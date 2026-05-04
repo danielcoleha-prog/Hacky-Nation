@@ -384,13 +384,13 @@
     <!-- WHITE SHIRT -->
     <article class="group cursor-pointer border-2 border-transparent hover:border-primary transition-all duration-300 overflow-hidden bg-surface-container-high reveal"
       onclick="openShirt('white')">
-      <div class="relative overflow-hidden h-[420px] bg-[#f5f5f5]">
+      <div class="relative overflow-hidden h-[420px] bg-[#f2ede4] flex items-center justify-center p-6">
         <!-- back = default -->
         <img src="Untitled design/white back.png" alt="Hacky Nation Tee White — back"
-          class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-100 group-hover:opacity-0" />
+          class="absolute inset-0 w-full h-full object-contain p-6 transition-opacity duration-500 opacity-100 group-hover:opacity-0" />
         <!-- front = on hover -->
         <img src="Untitled design/White front.png" alt="Hacky Nation Tee White — front"
-          class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100" />
+          class="absolute inset-0 w-full h-full object-contain p-6 transition-opacity duration-500 opacity-0 group-hover:opacity-100" />
         <span class="absolute top-4 left-4 font-label text-[10px] tracking-widest bg-white text-black px-2 py-1 z-10">WHITE</span>
       </div>
       <div class="p-6">
@@ -409,13 +409,13 @@
     <!-- BLACK SHIRT -->
     <article class="group cursor-pointer border-2 border-transparent hover:border-primary transition-all duration-300 overflow-hidden bg-surface-container-high reveal reveal-d1"
       onclick="openShirt('black')">
-      <div class="relative overflow-hidden h-[420px] bg-[#1a1a1a]">
+      <div class="relative overflow-hidden h-[420px] bg-[#f2ede4] flex items-center justify-center p-6">
         <!-- back = default -->
         <img src="Untitled design/black back.png" alt="Hacky Nation Tee Black — back"
-          class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-100 group-hover:opacity-0" />
+          class="absolute inset-0 w-full h-full object-contain p-6 transition-opacity duration-500 opacity-100 group-hover:opacity-0" />
         <!-- front = on hover -->
         <img src="Untitled design/black front.png" alt="Hacky Nation Tee Black — front"
-          class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100" />
+          class="absolute inset-0 w-full h-full object-contain p-6 transition-opacity duration-500 opacity-0 group-hover:opacity-100" />
         <span class="absolute top-4 left-4 font-label text-[10px] tracking-widest bg-white text-black px-2 py-1 z-10">BLACK</span>
       </div>
       <div class="p-6">
@@ -450,11 +450,11 @@
 
     <!-- images -->
     <div class="grid grid-cols-2 gap-1">
-      <div id="shirt-img-back" class="bg-[#f5f5f5] flex items-center justify-center overflow-hidden aspect-square">
-        <img id="shirt-modal-back" src="" alt="Back" class="w-full h-full object-cover" />
+      <div id="shirt-img-back" class="flex items-center justify-center overflow-hidden aspect-square">
+        <img id="shirt-modal-back" src="" alt="Back" class="w-full h-full object-contain p-4" />
       </div>
-      <div id="shirt-img-front" class="bg-[#f5f5f5] flex items-center justify-center overflow-hidden aspect-square">
-        <img id="shirt-modal-front" src="" alt="Front" class="w-full h-full object-cover" />
+      <div id="shirt-img-front" class="flex items-center justify-center overflow-hidden aspect-square">
+        <img id="shirt-modal-front" src="" alt="Front" class="w-full h-full object-contain p-4" />
       </div>
     </div>
 
@@ -882,7 +882,7 @@
       sub: 'WHITE · UNISEX · S–XXL',
       front: 'Untitled design/White front.png',
       back:  'Untitled design/white back.png',
-      imgBg: '#f5f5f5',
+      imgBg: '#f2ede4',
       price: 22,
     },
     black: {
@@ -891,7 +891,7 @@
       sub: 'BLACK · UNISEX · S–XXL',
       front: 'Untitled design/black front.png',
       back:  'Untitled design/black back.png',
-      imgBg: '#1a1a1a',
+      imgBg: '#f2ede4',
       price: 22,
     },
   };
