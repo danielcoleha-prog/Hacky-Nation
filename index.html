@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Hacky Nation — Keep It In The Air</title>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "surface-container-lowest": "#0e0e0e",
+          "surface-container-low":   "#1c1b1b",
+          "surface-container":       "#201f1f",
+          "surface-container-high":  "#2a2a2a",
+          "surface-container-highest":"#353534",
+          "surface-dim":             "#131313",
+          "surface":                 "#131313",
+          "surface-bright":          "#393939",
+          "on-surface":              "#e5e2e1",
+          "on-surface-variant":      "#bbc9cf",
+          "primary":                 "#a4e6ff",
+          "primary-container":       "#00d1ff",
+          "primary-fixed":           "#b7eaff",
+          "primary-fixed-dim":       "#4cd6ff",
+          "on-primary":              "#003543",
+          "on-primary-fixed":        "#001f28",
+          "outline":                 "#859399",
+          "outline-variant":         "#3c494e",
+          "error":                   "#ffb4ab",
+          "on-error":                "#690005",
+          "background":              "#131313",
+          "on-background":           "#e5e2e1",
+          "secondary":               "#c6c6c9",
+          "on-secondary":            "#2f3133",
+          "secondary-container":     "#454749",
+        },
+        fontFamily: {
+          "display":   ["Lexend"],
+          "headline":  ["Lexend"],
+          "body":      ["Lexend"],
+          "label":     ["Space Grotesk"],
+        },
+        fontSize: {
+          "display-xl": ["clamp(3rem,8vw,80px)", {lineHeight:"1.0", letterSpacing:"-0.04em", fontWeight:"900"}],
+          "display-lg": ["clamp(2rem,5vw,56px)",  {lineHeight:"1.0", letterSpacing:"-0.04em", fontWeight:"900"}],
+          "headline-lg":["32px", {lineHeight:"1.2", letterSpacing:"-0.02em", fontWeight:"700"}],
+          "headline-md":["24px", {lineHeight:"1.2", fontWeight:"700"}],
+          "headline-sm":["20px", {lineHeight:"1.2", fontWeight:"700"}],
+          "label-caps": ["12px", {lineHeight:"1.0", letterSpacing:"0.12em", fontWeight:"700"}],
+          "body-lg":    ["18px", {lineHeight:"1.5", fontWeight:"400"}],
+          "body-md":    ["15px", {lineHeight:"1.5", fontWeight:"400"}],
+        },
+      },
+    },
+  }
+</script>
+<style>
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    font-family: 'Material Symbols Outlined';
+  }
+  html { scroll-behavior: smooth; }
+  body { background: #131313; color: #e5e2e1; overflow-x: hidden; }
+
+  /* skew hover utility */
+  .skew-hover { transition: transform 0.18s ease; }
+  .skew-hover:hover { transform: skewX(-6deg); }
+
+  /* marquee */
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .marquee-inner { animation: marquee 30s linear infinite; }
+
+  /* fade-up reveal */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.65s ease, transform 0.65s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  .reveal-d1 { transition-delay: 0.1s; }
+  .reveal-d2 { transition-delay: 0.2s; }
+  .reveal-d3 { transition-delay: 0.3s; }
+  .reveal-d4 { transition-delay: 0.4s; }
+
+  /* floating animation */
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-18px); } }
+
+  /* noise grain overlay */
+  .grain::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1;
+  }
+
+  /* product card hidden */
+  .product-card.hidden { display: none !important; }
+
+  /* range input */
+  input[type=range] { accent-color: #a4e6ff; }
+
+  /* mobile menu transition */
+  #mobile-nav { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+  #mobile-nav.open { max-height: 320px; }
+
+  /* disable rotation on testimonial cards on mobile to prevent overflow */
+  @media (max-width: 767px) {
+    [style*="rotate"] { transform: none !important; }
+  }
+
+  /* larger tap targets for cart qty buttons */
+  .qty-btn { min-width: 44px; min-height: 44px; }
+
+  /* prevent skew from clipping text on small screens */
+  @media (max-width: 479px) {
+    .skew-mobile-off { transform: none !important; }
+  }
+</style>
+</head>
+<body class="font-body antialiased">
+
+<!-- ===== FLASH BANNERS (success / cancel from Stripe redirect) ===== -->
+<div id="banner-success" class="hidden fixed top-0 left-0 right-0 z-[100] bg-green-600 text-white font-label text-[11px] tracking-widest py-3 px-4 flex items-center justify-center gap-2 text-center flex-wrap">
+  <span class="material-symbols-outlined text-sm flex-shrink-0">check_circle</span>
+  <span>ORDER PLACED — THANK YOU! CHECK YOUR EMAIL.</span>
+  <button onclick="dismissBanner('banner-success')" class="ml-2 opacity-70 hover:opacity-100 flex-shrink-0"><span class="material-symbols-outlined text-sm">close</span></button>
+</div>
+<div id="banner-cancel" class="hidden fixed top-0 left-0 right-0 z-[100] bg-surface-container-high text-on-surface-variant font-label text-[11px] tracking-widest py-3 px-4 flex items-center justify-center gap-2 text-center flex-wrap">
+  <span class="material-symbols-outlined text-sm flex-shrink-0">info</span>
+  <span>CHECKOUT CANCELLED — YOUR CART IS SAVED.</span>
+  <button onclick="dismissBanner('banner-cancel')" class="ml-2 opacity-70 hover:opacity-100 flex-shrink-0"><span class="material-symbols-outlined text-sm">close</span></button>
+</div>
+
+<!-- ===================== NAV ===================== -->
+<header id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300">
+  <div class="flex justify-between items-center px-6 md:px-10 py-4 max-w-[1440px] mx-auto bg-[#131313]/85 backdrop-blur-md border-b-2 border-primary/30">
+    <!-- Logo -->
+    <a href="#hero" class="flex items-center gap-2 group">
+      <img src="Untitled design/5.png" alt="Hacky Nation Logo"
+        class="h-10 w-10 object-contain opacity-90 group-hover:opacity-100 transition-opacity" />
+      <span class="font-display text-xl font-black uppercase tracking-tighter text-primary italic skew-x-[-8deg] inline-block">HACKY NATION</span>
+    </a>
+
+    <!-- Desktop Links -->
+    <nav class="hidden md:flex items-center gap-8">
+      <a href="#shop" class="font-label font-bold text-label-caps uppercase text-white hover:text-primary transition-colors skew-hover" rel="noopener">Shop</a>
+      <a href="#skill-picker" class="font-label font-bold text-label-caps uppercase text-white hover:text-primary transition-colors skew-hover" rel="noopener">Drops</a>
+      <a href="#testimonials" class="font-label font-bold text-label-caps uppercase text-white hover:text-primary transition-colors skew-hover" rel="noopener">Reviews</a>
+      <a href="#newsletter" class="font-label font-bold text-label-caps uppercase text-white hover:text-primary transition-colors skew-hover" rel="noopener">Contact</a>
+    </nav>
+
+    <!-- Actions -->
+    <div class="flex items-center gap-4 text-primary">
+      <!-- Cart -->
+      <button onclick="openCart()" class="relative skew-hover" aria-label="Open cart">
+        <span class="material-symbols-outlined">shopping_cart</span>
+        <span id="cart-badge" class="absolute -top-2 -right-2 bg-primary text-black text-[9px] font-black w-4 h-4 rounded-sm flex items-center justify-center font-label hidden">0</span>
+      </button>
+      <!-- Hamburger -->
+      <button id="hamburger" class="md:hidden flex flex-col gap-[5px] p-1" aria-label="Menu">
+        <span class="block w-5 h-[2px] bg-primary transition-all duration-300 origin-center" id="h1"></span>
+        <span class="block w-5 h-[2px] bg-primary transition-all duration-300" id="h2"></span>
+        <span class="block w-5 h-[2px] bg-primary transition-all duration-300 origin-center" id="h3"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-nav" class="md:hidden bg-[#0e0e0e] border-b-2 border-primary/20 px-6">
+    <div class="py-4 flex flex-col gap-4">
+      <a href="#shop" onclick="closeMobile()" class="font-label font-bold text-label-caps uppercase text-white hover:text-primary transition-colors py-2">Shop</a>
+      <a href="#skill-picker" onclick="closeMobile()" class="font-label font-bold text-label-caps uppercase text-white hover:text-primary transition-colors py-2">Drops</a>
+      <a href="#testimonials" onclick="closeMobile()" class="font-label font-bold text-label-caps uppercase text-white hover:text-primary transition-colors py-2">Reviews</a>
+      <a href="#newsletter" onclick="closeMobile()" class="font-label font-bold text-label-caps uppercase text-white hover:text-primary transition-colors py-2">Contact</a>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section id="hero" class="relative min-h-screen flex items-center overflow-hidden grain pt-20">
+  <!-- background image -->
+  <div class="absolute inset-0 z-0">
+    <div class="absolute inset-0 bg-gradient-to-r from-[#131313] via-[#131313]/70 to-transparent z-10"></div>
+    <img class="w-full h-full object-cover opacity-75"
+      src="1202d6e8-e60d-4ef1-adc1-28c2eafb30b7.png"
+      alt="Friends playing hacky sack at sunset"/>
+  </div>
+
+  <!-- blue electric glow -->
+  <div class="absolute top-1/4 right-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl z-0 pointer-events-none" style="animation: float 6s ease-in-out infinite;"></div>
+
+  <!-- Logo — decorative right side -->
+  <img src="Untitled design/5.png" alt=""
+    class="absolute right-10 bottom-24 w-44 opacity-15 z-10 pointer-events-none hidden lg:block"
+    style="animation: float 7s ease-in-out 1s infinite;" />
+
+  <div class="relative z-20 px-6 md:px-10 max-w-[1440px] mx-auto w-full">
+    <div class="max-w-3xl">
+      <span class="font-label text-label-caps text-primary block mb-6 reveal">HANDCRAFTED · EST. IN A CIRCLE OF FRIENDS</span>
+      <h1 class="font-display text-display-xl uppercase italic text-white leading-[0.9] mb-6 reveal reveal-d1">
+        KEEP IT<br>
+        <span class="text-primary">IN THE</span><br>
+        AIR.
+      </h1>
+      <p class="text-body-lg text-on-surface-variant mb-10 max-w-lg reveal reveal-d2">
+        Handcrafted hacky sacks for the culture. Played everywhere. Born from the ground up. No stadium required.
+      </p>
+      <div class="flex flex-wrap gap-4 reveal reveal-d3">
+        <a href="#shop" class="bg-primary text-black font-display font-extrabold px-8 py-4 uppercase tracking-tighter sm:skew-x-[-10deg] inline-block hover:bg-primary-fixed transition-all">
+          SHOP THE DROP
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- stat ticker -->
+  <div class="absolute bottom-0 left-0 right-0 z-20 bg-primary/10 backdrop-blur-sm border-t border-primary/20 py-3 px-6">
+    <div class="max-w-[1440px] mx-auto grid grid-cols-2 md:flex md:items-center md:justify-between gap-x-6 gap-y-2">
+      <div class="flex items-center gap-2">
+        <span class="font-display font-black text-xl text-primary">1K+</span>
+        <span class="font-label text-label-caps text-on-surface-variant">Followers</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="font-display font-black text-xl text-primary">48</span>
+        <span class="font-label text-label-caps text-on-surface-variant">States Played</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="font-display font-black text-xl text-primary">100%</span>
+        <span class="font-label text-label-caps text-on-surface-variant">Handmade</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings:'FILL' 0,'wght' 700">all_inclusive</span>
+        <span class="font-label text-label-caps text-on-surface-variant">Circles Formed</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== NEW ARRIVALS (BENTO) ===================== -->
+<section id="shop" class="py-20 px-6 md:px-10 max-w-[1440px] mx-auto">
+  <div class="flex justify-between items-end mb-12 flex-wrap gap-4 reveal">
+    <div>
+      <h2 class="font-display text-headline-lg uppercase italic text-white">THE LINEUP</h2>
+      <p class="font-label text-label-caps text-on-surface-variant uppercase tracking-widest mt-2">Season Drop · Handcrafted Gear</p>
+    </div>
+    <a href="#" class="font-label text-label-caps text-primary border-b-2 border-primary pb-1 hover:text-white hover:border-white transition-colors">SEE ALL GEAR →</a>
+  </div>
+
+  <!-- Product Grid: 3-col, clean card structure -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5" id="products-grid">
+
+    <!-- MYSTERY BAG — spans full width, horizontal layout, IN STOCK -->
+    <article class="product-card sm:col-span-2 md:col-span-3 group border-2 border-transparent hover:border-primary transition-all duration-300 overflow-hidden bg-surface-container-high flex flex-col sm:flex-row reveal"
+      data-index="0" data-level="beginner" data-id="mystery-bag" data-name="Assorted Hand Knit Mystery Bag" data-price="10" data-image="Untitled design/Untitled design.png">
+      <!-- image -->
+      <div class="relative bg-[#f2ede4] flex items-center justify-center p-6 sm:w-80 flex-shrink-0 overflow-hidden min-h-[240px] sm:min-h-0">
+        <img class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
+          src="Untitled design/Untitled design.png" alt="Assorted hand knit hacky sacks" />
+      </div>
+      <!-- info -->
+      <div class="p-8 flex flex-col justify-between flex-1">
+        <div>
+          <span class="font-label text-label-caps bg-primary-container text-black px-2 py-1 mb-4 inline-block">IN STOCK · SURPRISE DROP</span>
+          <h3 class="font-display font-black text-2xl text-white uppercase italic leading-tight mb-2">Assorted Hand Knit<br>Mystery Bag</h3>
+          <p class="text-on-surface-variant text-sm leading-relaxed">
+            Each sack is hand-knit with unique patterns and colors, pulled at random. You don't pick the design — the sack picks you. <strong class="text-white">1 piece per order.</strong>
+          </p>
+        </div>
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-6">
+          <span class="font-display font-black text-3xl text-primary">$10.00</span>
+          <button onclick="addToCart(event)" data-id="mystery-bag" data-name="Assorted Hand Knit Mystery Bag" data-price="10" data-image="Untitled design/Untitled design.png"
+            class="bg-primary text-black font-display font-bold px-8 py-4 uppercase tracking-tighter active:scale-95 transition-all flex items-center justify-center gap-2 text-sm flex-1 sm:flex-none">
+            <span class="material-symbols-outlined text-sm">add_shopping_cart</span> ADD TO CART
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- SUNSET — SOLD OUT -->
+    <article class="product-card sm:col-span-2 group border-2 border-white/5 overflow-hidden bg-surface-container-high flex flex-col reveal reveal-d1 opacity-75"
+      data-index="1" data-level="beginner" data-sold-out="true">
+      <!-- image area -->
+      <div class="relative bg-[#f2ede4] flex items-center justify-center p-6 h-72 overflow-hidden">
+        <div class="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
+          <span class="font-display font-black text-2xl text-white uppercase italic tracking-widest border-2 border-white px-6 py-2">SOLD OUT</span>
+        </div>
+        <img class="h-60 w-auto object-contain grayscale"
+          src="Untitled design/1.png" alt="Sunset hacky sack" />
+      </div>
+      <div class="p-6 flex flex-col flex-1">
+        <div class="flex items-start justify-between mb-1">
+          <h3 class="font-display font-black text-2xl text-white/60 uppercase italic">Sunset</h3>
+          <span class="font-display font-black text-2xl text-on-surface-variant">$14.00</span>
+        </div>
+        <p class="font-label text-[10px] tracking-widest text-on-surface-variant/50 mb-5">YELLOW &amp; ORANGE · 32 PANELS</p>
+        <a href="#newsletter" class="mt-auto w-full border-2 border-white/20 text-on-surface-variant font-display font-bold py-3 uppercase tracking-tighter transition-all flex items-center justify-center gap-2 hover:border-primary hover:text-primary">
+          <span class="material-symbols-outlined text-sm">notifications</span> NOTIFY ME WHEN BACK
+        </a>
+      </div>
+    </article>
+
+    <!-- BULLDAWGS — SOLD OUT -->
+    <article class="product-card group border-2 border-white/5 overflow-hidden bg-surface-container-high flex flex-col reveal reveal-d1 opacity-75"
+      data-index="2" data-level="intermediate" data-sold-out="true">
+      <div class="relative bg-[#f2ede4] flex items-center justify-center p-6 h-72 overflow-hidden">
+        <div class="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
+          <span class="font-display font-black text-xl text-white uppercase italic tracking-widest border-2 border-white px-4 py-2">SOLD OUT</span>
+        </div>
+        <img class="h-56 w-auto object-contain grayscale"
+          src="Untitled design/4.png" alt="Bulldawgs hacky sack" />
+      </div>
+      <div class="p-6 flex flex-col flex-1">
+        <div class="flex items-start justify-between mb-1">
+          <h3 class="font-display font-black text-xl text-white/60 uppercase italic">Bulldawgs</h3>
+          <span class="font-display font-black text-xl text-on-surface-variant">$14.00</span>
+        </div>
+        <p class="font-label text-[10px] tracking-widest text-on-surface-variant/50 mb-5">BLACK &amp; RED · 14 PANELS</p>
+        <a href="#newsletter" class="mt-auto w-full border-2 border-white/20 text-on-surface-variant font-display font-bold py-3 uppercase tracking-tighter transition-all flex items-center justify-center gap-2 hover:border-primary hover:text-primary">
+          <span class="material-symbols-outlined text-sm">notifications</span> NOTIFY ME WHEN BACK
+        </a>
+      </div>
+    </article>
+
+    <!-- SKY — SOLD OUT -->
+    <article class="product-card group border-2 border-white/5 overflow-hidden bg-surface-container-high flex flex-col reveal reveal-d1 opacity-75"
+      data-index="3" data-level="beginner" data-sold-out="true">
+      <div class="relative bg-[#f2ede4] flex items-center justify-center p-6 h-72 overflow-hidden">
+        <div class="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
+          <span class="font-display font-black text-xl text-white uppercase italic tracking-widest border-2 border-white px-4 py-2">SOLD OUT</span>
+        </div>
+        <img class="h-56 w-auto object-contain grayscale"
+          src="Untitled design/2.png" alt="Sky hacky sack" />
+      </div>
+      <div class="p-6 flex flex-col flex-1">
+        <div class="flex items-start justify-between mb-1">
+          <h3 class="font-display font-black text-xl text-white/60 uppercase italic">Sky</h3>
+          <span class="font-display font-black text-xl text-on-surface-variant">$14.00</span>
+        </div>
+        <p class="font-label text-[10px] tracking-widest text-on-surface-variant/50 mb-5">BLUE &amp; WHITE · 16 PANELS</p>
+        <a href="#newsletter" class="mt-auto w-full border-2 border-white/20 text-on-surface-variant font-display font-bold py-3 uppercase tracking-tighter transition-all flex items-center justify-center gap-2 hover:border-primary hover:text-primary">
+          <span class="material-symbols-outlined text-sm">notifications</span> NOTIFY ME WHEN BACK
+        </a>
+      </div>
+    </article>
+
+    <!-- PATRIOT — SOLD OUT -->
+    <article class="product-card group border-2 border-white/5 overflow-hidden bg-surface-container-high flex flex-col reveal reveal-d2 opacity-75"
+      data-index="4" data-level="intermediate" data-sold-out="true">
+      <div class="relative bg-[#f2ede4] flex items-center justify-center p-6 h-72 overflow-hidden">
+        <div class="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
+          <span class="font-display font-black text-xl text-white uppercase italic tracking-widest border-2 border-white px-4 py-2">SOLD OUT</span>
+        </div>
+        <img class="h-56 w-auto object-contain grayscale"
+          src="Untitled design/Untitled design (1).png" alt="Patriot hacky sack" />
+      </div>
+      <div class="p-6 flex flex-col flex-1">
+        <div class="flex items-start justify-between mb-1">
+          <h3 class="font-display font-black text-xl text-white/60 uppercase italic">Patriot</h3>
+          <span class="font-display font-black text-xl text-on-surface-variant">$14.00</span>
+        </div>
+        <p class="font-label text-[10px] tracking-widest text-on-surface-variant/50 mb-5">RED · WHITE · BLUE · 32 PANELS</p>
+        <a href="#newsletter" class="mt-auto w-full border-2 border-white/20 text-on-surface-variant font-display font-bold py-3 uppercase tracking-tighter transition-all flex items-center justify-center gap-2 hover:border-primary hover:text-primary">
+          <span class="material-symbols-outlined text-sm">notifications</span> NOTIFY ME WHEN BACK
+        </a>
+      </div>
+    </article>
+
+  </div><!-- /product grid -->
+</section>
+
+<!-- ===================== SKILL PICKER ===================== -->
+<section id="skill-picker" class="py-20 px-6 md:px-10 max-w-[1440px] mx-auto">
+  <div class="text-center mb-12 reveal">
+    <h2 class="font-display text-display-lg uppercase italic text-white leading-none">FIND YOUR SACK</h2>
+    <p class="font-label text-label-caps text-on-surface-variant tracking-widest mt-3">Pick your level — we'll filter the lineup</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto reveal reveal-d1">
+    <!-- Beginner -->
+    <button class="skill-btn border-2 border-white/10 bg-surface-container-high p-8 text-left transition-all duration-200 hover:border-primary group"
+      data-level="beginner" onclick="filterSkill('beginner', this)">
+      <div class="flex gap-1 mb-4">
+        <div class="w-5 h-5 rounded-sm bg-white/20 group-hover:bg-primary transition-colors skill-dot"></div>
+      </div>
+      <h3 class="font-display font-black text-xl text-white uppercase italic group-hover:text-primary transition-colors">Beginner</h3>
+      <p class="text-on-surface-variant text-sm mt-2 font-label">Soft, forgiving, fun. Just getting started.</p>
+    </button>
+    <!-- Intermediate -->
+    <button class="skill-btn border-2 border-white/10 bg-surface-container-high p-8 text-left transition-all duration-200 hover:border-primary group"
+      data-level="intermediate" onclick="filterSkill('intermediate', this)">
+      <div class="flex gap-1 mb-4">
+        <div class="w-5 h-5 rounded-sm bg-white/20 group-hover:bg-primary transition-colors skill-dot"></div>
+        <div class="w-5 h-5 rounded-sm bg-white/20 group-hover:bg-primary transition-colors skill-dot"></div>
+      </div>
+      <h3 class="font-display font-black text-xl text-white uppercase italic group-hover:text-primary transition-colors">Intermediate</h3>
+      <p class="text-on-surface-variant text-sm mt-2 font-label">Built for control. You've got moves.</p>
+    </button>
+    <!-- Pro -->
+    <button class="skill-btn border-2 border-white/10 bg-surface-container-high p-8 text-left transition-all duration-200 hover:border-primary group"
+      data-level="pro" onclick="filterSkill('pro', this)">
+      <div class="flex gap-1 mb-4">
+        <div class="w-5 h-5 rounded-sm bg-white/20 group-hover:bg-primary transition-colors skill-dot"></div>
+        <div class="w-5 h-5 rounded-sm bg-white/20 group-hover:bg-primary transition-colors skill-dot"></div>
+        <div class="w-5 h-5 rounded-sm bg-white/20 group-hover:bg-primary transition-colors skill-dot"></div>
+      </div>
+      <h3 class="font-display font-black text-xl text-white uppercase italic group-hover:text-primary transition-colors">Pro</h3>
+      <p class="text-on-surface-variant text-sm mt-2 font-label">No mercy. Premium materials. Serious play.</p>
+    </button>
+  </div>
+
+  <div class="text-center mt-6">
+    <button id="skill-reset" class="font-label text-label-caps text-on-surface-variant underline hidden hover:text-primary transition-colors"
+      onclick="resetSkill()">Show all sacks</button>
+  </div>
+</section>
+
+<!-- ===================== TESTIMONIALS ===================== -->
+<section id="testimonials" class="border-t-2 border-white/5">
+  <!-- marquee ticker -->
+  <div class="overflow-hidden bg-surface-container-lowest border-b-2 border-white/5 py-3">
+    <div class="flex gap-12 marquee-inner whitespace-nowrap w-max">
+      <span class="font-label text-label-caps text-primary">⬤ "Best sack I've ever played with" — Jake M., Boulder CO</span>
+      <span class="font-label text-label-caps text-on-surface-variant">⬤ "Feels handmade because it IS handmade" — Sara L., Portland OR</span>
+      <span class="font-label text-label-caps text-primary">⬤ "My whole crew ordered one" — Devon K., Austin TX</span>
+      <span class="font-label text-label-caps text-on-surface-variant">⬤ "Festival approved. All day." — Mia T., Asheville NC</span>
+      <span class="font-label text-label-caps text-primary">⬤ "Zero regrets. Worth every dollar." — Chris B., Denver CO</span>
+      <!-- duplicate for seamless loop -->
+      <span class="font-label text-label-caps text-primary">⬤ "Best sack I've ever played with" — Jake M., Boulder CO</span>
+      <span class="font-label text-label-caps text-on-surface-variant">⬤ "Feels handmade because it IS handmade" — Sara L., Portland OR</span>
+      <span class="font-label text-label-caps text-primary">⬤ "My whole crew ordered one" — Devon K., Austin TX</span>
+      <span class="font-label text-label-caps text-on-surface-variant">⬤ "Festival approved. All day." — Mia T., Asheville NC</span>
+      <span class="font-label text-label-caps text-primary">⬤ "Zero regrets. Worth every dollar." — Chris B., Denver CO</span>
+    </div>
+  </div>
+
+  <!-- Quote cards -->
+  <div class="py-20 px-6 md:px-10 max-w-[1440px] mx-auto">
+    <h2 class="font-display text-headline-lg uppercase italic text-white mb-12 text-center reveal">THE CIRCLE SPEAKS</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+      <div class="bg-surface-container-high border-2 border-white/5 p-8 reveal" style="transform: rotate(-1.5deg);">
+        <p class="font-display text-4xl text-primary leading-none mb-4">"</p>
+        <p class="text-on-surface-variant leading-relaxed mb-6">Best sack I've ever played with. The feel is unreal, it's like it was made for my foot.</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-sm bg-surface-container-lowest flex items-center justify-center">
+            <span class="material-symbols-outlined text-primary text-sm">person</span>
+          </div>
+          <div>
+            <p class="font-label font-bold text-white text-sm uppercase tracking-tight">Harrison B.</p>
+            <p class="font-label text-[10px] text-on-surface-variant tracking-widest">HADDONFIELD, NJ</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-surface-container-high border-2 border-white/5 p-8 reveal reveal-d1 mt-6 md:mt-0" style="transform: rotate(1deg);">
+        <p class="font-display text-4xl text-primary leading-none mb-4">"</p>
+        <p class="text-on-surface-variant leading-relaxed mb-6">All my homies love hacky nation knit sacks, they are the best.</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-sm bg-surface-container-lowest flex items-center justify-center">
+            <span class="material-symbols-outlined text-primary text-sm">person</span>
+          </div>
+          <div>
+            <p class="font-label font-bold text-white text-sm uppercase tracking-tight">Peter S.</p>
+            <p class="font-label text-[10px] text-on-surface-variant tracking-widest">MOORESTOWN, NJ</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-surface-container-high border-2 border-white/5 p-8 reveal reveal-d2" style="transform: rotate(-0.8deg);">
+        <p class="font-display text-4xl text-primary leading-none mb-4">"</p>
+        <p class="text-on-surface-variant leading-relaxed mb-6">They have the best sack content on all of Instagram!</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-sm bg-surface-container-lowest flex items-center justify-center">
+            <span class="material-symbols-outlined text-primary text-sm">person</span>
+          </div>
+          <div>
+            <p class="font-label font-bold text-white text-sm uppercase tracking-tight">Brian M.</p>
+            <p class="font-label text-[10px] text-on-surface-variant tracking-widest">WEST CHESTER, PA</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CTA BAND ===================== -->
+<section class="py-32 relative overflow-hidden border-t-2 border-white/5">
+  <div class="absolute inset-0 bg-primary/5"></div>
+  <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary to-transparent"></div>
+  <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary to-transparent"></div>
+  <div class="px-6 md:px-10 max-w-[1440px] mx-auto text-center relative z-10 reveal">
+    <h2 class="font-display text-display-xl uppercase italic text-white mb-8">UNLEASH THE PRO<br><span class="text-primary">IN YOU.</span></h2>
+    <p class="text-on-surface-variant max-w-xl mx-auto mb-12 text-body-lg">
+      From beginner basics to elite stalls. Every level has its sack. Every player has their circle.
+    </p>
+    <a href="#shop" class="bg-white text-black font-display font-extrabold px-10 py-5 uppercase tracking-tighter sm:skew-x-[-10deg] inline-block hover:bg-primary transition-all">
+      SHOP NOW
+    </a>
+  </div>
+</section>
+
+<!-- ===================== INSTAGRAM ===================== -->
+<section class="py-20 px-6 md:px-10 max-w-[1440px] mx-auto border-t-2 border-white/5">
+  <div class="flex flex-col md:flex-row items-center justify-between gap-10 reveal">
+    <div class="max-w-lg">
+      <span class="font-label text-label-caps text-primary tracking-widest block mb-3">FOLLOW THE CIRCLE</span>
+      <h2 class="font-display text-display-lg uppercase italic text-white leading-none mb-4">@HACKY_NATION</h2>
+      <p class="text-on-surface-variant text-body-lg mb-8">Behind-the-scenes drops, trick clips, and the community keeping it in the air. Follow us on Instagram for the latest.</p>
+      <a href="https://www.instagram.com/hacky_nation" target="_blank" rel="noopener noreferrer"
+        class="inline-flex items-center gap-3 bg-primary text-black font-display font-extrabold px-8 py-4 uppercase tracking-tighter sm:skew-x-[-10deg] hover:bg-primary-fixed transition-all w-full sm:w-auto justify-center sm:justify-start">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+        FOLLOW ON INSTAGRAM
+      </a>
+    </div>
+    <div class="w-full md:w-auto flex-shrink-0 border-2 border-white/10 bg-surface-container-high p-8 text-center max-w-xs w-full">
+      <span class="material-symbols-outlined text-primary text-5xl mb-4 block">photo_camera</span>
+      <p class="font-display font-black text-white uppercase italic text-lg mb-2">Tag Us</p>
+      <p class="font-label text-on-surface-variant text-sm tracking-widest">#HACKYNATION to get featured</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CUSTOM ORDERS ===================== -->
+<section class="py-20 px-6 md:px-10 max-w-[1440px] mx-auto border-t-2 border-white/5">
+  <div class="max-w-2xl mx-auto text-center reveal">
+    <span class="font-label text-label-caps text-primary tracking-widest block mb-3">BUILD YOUR OWN</span>
+    <h2 class="font-display text-display-lg uppercase italic text-white leading-none mb-4">CUSTOM SACK REQUEST</h2>
+    <p class="text-on-surface-variant text-body-lg mb-10">Want a sack made to your specs? Colors, panels, size — we'll work with you to build something one-of-a-kind. DM us on Instagram to get the conversation started.</p>
+    <a href="https://www.instagram.com/hacky_nation" target="_blank" rel="noopener noreferrer"
+      class="inline-flex items-center gap-3 border-2 border-primary text-primary font-display font-extrabold px-8 py-4 uppercase tracking-tighter sm:skew-x-[-10deg] hover:bg-primary hover:text-black transition-all w-full sm:w-auto justify-center">
+      <span class="material-symbols-outlined text-sm">send</span> DM US ON INSTAGRAM
+    </a>
+    <p class="font-label text-[10px] text-on-surface-variant/50 tracking-widest uppercase mt-6">Custom orders handled case by case · Reply time 1–2 days</p>
+  </div>
+</section>
+
+<!-- ===================== NEWSLETTER ===================== -->
+<section id="newsletter" class="py-20 bg-surface-container-lowest border-t-2 border-white/5">
+  <div class="px-6 md:px-10 max-w-[1440px] mx-auto">
+    <div class="max-w-2xl mx-auto text-center reveal">
+      <h2 class="font-display text-display-lg uppercase italic text-white mb-4">JOIN THE CIRCLE.</h2>
+      <p class="text-on-surface-variant mb-10 text-body-lg">Get first access to drops, tricks, and community events. No spam — just sack talk.</p>
+
+      <form id="newsletter-form" name="newsletter" netlify netlify-honeypot="bot-field" onsubmit="handleNewsletter(event)" class="flex flex-col sm:flex-row gap-0 max-w-md mx-auto border-2 border-white/10">
+        <input type="hidden" name="form-name" value="newsletter" />
+        <input type="text" name="bot-field" style="display:none" aria-hidden="true" tabindex="-1" />
+        <input type="email" id="nl-email" name="email" required placeholder="your@email.com"
+          class="flex-1 bg-surface-container px-5 py-4 text-white placeholder-on-surface-variant outline-none font-body text-sm border-none focus:ring-0 min-w-0" />
+        <button type="submit" class="bg-primary text-black font-display font-extrabold px-8 py-4 uppercase tracking-tighter hover:bg-primary-fixed transition-all whitespace-nowrap">
+          COUNT ME IN
+        </button>
+      </form>
+      <p id="nl-success" class="hidden font-display font-bold text-primary text-xl mt-6 uppercase italic">You're in the circle. 🤙</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="w-full py-12 px-6 md:px-10 bg-surface-container-lowest border-t-2 border-surface-container-highest">
+  <div class="max-w-[1440px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+    <div class="flex items-center gap-3">
+      <img src="Untitled design/5.png" alt="Hacky Nation"
+        class="h-9 w-9 object-contain opacity-80" />
+      <span class="font-display font-black text-white uppercase tracking-tighter">HACKY NATION</span>
+    </div>
+
+    <nav class="flex gap-8 flex-wrap justify-center">
+      <a href="#shop"       class="font-label text-[11px] uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">Shop</a>
+      <a href="#testimonials" class="font-label text-[11px] uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">Reviews</a>
+      <a href="#newsletter"   class="font-label text-[11px] uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">Contact</a>
+      <a href="https://www.instagram.com/hacky_nation" target="_blank" rel="noopener noreferrer" class="font-label text-[11px] uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">Instagram</a>
+      <a href="#newsletter" class="font-label text-[11px] uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">Contact</a>
+    </nav>
+
+    <p class="font-label text-[11px] uppercase tracking-widest text-on-surface-variant">
+      © 2025 HACKY NATION. KEEP IT IN THE AIR.
+    </p>
+  </div>
+</footer>
+
+<!-- ===================== CART DRAWER ===================== -->
+<div id="cart-overlay" onclick="closeCart()" class="fixed inset-0 bg-black/60 z-[60] hidden"></div>
+<aside id="cart-drawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-surface-container-low z-[70] flex flex-col translate-x-full transition-transform duration-300 ease-in-out">
+  <!-- header -->
+  <div class="flex items-center justify-between px-6 py-5 border-b border-white/10">
+    <h2 class="font-display font-black text-xl text-white uppercase italic">Your Cart</h2>
+    <button onclick="closeCart()" class="text-on-surface-variant hover:text-white transition-colors">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+  </div>
+  <!-- items -->
+  <div id="cart-items" class="flex-1 overflow-y-auto px-6 py-4 space-y-4"></div>
+  <!-- empty state -->
+  <div id="cart-empty" class="flex-1 flex flex-col items-center justify-center text-center px-6 gap-4">
+    <span class="material-symbols-outlined text-5xl text-on-surface-variant/40">shopping_basket</span>
+    <p class="font-display font-bold text-white/40 uppercase italic text-xl">Your cart is empty</p>
+    <button onclick="closeCart()" class="font-label text-label-caps text-primary underline tracking-widest">Keep browsing</button>
+  </div>
+  <!-- footer -->
+  <div id="cart-footer" class="hidden border-t border-white/10 px-6 py-6 space-y-4">
+    <div class="flex justify-between items-center">
+      <span class="font-label font-bold text-on-surface-variant uppercase tracking-widest text-sm">Subtotal</span>
+      <span id="cart-subtotal" class="font-display font-black text-white text-2xl">$0.00</span>
+    </div>
+    <button onclick="handleCheckout()" class="w-full bg-primary text-black font-display font-black text-lg py-4 uppercase tracking-tighter skew-hover active:scale-95 transition-all flex items-center justify-center gap-2">
+      <span class="material-symbols-outlined">lock</span> CHECKOUT
+    </button>
+    <p class="font-label text-[10px] text-on-surface-variant/50 text-center tracking-widest uppercase">Powered by Stripe · Secure checkout</p>
+  </div>
+</aside>
+
+<!-- FAB -->
+<button id="fab" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})"
+  class="fixed bottom-8 right-8 z-50 bg-primary text-black w-14 h-14 flex items-center justify-center shadow-2xl active:scale-90 transition-all skew-hover">
+  <span class="material-symbols-outlined">shopping_basket</span>
+</button>
+
+<script>
+  // ===== CART STATE =====
+  let cart = JSON.parse(localStorage.getItem('hn-cart') || '[]');
+
+  function saveCart() {
+    localStorage.setItem('hn-cart', JSON.stringify(cart));
+  }
+
+  function updateBadge() {
+    const badge = document.getElementById('cart-badge');
+    const total = cart.reduce((s, i) => s + i.qty, 0);
+    if (total > 0) {
+      badge.textContent = total;
+      badge.classList.remove('hidden');
+    } else {
+      badge.classList.add('hidden');
+    }
+  }
+
+  function renderCart() {
+    const itemsEl = document.getElementById('cart-items');
+    const emptyEl = document.getElementById('cart-empty');
+    const footerEl = document.getElementById('cart-footer');
+    const subtotalEl = document.getElementById('cart-subtotal');
+
+    if (cart.length === 0) {
+      itemsEl.innerHTML = '';
+      emptyEl.classList.remove('hidden');
+      footerEl.classList.add('hidden');
+      return;
+    }
+
+    emptyEl.classList.add('hidden');
+    footerEl.classList.remove('hidden');
+
+    itemsEl.innerHTML = cart.map((item, idx) => `
+      <div class="flex gap-3 items-start border-b border-white/5 pb-4">
+        <div class="w-16 h-16 bg-[#f2ede4] flex-shrink-0 flex items-center justify-center overflow-hidden">
+          <img src="${escHtml(item.image)}" alt="${escHtml(item.name)}" class="w-full h-full object-contain" />
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="font-display font-bold text-white uppercase italic text-sm leading-tight">${escHtml(item.name)}</p>
+          <p class="font-label text-[11px] text-on-surface-variant mt-1 uppercase tracking-widest">$${item.price.toFixed(2)} each</p>
+          <div class="flex items-center gap-2 mt-3">
+            <button onclick="updateQty(${idx}, -1)" class="qty-btn w-11 h-11 border border-white/20 text-white flex items-center justify-center hover:border-primary hover:text-primary active:bg-primary/10 transition-colors font-bold text-xl">−</button>
+            <span class="font-display font-bold text-white w-6 text-center text-lg">${item.qty}</span>
+            <button onclick="updateQty(${idx}, 1)" class="qty-btn w-11 h-11 border border-white/20 text-white flex items-center justify-center hover:border-primary hover:text-primary active:bg-primary/10 transition-colors font-bold text-xl">+</button>
+            <button onclick="removeFromCart(${idx})" class="ml-auto w-11 h-11 flex items-center justify-center text-on-surface-variant hover:text-error active:text-error transition-colors">
+              <span class="material-symbols-outlined">delete</span>
+            </button>
+          </div>
+        </div>
+        <span class="font-display font-bold text-primary text-sm flex-shrink-0 pt-1">$${(item.price * item.qty).toFixed(2)}</span>
+      </div>
+    `).join('');
+
+    const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    subtotalEl.textContent = '$' + subtotal.toFixed(2);
+  }
+
+  function escHtml(str) {
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function addToCart(e) {
+    const btn = e.currentTarget || e.target.closest('button');
+    const id = btn.dataset.id;
+    const name = btn.dataset.name;
+    const price = parseFloat(btn.dataset.price);
+    const image = btn.dataset.image;
+    if (!id || !name || isNaN(price)) return;
+
+    const existing = cart.find(i => i.id === id);
+    if (existing) {
+      existing.qty++;
+    } else {
+      cart.push({ id, name, price, image, qty: 1 });
+    }
+    saveCart();
+    updateBadge();
+    renderCart();
+    openCart();
+  }
+
+  function updateQty(idx, delta) {
+    cart[idx].qty += delta;
+    if (cart[idx].qty <= 0) cart.splice(idx, 1);
+    saveCart();
+    updateBadge();
+    renderCart();
+  }
+
+  function removeFromCart(idx) {
+    cart.splice(idx, 1);
+    saveCart();
+    updateBadge();
+    renderCart();
+  }
+
+  function openCart() {
+    document.getElementById('cart-drawer').classList.remove('translate-x-full');
+    document.getElementById('cart-overlay').classList.remove('hidden');
+    document.getElementById('fab').classList.add('hidden');
+    document.body.style.overflow = 'hidden';
+    renderCart();
+  }
+
+  function closeCart() {
+    document.getElementById('cart-drawer').classList.add('translate-x-full');
+    document.getElementById('cart-overlay').classList.add('hidden');
+    document.getElementById('fab').classList.remove('hidden');
+    document.body.style.overflow = '';
+  }
+
+  async function handleCheckout() {
+    if (cart.length === 0) return;
+    const btn = document.querySelector('#cart-footer button');
+    btn.textContent = 'Redirecting…';
+    btn.disabled = true;
+    try {
+      const res = await fetch('/.netlify/functions/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: cart.map(i => ({ id: i.id, qty: i.qty })) }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error(data.error || 'No URL returned');
+      }
+    } catch (err) {
+      btn.innerHTML = '<span class="material-symbols-outlined">lock</span> CHECKOUT';
+      btn.disabled = false;
+      alert('Checkout failed. Please try again.');
+    }
+  }
+
+  function dismissBanner(id) {
+    document.getElementById(id).classList.add('hidden');
+  }
+
+  // Check URL params for Stripe redirect
+  (function checkStripeReturn() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('success') === '1') {
+      document.getElementById('banner-success').classList.remove('hidden');
+      cart = [];
+      saveCart();
+      updateBadge();
+      history.replaceState({}, '', window.location.pathname);
+    } else if (params.get('cancel') === '1') {
+      document.getElementById('banner-cancel').classList.remove('hidden');
+      history.replaceState({}, '', window.location.pathname);
+    }
+  })();
+
+  // Init badge on load
+  updateBadge();
+
+  // ===== HAMBURGER =====
+  const hamburger = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobile-nav');
+  const h1 = document.getElementById('h1'), h2 = document.getElementById('h2'), h3 = document.getElementById('h3');
+  let menuOpen = false;
+  hamburger.addEventListener('click', () => {
+    menuOpen = !menuOpen;
+    mobileNav.classList.toggle('open', menuOpen);
+    if (menuOpen) {
+      h1.style.transform = 'translateY(7px) rotate(45deg)';
+      h2.style.opacity = '0';
+      h3.style.transform = 'translateY(-7px) rotate(-45deg)';
+    } else {
+      h1.style.transform = ''; h2.style.opacity = ''; h3.style.transform = '';
+    }
+  });
+  function closeMobile() {
+    menuOpen = false;
+    mobileNav.classList.remove('open');
+    h1.style.transform = ''; h2.style.opacity = ''; h3.style.transform = '';
+  }
+  document.addEventListener('click', e => {
+    if (menuOpen && !hamburger.contains(e.target) && !mobileNav.contains(e.target)) closeMobile();
+  });
+
+  // ===== SKILL FILTER =====
+  let activeLevel = null;
+  function filterSkill(level, btn) {
+    // toggle off if same
+    if (activeLevel === level) { resetSkill(); return; }
+    activeLevel = level;
+    document.querySelectorAll('.skill-btn').forEach(b => {
+      const active = b.dataset.level === level;
+      b.classList.toggle('border-primary', active);
+      b.classList.toggle('bg-primary/10', active);
+      b.classList.toggle('border-white/10', !active);
+    });
+    document.querySelectorAll('.product-card').forEach(card => {
+      card.classList.toggle('hidden', card.dataset.level !== level);
+    });
+    document.getElementById('skill-reset').classList.remove('hidden');
+    document.getElementById('shop').scrollIntoView({ behavior: 'smooth' });
+  }
+  function resetSkill() {
+    activeLevel = null;
+    document.querySelectorAll('.skill-btn').forEach(b => {
+      b.classList.remove('border-primary', 'bg-primary/10');
+      b.classList.add('border-white/10');
+    });
+    document.querySelectorAll('.product-card').forEach(c => c.classList.remove('hidden'));
+    document.getElementById('skill-reset').classList.add('hidden');
+  }
+
+  // ===== NEWSLETTER =====
+  function handleNewsletter(e) {
+    e.preventDefault();
+    document.getElementById('newsletter-form').style.display = 'none';
+    document.getElementById('nl-success').classList.remove('hidden');
+  }
+
+  // ===== INTERSECTION OBSERVER =====
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
