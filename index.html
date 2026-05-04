@@ -146,7 +146,7 @@
     <!-- Desktop Links -->
     <nav class="hidden md:flex items-center gap-8">
       <a href="#shop" class="font-label font-bold text-label-caps uppercase text-white hover:text-primary transition-colors skew-hover" rel="noopener">Shop</a>
-      <a href="#skill-picker" class="font-label font-bold text-label-caps uppercase text-white hover:text-primary transition-colors skew-hover" rel="noopener">Drops</a>
+      <a href="#merch" class="font-label font-bold text-label-caps uppercase text-white hover:text-primary transition-colors skew-hover" rel="noopener">Merch</a>
       <a href="#testimonials" class="font-label font-bold text-label-caps uppercase text-white hover:text-primary transition-colors skew-hover" rel="noopener">Reviews</a>
       <a href="#newsletter" class="font-label font-bold text-label-caps uppercase text-white hover:text-primary transition-colors skew-hover" rel="noopener">Contact</a>
     </nav>
@@ -171,7 +171,7 @@
   <div id="mobile-nav" class="md:hidden bg-[#0e0e0e] border-b-2 border-primary/20 px-6">
     <div class="py-4 flex flex-col gap-4">
       <a href="#shop" onclick="closeMobile()" class="font-label font-bold text-label-caps uppercase text-white hover:text-primary transition-colors py-2">Shop</a>
-      <a href="#skill-picker" onclick="closeMobile()" class="font-label font-bold text-label-caps uppercase text-white hover:text-primary transition-colors py-2">Drops</a>
+      <a href="#merch" onclick="closeMobile()" class="font-label font-bold text-label-caps uppercase text-white hover:text-primary transition-colors py-2">Merch</a>
       <a href="#testimonials" onclick="closeMobile()" class="font-label font-bold text-label-caps uppercase text-white hover:text-primary transition-colors py-2">Reviews</a>
       <a href="#newsletter" onclick="closeMobile()" class="font-label font-bold text-label-caps uppercase text-white hover:text-primary transition-colors py-2">Contact</a>
     </div>
@@ -370,51 +370,122 @@
   </div><!-- /product grid -->
 </section>
 
-<!-- ===================== SKILL PICKER ===================== -->
-<section id="skill-picker" class="py-20 px-6 md:px-10 max-w-[1440px] mx-auto">
-  <div class="text-center mb-12 reveal">
-    <h2 class="font-display text-display-lg uppercase italic text-white leading-none">FIND YOUR SACK</h2>
-    <p class="font-label text-label-caps text-on-surface-variant tracking-widest mt-3">Pick your level — we'll filter the lineup</p>
+<!-- ===================== SACK MERCH ===================== -->
+<section id="merch" class="py-20 px-6 md:px-10 max-w-[1440px] mx-auto border-t-2 border-white/5">
+  <div class="flex justify-between items-end mb-12 flex-wrap gap-4 reveal">
+    <div>
+      <h2 class="font-display text-headline-lg uppercase italic text-white">SACK MERCH</h2>
+      <p class="font-label text-label-caps text-on-surface-variant uppercase tracking-widest mt-2">PLAY WITH YOUR SACK. · Limited Run</p>
+    </div>
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto reveal reveal-d1">
-    <!-- Beginner -->
-    <button class="skill-btn border-2 border-white/10 bg-surface-container-high p-8 text-left transition-all duration-200 hover:border-primary group"
-      data-level="beginner" onclick="filterSkill('beginner', this)">
-      <div class="flex gap-1 mb-4">
-        <div class="w-5 h-5 rounded-sm bg-white/20 group-hover:bg-primary transition-colors skill-dot"></div>
-      </div>
-      <h3 class="font-display font-black text-xl text-white uppercase italic group-hover:text-primary transition-colors">Beginner</h3>
-      <p class="text-on-surface-variant text-sm mt-2 font-label">Soft, forgiving, fun. Just getting started.</p>
-    </button>
-    <!-- Intermediate -->
-    <button class="skill-btn border-2 border-white/10 bg-surface-container-high p-8 text-left transition-all duration-200 hover:border-primary group"
-      data-level="intermediate" onclick="filterSkill('intermediate', this)">
-      <div class="flex gap-1 mb-4">
-        <div class="w-5 h-5 rounded-sm bg-white/20 group-hover:bg-primary transition-colors skill-dot"></div>
-        <div class="w-5 h-5 rounded-sm bg-white/20 group-hover:bg-primary transition-colors skill-dot"></div>
-      </div>
-      <h3 class="font-display font-black text-xl text-white uppercase italic group-hover:text-primary transition-colors">Intermediate</h3>
-      <p class="text-on-surface-variant text-sm mt-2 font-label">Built for control. You've got moves.</p>
-    </button>
-    <!-- Pro -->
-    <button class="skill-btn border-2 border-white/10 bg-surface-container-high p-8 text-left transition-all duration-200 hover:border-primary group"
-      data-level="pro" onclick="filterSkill('pro', this)">
-      <div class="flex gap-1 mb-4">
-        <div class="w-5 h-5 rounded-sm bg-white/20 group-hover:bg-primary transition-colors skill-dot"></div>
-        <div class="w-5 h-5 rounded-sm bg-white/20 group-hover:bg-primary transition-colors skill-dot"></div>
-        <div class="w-5 h-5 rounded-sm bg-white/20 group-hover:bg-primary transition-colors skill-dot"></div>
-      </div>
-      <h3 class="font-display font-black text-xl text-white uppercase italic group-hover:text-primary transition-colors">Pro</h3>
-      <p class="text-on-surface-variant text-sm mt-2 font-label">No mercy. Premium materials. Serious play.</p>
-    </button>
-  </div>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
 
-  <div class="text-center mt-6">
-    <button id="skill-reset" class="font-label text-label-caps text-on-surface-variant underline hidden hover:text-primary transition-colors"
-      onclick="resetSkill()">Show all sacks</button>
+    <!-- WHITE SHIRT -->
+    <article class="group cursor-pointer border-2 border-transparent hover:border-primary transition-all duration-300 overflow-hidden bg-surface-container-high reveal"
+      onclick="openShirt('white')">
+      <div class="relative overflow-hidden h-[420px] bg-[#f5f5f5]">
+        <!-- back = default -->
+        <img src="Untitled design/white back.png" alt="Hacky Nation Tee White — back"
+          class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-100 group-hover:opacity-0" />
+        <!-- front = on hover -->
+        <img src="Untitled design/White front.png" alt="Hacky Nation Tee White — front"
+          class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100" />
+        <span class="absolute top-4 left-4 font-label text-[10px] tracking-widest bg-white text-black px-2 py-1 z-10">WHITE</span>
+      </div>
+      <div class="p-6">
+        <div class="flex items-start justify-between mb-1">
+          <h3 class="font-display font-black text-xl text-white uppercase italic">Hacky Nation Tee</h3>
+          <span class="font-display font-black text-xl text-primary">$22.00</span>
+        </div>
+        <p class="font-label text-[10px] tracking-widest text-on-surface-variant mb-5">WHITE · UNISEX · S–XXL</p>
+        <button onclick="event.stopPropagation(); openShirt('white')"
+          class="w-full bg-primary text-black font-display font-bold py-3 uppercase tracking-tighter active:scale-95 transition-all flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-sm">straighten</span> SELECT SIZE
+        </button>
+      </div>
+    </article>
+
+    <!-- BLACK SHIRT -->
+    <article class="group cursor-pointer border-2 border-transparent hover:border-primary transition-all duration-300 overflow-hidden bg-surface-container-high reveal reveal-d1"
+      onclick="openShirt('black')">
+      <div class="relative overflow-hidden h-[420px] bg-[#1a1a1a]">
+        <!-- back = default -->
+        <img src="Untitled design/black back.png" alt="Hacky Nation Tee Black — back"
+          class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-100 group-hover:opacity-0" />
+        <!-- front = on hover -->
+        <img src="Untitled design/black front.png" alt="Hacky Nation Tee Black — front"
+          class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100" />
+        <span class="absolute top-4 left-4 font-label text-[10px] tracking-widest bg-white text-black px-2 py-1 z-10">BLACK</span>
+      </div>
+      <div class="p-6">
+        <div class="flex items-start justify-between mb-1">
+          <h3 class="font-display font-black text-xl text-white uppercase italic">Hacky Nation Tee</h3>
+          <span class="font-display font-black text-xl text-primary">$22.00</span>
+        </div>
+        <p class="font-label text-[10px] tracking-widest text-on-surface-variant mb-5">BLACK · UNISEX · S–XXL</p>
+        <button onclick="event.stopPropagation(); openShirt('black')"
+          class="w-full bg-primary text-black font-display font-bold py-3 uppercase tracking-tighter active:scale-95 transition-all flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-sm">straighten</span> SELECT SIZE
+        </button>
+      </div>
+    </article>
+
   </div>
 </section>
+
+<!-- ===================== SHIRT MODAL ===================== -->
+<div id="shirt-modal" class="fixed inset-0 z-[80] hidden" aria-modal="true">
+  <div onclick="closeShirt()" class="absolute inset-0 bg-black/70"></div>
+  <div id="shirt-modal-panel"
+    class="absolute bottom-0 left-0 right-0 md:bottom-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:max-w-2xl md:w-full bg-surface-container-low max-h-[92vh] overflow-y-auto translate-y-full transition-transform duration-300 ease-out">
+
+    <!-- header -->
+    <div class="flex items-center justify-between px-6 py-5 border-b border-white/10 sticky top-0 bg-surface-container-low z-10">
+      <h2 id="shirt-modal-title" class="font-display font-black text-xl text-white uppercase italic"></h2>
+      <button onclick="closeShirt()" class="w-11 h-11 flex items-center justify-center text-on-surface-variant hover:text-white transition-colors">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+
+    <!-- images -->
+    <div class="grid grid-cols-2 gap-1">
+      <div id="shirt-img-back" class="bg-[#f5f5f5] flex items-center justify-center overflow-hidden aspect-square">
+        <img id="shirt-modal-back" src="" alt="Back" class="w-full h-full object-cover" />
+      </div>
+      <div id="shirt-img-front" class="bg-[#f5f5f5] flex items-center justify-center overflow-hidden aspect-square">
+        <img id="shirt-modal-front" src="" alt="Front" class="w-full h-full object-cover" />
+      </div>
+    </div>
+
+    <!-- details -->
+    <div class="p-6">
+      <div class="flex items-center justify-between mb-4">
+        <p class="font-label text-[10px] tracking-widest text-on-surface-variant uppercase" id="shirt-modal-sub"></p>
+        <span class="font-display font-black text-2xl text-primary">$22.00</span>
+      </div>
+      <p class="text-on-surface-variant text-sm leading-relaxed mb-6">
+        Heavyweight unisex tee. Logo on the front chest, "PLAY WITH YOUR SACK." on the back. Soft, durable, and built for the circle. Runs true to size.
+      </p>
+
+      <!-- size selector -->
+      <p class="font-label text-[10px] tracking-widest text-on-surface-variant uppercase mb-3">Select Size</p>
+      <div class="flex gap-2 flex-wrap mb-6" id="size-buttons">
+        <button class="size-opt font-label font-bold text-sm border-2 border-white/20 text-white w-14 h-14 flex items-center justify-center hover:border-primary hover:text-primary active:bg-primary/10 transition-colors" data-size="S">S</button>
+        <button class="size-opt font-label font-bold text-sm border-2 border-white/20 text-white w-14 h-14 flex items-center justify-center hover:border-primary hover:text-primary active:bg-primary/10 transition-colors" data-size="M">M</button>
+        <button class="size-opt font-label font-bold text-sm border-2 border-white/20 text-white w-14 h-14 flex items-center justify-center hover:border-primary hover:text-primary active:bg-primary/10 transition-colors" data-size="L">L</button>
+        <button class="size-opt font-label font-bold text-sm border-2 border-white/20 text-white w-14 h-14 flex items-center justify-center hover:border-primary hover:text-primary active:bg-primary/10 transition-colors" data-size="XL">XL</button>
+        <button class="size-opt font-label font-bold text-sm border-2 border-white/20 text-white w-14 h-14 flex items-center justify-center hover:border-primary hover:text-primary active:bg-primary/10 transition-colors" data-size="XXL">XXL</button>
+      </div>
+      <p id="size-error" class="hidden text-error font-label text-[11px] tracking-widest mb-3">Please select a size</p>
+
+      <button onclick="addShirtToCart()" id="shirt-add-btn"
+        class="w-full bg-primary text-black font-display font-black text-lg py-4 uppercase tracking-tighter active:scale-95 transition-all flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined">add_shopping_cart</span> ADD TO CART
+      </button>
+    </div>
+  </div>
+</div>
 
 <!-- ===================== TESTIMONIALS ===================== -->
 <section id="testimonials" class="border-t-2 border-white/5">
@@ -660,7 +731,7 @@
         </div>
         <div class="flex-1 min-w-0">
           <p class="font-display font-bold text-white uppercase italic text-sm leading-tight">${escHtml(item.name)}</p>
-          <p class="font-label text-[11px] text-on-surface-variant mt-1 uppercase tracking-widest">$${item.price.toFixed(2)} each</p>
+          <p class="font-label text-[11px] text-on-surface-variant mt-1 uppercase tracking-widest">${item.size ? `Size ${item.size} · ` : ''}$${item.price.toFixed(2)} each</p>
           <div class="flex items-center gap-2 mt-3">
             <button onclick="updateQty(${idx}, -1)" class="qty-btn w-11 h-11 border border-white/20 text-white flex items-center justify-center hover:border-primary hover:text-primary active:bg-primary/10 transition-colors font-bold text-xl">−</button>
             <span class="font-display font-bold text-white w-6 text-center text-lg">${item.qty}</span>
@@ -741,7 +812,7 @@
       const res = await fetch('/.netlify/functions/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items: cart.map(i => ({ id: i.id, qty: i.qty })) }),
+        body: JSON.stringify({ items: cart.map(i => ({ id: i.id, qty: i.qty, size: i.size || null })) }),
       });
       const data = await res.json();
       if (data.url) {
@@ -803,32 +874,92 @@
     if (menuOpen && !hamburger.contains(e.target) && !mobileNav.contains(e.target)) closeMobile();
   });
 
-  // ===== SKILL FILTER =====
-  let activeLevel = null;
-  function filterSkill(level, btn) {
-    // toggle off if same
-    if (activeLevel === level) { resetSkill(); return; }
-    activeLevel = level;
-    document.querySelectorAll('.skill-btn').forEach(b => {
-      const active = b.dataset.level === level;
-      b.classList.toggle('border-primary', active);
-      b.classList.toggle('bg-primary/10', active);
-      b.classList.toggle('border-white/10', !active);
+  // ===== SHIRT MODAL =====
+  const SHIRTS = {
+    white: {
+      id: 'shirt-white',
+      title: 'Hacky Nation Tee — White',
+      sub: 'WHITE · UNISEX · S–XXL',
+      front: 'Untitled design/White front.png',
+      back:  'Untitled design/white back.png',
+      imgBg: '#f5f5f5',
+      price: 22,
+    },
+    black: {
+      id: 'shirt-black',
+      title: 'Hacky Nation Tee — Black',
+      sub: 'BLACK · UNISEX · S–XXL',
+      front: 'Untitled design/black front.png',
+      back:  'Untitled design/black back.png',
+      imgBg: '#1a1a1a',
+      price: 22,
+    },
+  };
+  let activeShirt = null;
+  let selectedSize = null;
+
+  function openShirt(color) {
+    activeShirt = SHIRTS[color];
+    selectedSize = null;
+    document.getElementById('shirt-modal-title').textContent = activeShirt.title;
+    document.getElementById('shirt-modal-sub').textContent = activeShirt.sub;
+    document.getElementById('shirt-modal-back').src = activeShirt.back;
+    document.getElementById('shirt-modal-front').src = activeShirt.front;
+    document.getElementById('shirt-img-back').style.background = activeShirt.imgBg;
+    document.getElementById('shirt-img-front').style.background = activeShirt.imgBg;
+    document.getElementById('size-error').classList.add('hidden');
+    document.querySelectorAll('.size-opt').forEach(b => {
+      b.classList.remove('border-primary', 'text-primary', 'bg-primary/10');
+      b.classList.add('border-white/20', 'text-white');
     });
-    document.querySelectorAll('.product-card').forEach(card => {
-      card.classList.toggle('hidden', card.dataset.level !== level);
-    });
-    document.getElementById('skill-reset').classList.remove('hidden');
-    document.getElementById('shop').scrollIntoView({ behavior: 'smooth' });
+    const modal = document.getElementById('shirt-modal');
+    const panel = document.getElementById('shirt-modal-panel');
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    requestAnimationFrame(() => panel.classList.remove('translate-y-full'));
+    document.getElementById('fab').classList.add('hidden');
   }
-  function resetSkill() {
-    activeLevel = null;
-    document.querySelectorAll('.skill-btn').forEach(b => {
-      b.classList.remove('border-primary', 'bg-primary/10');
-      b.classList.add('border-white/10');
+
+  function closeShirt() {
+    const panel = document.getElementById('shirt-modal-panel');
+    panel.classList.add('translate-y-full');
+    setTimeout(() => {
+      document.getElementById('shirt-modal').classList.add('hidden');
+      document.body.style.overflow = '';
+      document.getElementById('fab').classList.remove('hidden');
+    }, 300);
+  }
+
+  document.querySelectorAll('.size-opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      selectedSize = btn.dataset.size;
+      document.querySelectorAll('.size-opt').forEach(b => {
+        b.classList.remove('border-primary', 'text-primary', 'bg-primary/10');
+        b.classList.add('border-white/20', 'text-white');
+      });
+      btn.classList.add('border-primary', 'text-primary', 'bg-primary/10');
+      btn.classList.remove('border-white/20', 'text-white');
+      document.getElementById('size-error').classList.add('hidden');
     });
-    document.querySelectorAll('.product-card').forEach(c => c.classList.remove('hidden'));
-    document.getElementById('skill-reset').classList.add('hidden');
+  });
+
+  function addShirtToCart() {
+    if (!selectedSize) {
+      document.getElementById('size-error').classList.remove('hidden');
+      return;
+    }
+    const cartId = `${activeShirt.id}-${selectedSize}`;
+    const name = `${activeShirt.title} — ${selectedSize}`;
+    const existing = cart.find(i => i.id === cartId);
+    if (existing) {
+      existing.qty++;
+    } else {
+      cart.push({ id: activeShirt.id, cartId, name, price: activeShirt.price, image: activeShirt.front, size: selectedSize, qty: 1 });
+    }
+    saveCart();
+    updateBadge();
+    closeShirt();
+    setTimeout(openCart, 320);
   }
 
   // ===== NEWSLETTER =====

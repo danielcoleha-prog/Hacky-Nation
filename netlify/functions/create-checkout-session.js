@@ -3,6 +3,8 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 // Server-side product whitelist — clients cannot manipulate prices
 const PRODUCTS = {
   'mystery-bag': { name: 'Assorted Hand Knit Mystery Bag', price: 1000 }, // cents
+  'shirt-white': { name: 'Hacky Nation Tee — White', price: 2200 },
+  'shirt-black': { name: 'Hacky Nation Tee — Black', price: 2200 },
 };
 
 const ALLOWED_ORIGINS = [
@@ -50,10 +52,11 @@ exports.handler = async (event) => {
     if (!qty || qty < 1 || qty > 20) {
       return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ error: 'Invalid quantity' }) };
     }
+    const size = typeof item.size === 'string' && /^(S|M|L|XL|XXL)$/.test(item.size) ? item.size : null;
     lineItems.push({
       price_data: {
         currency: 'usd',
-        product_data: { name: product.name },
+        product_data: { name: size ? `${product.name} — ${size}` : product.name },
         unit_amount: product.price,
       },
       quantity: qty,
