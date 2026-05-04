@@ -65,6 +65,10 @@ exports.handler = async (event) => {
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
+      shipping_address_collection: {
+        allowed_countries: ['US', 'CA'],
+      },
+      phone_number_collection: { enabled: true },
       success_url: `${process.env.URL || 'http://localhost:8888'}/?success=1`,
       cancel_url:  `${process.env.URL || 'http://localhost:8888'}/?cancel=1`,
     });
