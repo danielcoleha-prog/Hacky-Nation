@@ -69,6 +69,9 @@ exports.handler = async (event) => {
       shipping_address_collection: {
         allowed_countries: ['US', 'CA'],
       },
+      shipping_options: [
+        { shipping_rate: 'shr_1TTCaSQ7R19docShWmxtVoEp' },
+      ],
       phone_number_collection: { enabled: true },
       success_url: `${process.env.URL || 'http://localhost:8888'}/?success=1`,
       cancel_url:  `${process.env.URL || 'http://localhost:8888'}/?cancel=1`,
