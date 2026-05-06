@@ -2,7 +2,7 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 // Server-side product whitelist — clients cannot manipulate prices
 const PRODUCTS = {
-  'mystery-bag': { name: 'Assorted Hand Knit Mystery Bag', price: 1000, stripePrice: 'price_1TTK8PQ7R19docSh3cFG7zZZ' },
+  'mystery-bag': { name: 'Hand Knit Mystery Bag', price: 1000 },
   'shirt-white': { name: 'Hacky Nation Tee — White', price: 1900 },
   'shirt-black': { name: 'Hacky Nation Tee — Black', price: 1900 },
 };
@@ -43,6 +43,7 @@ exports.handler = async (event) => {
 
   // Validate and build line items using server-side prices only
   const lineItems = [];
+  const orderSummaryParts = [];
   for (const item of items) {
     const product = PRODUCTS[item.id];
     if (!product) {
@@ -53,18 +54,16 @@ exports.handler = async (event) => {
       return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ error: 'Invalid quantity' }) };
     }
     const size = typeof item.size === 'string' && /^(S|M|L|XL|XXL)$/.test(item.size) ? item.size : null;
-    if (product.stripePrice) {
-      lineItems.push({ price: product.stripePrice, quantity: qty });
-    } else {
-      lineItems.push({
-        price_data: {
-          currency: 'usd',
-          product_data: { name: size ? `${product.name} — ${size}` : product.name },
-          unit_amount: product.price,
-        },
-        quantity: qty,
-      });
-    }
+    const baseName = size ? `${product.name} — ${size}` : product.name;
+    orderSummaryParts.push(`${baseName} x${qty}`);
+    lineItems.push({
+      price_data: {
+        currency: 'usd',
+        product_data: { name: `${baseName} x${qty}` },
+        unit_amount: product.price * qty,
+      },
+      quantity: 1,
+    });
   }
 
   try {
@@ -72,6 +71,7 @@ exports.handler = async (event) => {
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
+      payment_intent_data: { description: orderSummaryParts.join(', ') },
       allow_promotion_codes: true,
       shipping_address_collection: {
         allowed_countries: ['US', 'CA'],
