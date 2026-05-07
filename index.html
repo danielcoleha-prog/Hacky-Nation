@@ -238,140 +238,8 @@
   </div>
 </section>
 
-<!-- ===================== NEW ARRIVALS (BENTO) ===================== -->
-<section id="shop" class="py-20 px-6 md:px-10 max-w-[1440px] mx-auto">
-  <div class="flex justify-between items-end mb-12 flex-wrap gap-4 reveal">
-    <div>
-      <h2 class="font-display text-headline-lg uppercase italic text-white">THE LINEUP</h2>
-      <p class="font-label text-label-caps text-on-surface-variant uppercase tracking-widest mt-2">Season Drop · Handcrafted Gear</p>
-    </div>
-    <a href="#" class="font-label text-label-caps text-primary border-b-2 border-primary pb-1 hover:text-white hover:border-white transition-colors">SEE ALL GEAR →</a>
-  </div>
-
-  <!-- Product Grid: 3-col, clean card structure -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5" id="products-grid">
-
-    <!-- MYSTERY BAG — spans full width, horizontal layout, IN STOCK -->
-    <article class="product-card sm:col-span-2 md:col-span-3 group border-2 border-transparent hover:border-primary transition-all duration-300 overflow-hidden bg-surface-container-high flex flex-col sm:flex-row reveal"
-      data-index="0" data-level="beginner" data-id="mystery-bag" data-name="Hand Knit Mystery Bag" data-price="10" data-image="Untitled design/Untitled design.png">
-      <!-- image -->
-      <div class="relative bg-[#f2ede4] flex items-center justify-center p-6 sm:w-80 flex-shrink-0 overflow-hidden min-h-[240px] sm:min-h-0">
-        <img class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
-          src="Untitled design/Untitled design.png" alt="Hand knit foot bags" />
-      </div>
-      <!-- info -->
-      <div class="p-8 flex flex-col justify-between flex-1">
-        <div>
-          <span class="font-label text-label-caps bg-primary-container text-black px-2 py-1 mb-4 inline-block">IN STOCK · SURPRISE DROP</span>
-          <h3 class="font-display font-black text-2xl text-white uppercase italic leading-tight mb-2">Hand Knit<br>Mystery Bag</h3>
-          <p class="text-on-surface-variant text-sm leading-relaxed">
-            Each sack is hand-knit with unique patterns and colors, pulled at random. You don't pick the design — the sack picks you. <strong class="text-white">1 piece per order.</strong>
-          </p>
-        </div>
-        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-6">
-          <span class="font-display font-black text-3xl text-primary">$10.00</span>
-          <button onclick="addToCart(event)" data-id="mystery-bag" data-name="Hand Knit Mystery Bag" data-price="10" data-image="Untitled design/Untitled design.png"
-            class="bg-primary text-black font-display font-bold px-8 py-4 uppercase tracking-tighter active:scale-95 transition-all flex items-center justify-center gap-2 text-sm flex-1 sm:flex-none">
-            <span class="material-symbols-outlined text-sm">add_shopping_cart</span> ADD TO CART
-          </button>
-        </div>
-      </div>
-    </article>
-
-    <!-- SUNSET — SOLD OUT -->
-    <article class="product-card sm:col-span-2 group border-2 border-white/5 overflow-hidden bg-surface-container-high flex flex-col reveal reveal-d1 opacity-75"
-      data-index="1" data-level="beginner" data-sold-out="true">
-      <!-- image area -->
-      <div class="relative bg-[#f2ede4] flex items-center justify-center p-6 h-72 overflow-hidden">
-        <div class="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
-          <span class="font-display font-black text-2xl text-white uppercase italic tracking-widest border-2 border-white px-6 py-2">SOLD OUT</span>
-        </div>
-        <img class="h-60 w-auto object-contain grayscale"
-          src="Untitled design/1.png" alt="Sunset foot bag" />
-      </div>
-      <div class="p-6 flex flex-col flex-1">
-        <div class="flex items-start justify-between mb-1">
-          <h3 class="font-display font-black text-2xl text-white/60 uppercase italic">Sunset</h3>
-          <span class="font-display font-black text-2xl text-on-surface-variant">$17.00</span>
-        </div>
-        <p class="font-label text-[10px] tracking-widest text-on-surface-variant/50 mb-5">YELLOW &amp; ORANGE · 32 PANELS</p>
-        <a href="#newsletter" class="mt-auto w-full border-2 border-white/20 text-on-surface-variant font-display font-bold py-3 uppercase tracking-tighter transition-all flex items-center justify-center gap-2 hover:border-primary hover:text-primary">
-          <span class="material-symbols-outlined text-sm">notifications</span> NOTIFY ME WHEN BACK
-        </a>
-      </div>
-    </article>
-
-    <!-- BULLDAWGS — SOLD OUT -->
-    <article class="product-card group border-2 border-white/5 overflow-hidden bg-surface-container-high flex flex-col reveal reveal-d1 opacity-75"
-      data-index="2" data-level="intermediate" data-sold-out="true">
-      <div class="relative bg-[#f2ede4] flex items-center justify-center p-6 h-72 overflow-hidden">
-        <div class="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
-          <span class="font-display font-black text-xl text-white uppercase italic tracking-widest border-2 border-white px-4 py-2">SOLD OUT</span>
-        </div>
-        <img class="h-56 w-auto object-contain grayscale"
-          src="Untitled design/4.png" alt="Bulldawgs foot bag" />
-      </div>
-      <div class="p-6 flex flex-col flex-1">
-        <div class="flex items-start justify-between mb-1">
-          <h3 class="font-display font-black text-xl text-white/60 uppercase italic">Bulldawgs</h3>
-          <span class="font-display font-black text-xl text-on-surface-variant">$17.00</span>
-        </div>
-        <p class="font-label text-[10px] tracking-widest text-on-surface-variant/50 mb-5">BLACK &amp; RED · 14 PANELS</p>
-        <a href="#newsletter" class="mt-auto w-full border-2 border-white/20 text-on-surface-variant font-display font-bold py-3 uppercase tracking-tighter transition-all flex items-center justify-center gap-2 hover:border-primary hover:text-primary">
-          <span class="material-symbols-outlined text-sm">notifications</span> NOTIFY ME WHEN BACK
-        </a>
-      </div>
-    </article>
-
-    <!-- SKY — SOLD OUT -->
-    <article class="product-card group border-2 border-white/5 overflow-hidden bg-surface-container-high flex flex-col reveal reveal-d1 opacity-75"
-      data-index="3" data-level="beginner" data-sold-out="true">
-      <div class="relative bg-[#f2ede4] flex items-center justify-center p-6 h-72 overflow-hidden">
-        <div class="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
-          <span class="font-display font-black text-xl text-white uppercase italic tracking-widest border-2 border-white px-4 py-2">SOLD OUT</span>
-        </div>
-        <img class="h-56 w-auto object-contain grayscale"
-          src="Untitled design/2.png" alt="Sky foot bag" />
-      </div>
-      <div class="p-6 flex flex-col flex-1">
-        <div class="flex items-start justify-between mb-1">
-          <h3 class="font-display font-black text-xl text-white/60 uppercase italic">Sky</h3>
-          <span class="font-display font-black text-xl text-on-surface-variant">$17.00</span>
-        </div>
-        <p class="font-label text-[10px] tracking-widest text-on-surface-variant/50 mb-5">BLUE &amp; WHITE · 16 PANELS</p>
-        <a href="#newsletter" class="mt-auto w-full border-2 border-white/20 text-on-surface-variant font-display font-bold py-3 uppercase tracking-tighter transition-all flex items-center justify-center gap-2 hover:border-primary hover:text-primary">
-          <span class="material-symbols-outlined text-sm">notifications</span> NOTIFY ME WHEN BACK
-        </a>
-      </div>
-    </article>
-
-    <!-- PATRIOT — SOLD OUT -->
-    <article class="product-card group border-2 border-white/5 overflow-hidden bg-surface-container-high flex flex-col reveal reveal-d2 opacity-75"
-      data-index="4" data-level="intermediate" data-sold-out="true">
-      <div class="relative bg-[#f2ede4] flex items-center justify-center p-6 h-72 overflow-hidden">
-        <div class="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
-          <span class="font-display font-black text-xl text-white uppercase italic tracking-widest border-2 border-white px-4 py-2">SOLD OUT</span>
-        </div>
-        <img class="h-56 w-auto object-contain grayscale"
-          src="Untitled design/Untitled design (1).png" alt="Patriot foot bag" />
-      </div>
-      <div class="p-6 flex flex-col flex-1">
-        <div class="flex items-start justify-between mb-1">
-          <h3 class="font-display font-black text-xl text-white/60 uppercase italic">Patriot</h3>
-          <span class="font-display font-black text-xl text-on-surface-variant">$17.00</span>
-        </div>
-        <p class="font-label text-[10px] tracking-widest text-on-surface-variant/50 mb-5">RED · WHITE · BLUE · 32 PANELS</p>
-        <a href="#newsletter" class="mt-auto w-full border-2 border-white/20 text-on-surface-variant font-display font-bold py-3 uppercase tracking-tighter transition-all flex items-center justify-center gap-2 hover:border-primary hover:text-primary">
-          <span class="material-symbols-outlined text-sm">notifications</span> NOTIFY ME WHEN BACK
-        </a>
-      </div>
-    </article>
-
-  </div><!-- /product grid -->
-</section>
-
 <!-- ===================== SACK MERCH ===================== -->
-<section id="merch" class="py-20 px-6 md:px-10 max-w-[1440px] mx-auto border-t-2 border-white/5">
+<section id="merch" class="py-20 px-6 md:px-10 max-w-[1440px] mx-auto border-b-2 border-white/5">
   <div class="flex justify-between items-end mb-12 flex-wrap gap-4 reveal">
     <div>
       <h2 class="font-display text-headline-lg uppercase italic text-white">SACK MERCH</h2>
@@ -486,6 +354,140 @@
     </div>
   </div>
 </div>
+
+<!-- ===================== NEW ARRIVALS (BENTO) ===================== -->
+<section id="shop" class="py-20 px-6 md:px-10 max-w-[1440px] mx-auto">
+  <div class="flex justify-between items-end mb-12 flex-wrap gap-4 reveal">
+    <div>
+      <h2 class="font-display text-headline-lg uppercase italic text-white">THE LINEUP</h2>
+      <p class="font-label text-label-caps text-on-surface-variant uppercase tracking-widest mt-2">Season Drop · Handcrafted Gear</p>
+    </div>
+    <a href="#" class="font-label text-label-caps text-primary border-b-2 border-primary pb-1 hover:text-white hover:border-white transition-colors">SEE ALL GEAR →</a>
+  </div>
+
+  <!-- Product Grid: 3-col, clean card structure -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5" id="products-grid">
+
+    <!-- MYSTERY BAG — spans full width, horizontal layout, SOLD OUT -->
+    <article class="product-card sm:col-span-2 md:col-span-3 group border-2 border-white/5 overflow-hidden bg-surface-container-high flex flex-col sm:flex-row reveal opacity-75"
+      data-index="0" data-level="beginner" data-sold-out="true">
+      <!-- image -->
+      <div class="relative bg-[#f2ede4] flex items-center justify-center p-6 sm:w-80 flex-shrink-0 overflow-hidden min-h-[240px] sm:min-h-0">
+        <div class="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
+          <span class="font-display font-black text-2xl text-white uppercase italic tracking-widest border-2 border-white px-6 py-2">SOLD OUT</span>
+        </div>
+        <img class="w-full h-full object-contain grayscale"
+          src="Untitled design/Untitled design.png" alt="Hand knit foot bags" />
+      </div>
+      <!-- info -->
+      <div class="p-8 flex flex-col justify-between flex-1">
+        <div>
+          <span class="font-label text-label-caps bg-white/10 text-white/60 px-2 py-1 mb-4 inline-block">SOLD OUT · CHECK BACK SOON</span>
+          <h3 class="font-display font-black text-2xl text-white/60 uppercase italic leading-tight mb-2">Hand Knit<br>Mystery Bag</h3>
+          <p class="text-on-surface-variant/60 text-sm leading-relaxed">
+            Each sack is hand-knit with unique patterns and colors, pulled at random. You don't pick the design — the sack picks you. <strong class="text-white/60">1 piece per order.</strong>
+          </p>
+        </div>
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-6">
+          <span class="font-display font-black text-3xl text-on-surface-variant">$10.00</span>
+          <a href="#newsletter" class="border-2 border-white/20 text-on-surface-variant font-display font-bold px-8 py-4 uppercase tracking-tighter transition-all flex items-center justify-center gap-2 text-sm hover:border-primary hover:text-primary">
+            <span class="material-symbols-outlined text-sm">notifications</span> NOTIFY ME WHEN BACK
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <!-- SUNSET — SOLD OUT -->
+    <article class="product-card sm:col-span-2 group border-2 border-white/5 overflow-hidden bg-surface-container-high flex flex-col reveal reveal-d1 opacity-75"
+      data-index="1" data-level="beginner" data-sold-out="true">
+      <!-- image area -->
+      <div class="relative bg-[#f2ede4] flex items-center justify-center p-6 h-72 overflow-hidden">
+        <div class="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
+          <span class="font-display font-black text-2xl text-white uppercase italic tracking-widest border-2 border-white px-6 py-2">SOLD OUT</span>
+        </div>
+        <img class="h-60 w-auto object-contain grayscale"
+          src="Untitled design/1.png" alt="Sunset foot bag" />
+      </div>
+      <div class="p-6 flex flex-col flex-1">
+        <div class="flex items-start justify-between mb-1">
+          <h3 class="font-display font-black text-2xl text-white/60 uppercase italic">Sunset</h3>
+          <span class="font-display font-black text-2xl text-on-surface-variant">$17.00</span>
+        </div>
+        <p class="font-label text-[10px] tracking-widest text-on-surface-variant/50 mb-5">YELLOW &amp; ORANGE · 32 PANELS</p>
+        <a href="#newsletter" class="mt-auto w-full border-2 border-white/20 text-on-surface-variant font-display font-bold py-3 uppercase tracking-tighter transition-all flex items-center justify-center gap-2 hover:border-primary hover:text-primary">
+          <span class="material-symbols-outlined text-sm">notifications</span> NOTIFY ME WHEN BACK
+        </a>
+      </div>
+    </article>
+
+    <!-- BULLDAWGS — SOLD OUT -->
+    <article class="product-card group border-2 border-white/5 overflow-hidden bg-surface-container-high flex flex-col reveal reveal-d1 opacity-75"
+      data-index="2" data-level="intermediate" data-sold-out="true">
+      <div class="relative bg-[#f2ede4] flex items-center justify-center p-6 h-72 overflow-hidden">
+        <div class="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
+          <span class="font-display font-black text-xl text-white uppercase italic tracking-widest border-2 border-white px-4 py-2">SOLD OUT</span>
+        </div>
+        <img class="h-56 w-auto object-contain grayscale"
+          src="Untitled design/4.png" alt="Bulldawgs foot bag" />
+      </div>
+      <div class="p-6 flex flex-col flex-1">
+        <div class="flex items-start justify-between mb-1">
+          <h3 class="font-display font-black text-xl text-white/60 uppercase italic">Bulldawgs</h3>
+          <span class="font-display font-black text-xl text-on-surface-variant">$17.00</span>
+        </div>
+        <p class="font-label text-[10px] tracking-widest text-on-surface-variant/50 mb-5">BLACK &amp; RED · 14 PANELS</p>
+        <a href="#newsletter" class="mt-auto w-full border-2 border-white/20 text-on-surface-variant font-display font-bold py-3 uppercase tracking-tighter transition-all flex items-center justify-center gap-2 hover:border-primary hover:text-primary">
+          <span class="material-symbols-outlined text-sm">notifications</span> NOTIFY ME WHEN BACK
+        </a>
+      </div>
+    </article>
+
+    <!-- SKY — SOLD OUT -->
+    <article class="product-card group border-2 border-white/5 overflow-hidden bg-surface-container-high flex flex-col reveal reveal-d1 opacity-75"
+      data-index="3" data-level="beginner" data-sold-out="true">
+      <div class="relative bg-[#f2ede4] flex items-center justify-center p-6 h-72 overflow-hidden">
+        <div class="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
+          <span class="font-display font-black text-xl text-white uppercase italic tracking-widest border-2 border-white px-4 py-2">SOLD OUT</span>
+        </div>
+        <img class="h-56 w-auto object-contain grayscale"
+          src="Untitled design/2.png" alt="Sky foot bag" />
+      </div>
+      <div class="p-6 flex flex-col flex-1">
+        <div class="flex items-start justify-between mb-1">
+          <h3 class="font-display font-black text-xl text-white/60 uppercase italic">Sky</h3>
+          <span class="font-display font-black text-xl text-on-surface-variant">$17.00</span>
+        </div>
+        <p class="font-label text-[10px] tracking-widest text-on-surface-variant/50 mb-5">BLUE &amp; WHITE · 16 PANELS</p>
+        <a href="#newsletter" class="mt-auto w-full border-2 border-white/20 text-on-surface-variant font-display font-bold py-3 uppercase tracking-tighter transition-all flex items-center justify-center gap-2 hover:border-primary hover:text-primary">
+          <span class="material-symbols-outlined text-sm">notifications</span> NOTIFY ME WHEN BACK
+        </a>
+      </div>
+    </article>
+
+    <!-- PATRIOT — SOLD OUT -->
+    <article class="product-card group border-2 border-white/5 overflow-hidden bg-surface-container-high flex flex-col reveal reveal-d2 opacity-75"
+      data-index="4" data-level="intermediate" data-sold-out="true">
+      <div class="relative bg-[#f2ede4] flex items-center justify-center p-6 h-72 overflow-hidden">
+        <div class="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
+          <span class="font-display font-black text-xl text-white uppercase italic tracking-widest border-2 border-white px-4 py-2">SOLD OUT</span>
+        </div>
+        <img class="h-56 w-auto object-contain grayscale"
+          src="Untitled design/Untitled design (1).png" alt="Patriot foot bag" />
+      </div>
+      <div class="p-6 flex flex-col flex-1">
+        <div class="flex items-start justify-between mb-1">
+          <h3 class="font-display font-black text-xl text-white/60 uppercase italic">Patriot</h3>
+          <span class="font-display font-black text-xl text-on-surface-variant">$17.00</span>
+        </div>
+        <p class="font-label text-[10px] tracking-widest text-on-surface-variant/50 mb-5">RED · WHITE · BLUE · 32 PANELS</p>
+        <a href="#newsletter" class="mt-auto w-full border-2 border-white/20 text-on-surface-variant font-display font-bold py-3 uppercase tracking-tighter transition-all flex items-center justify-center gap-2 hover:border-primary hover:text-primary">
+          <span class="material-symbols-outlined text-sm">notifications</span> NOTIFY ME WHEN BACK
+        </a>
+      </div>
+    </article>
+
+  </div><!-- /product grid -->
+</section>
 
 <!-- ===================== TESTIMONIALS ===================== -->
 <section id="testimonials" class="border-t-2 border-white/5">
