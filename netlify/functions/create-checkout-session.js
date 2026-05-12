@@ -80,7 +80,7 @@ exports.handler = async (event) => {
         { shipping_rate: 'shr_1TTCaSQ7R19docShWmxtVoEp' },
       ],
       phone_number_collection: { enabled: true },
-      success_url: `${process.env.URL || 'http://localhost:8888'}/?success=1`,
+      success_url: `${process.env.URL || 'http://localhost:8888'}/?success=1&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url:  `${process.env.URL || 'http://localhost:8888'}/?cancel=1`,
     });
 
