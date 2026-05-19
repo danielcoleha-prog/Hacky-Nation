@@ -2,10 +2,16 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 // Server-side product whitelist — clients cannot manipulate prices
 const PRODUCTS = {
-  'mystery-bag': { name: 'Hand Knit Mystery Bag', price: 1000 },
-  'shirt-white': { name: 'Hacky Nation Tee — White', price: 1900 },
-  'shirt-black': { name: 'Hacky Nation Tee — Black', price: 1900 },
+  'mystery-bag':    { name: 'Hand Knit Mystery Bag',  price: 1000 },
+  'shirt-white':    { name: 'Hacky Nation Tee — White', price: 1900 },
+  'shirt-black':    { name: 'Hacky Nation Tee — Black', price: 1900 },
+  'sunset-sack':    { name: 'Sunset Foot Bag',          price: 1700, bundlePrice: 1500 },
+  'bulldawgs-sack': { name: 'Bulldawgs Foot Bag',       price: 1700, bundlePrice: 1500 },
+  'sky-sack':       { name: 'Sky Foot Bag',             price: 1700, bundlePrice: 1500 },
+  'patriot-sack':   { name: 'Patriot Foot Bag',         price: 1700, bundlePrice: 1500 },
 };
+
+const SACK_IDS = new Set(['sunset-sack', 'bulldawgs-sack', 'sky-sack', 'patriot-sack']);
 
 const ALLOWED_ORIGINS = [
   process.env.URL,
@@ -41,9 +47,8 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ error: 'Cart is empty' }) };
   }
 
-  // Validate and build line items using server-side prices only
-  const lineItems = [];
-  const orderSummaryParts = [];
+  // Validate items and compute total sack qty for bundle pricing
+  const validatedItems = [];
   for (const item of items) {
     const product = PRODUCTS[item.id];
     if (!product) {
@@ -54,13 +59,23 @@ exports.handler = async (event) => {
       return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ error: 'Invalid quantity' }) };
     }
     const size = typeof item.size === 'string' && /^(S|M|L|XL|XXL)$/.test(item.size) ? item.size : null;
+    validatedItems.push({ product, qty, size, id: item.id });
+  }
+
+  const totalSackQty = validatedItems.filter(i => SACK_IDS.has(i.id)).reduce((s, i) => s + i.qty, 0);
+  const isBundleOrder = totalSackQty >= 2;
+
+  const lineItems = [];
+  const orderSummaryParts = [];
+  for (const { product, qty, size, id } of validatedItems) {
+    const unitPrice = SACK_IDS.has(id) && isBundleOrder ? product.bundlePrice : product.price;
     const baseName = size ? `${product.name} — ${size}` : product.name;
     orderSummaryParts.push(`${baseName} x${qty}`);
     lineItems.push({
       price_data: {
         currency: 'usd',
         product_data: { name: `${baseName} x${qty}` },
-        unit_amount: product.price * qty,
+        unit_amount: unitPrice * qty,
       },
       quantity: 1,
     });
