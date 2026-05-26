@@ -1,3 +1,7 @@
 node_modules/
 .env
 .netlify/
+
+# macOS metadata
+.DS_Store
+._*

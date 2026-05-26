@@ -9,6 +9,7 @@ const PRODUCTS = {
   'bulldawgs-sack': { name: 'Bulldawgs Foot Bag',       price: 1700, bundlePrice: 1500 },
   'sky-sack':       { name: 'Sky Foot Bag',             price: 1700, bundlePrice: 1500 },
   'patriot-sack':   { name: 'Patriot Foot Bag',         price: 1700, bundlePrice: 1500 },
+  'usl-pro-sack':   { name: 'USASackLeague X Hacky Nation Pro Sack', price: 2000 },
 };
 
 const SACK_IDS = new Set(['sunset-sack', 'bulldawgs-sack', 'sky-sack', 'patriot-sack']);
@@ -89,10 +90,10 @@ exports.handler = async (event) => {
       payment_intent_data: { description: orderSummaryParts.join(', ') },
       allow_promotion_codes: true,
       shipping_address_collection: {
-        allowed_countries: ['US', 'CA'],
+        allowed_countries: ['US'],
       },
       shipping_options: [
-        { shipping_rate: 'shr_1TTCaSQ7R19docShWmxtVoEp' },
+        { shipping_rate: 'shr_1TbSltQ7R19docShrqObxzKi' },
       ],
       phone_number_collection: { enabled: true },
       success_url: `${process.env.URL || 'http://localhost:8888'}/?success=1&session_id={CHECKOUT_SESSION_ID}`,
