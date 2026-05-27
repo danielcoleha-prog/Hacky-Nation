@@ -75,8 +75,12 @@ exports.handler = async (event) => {
     lineItems.push({
       price_data: {
         currency: 'usd',
-        product_data: { name: `${baseName} x${qty}` },
+        product_data: {
+          name: `${baseName} x${qty}`,
+          tax_code: 'txcd_99999999', // General — Tangible Goods
+        },
         unit_amount: unitPrice * qty,
+        tax_behavior: 'exclusive',
       },
       quantity: 1,
     });
@@ -87,6 +91,7 @@ exports.handler = async (event) => {
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
+      automatic_tax: { enabled: true },
       payment_intent_data: { description: orderSummaryParts.join(', ') },
       allow_promotion_codes: true,
       shipping_address_collection: {
