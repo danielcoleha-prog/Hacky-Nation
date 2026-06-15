@@ -311,20 +311,6 @@
 </head>
 <body class="font-body antialiased">
 
-<!-- ===== TOP PROMO MARQUEE (luxury / shoppy) ===== -->
-<div class="bg-primary text-black overflow-hidden border-b border-black/20">
-  <div class="flex gap-12 marquee-inner whitespace-nowrap w-max py-2">
-    <span class="font-label text-[10px] tracking-[0.3em] font-bold uppercase">★ NEW DROP · USASackLeague × Hacky Nation Pro Sack — $20</span>
-    <span class="font-label text-[10px] tracking-[0.3em] font-bold uppercase">⬤ Handcrafted in the USA</span>
-    <span class="font-label text-[10px] tracking-[0.3em] font-bold uppercase">★ Limited Edition · Numbered Run</span>
-    <span class="font-label text-[10px] tracking-[0.3em] font-bold uppercase">⚡ Secure Checkout · Stripe Verified</span>
-    <span class="font-label text-[10px] tracking-[0.3em] font-bold uppercase">★ NEW DROP · USASackLeague × Hacky Nation Pro Sack — $20</span>
-    <span class="font-label text-[10px] tracking-[0.3em] font-bold uppercase">⬤ Handcrafted in the USA</span>
-    <span class="font-label text-[10px] tracking-[0.3em] font-bold uppercase">★ Limited Edition · Numbered Run</span>
-    <span class="font-label text-[10px] tracking-[0.3em] font-bold uppercase">⚡ Secure Checkout · Stripe Verified</span>
-  </div>
-</div>
-
 <!-- ===== FLASH BANNERS (success / cancel from Stripe redirect) ===== -->
 <div id="banner-success" class="hidden fixed top-0 left-0 right-0 z-[100] bg-green-600 text-white font-label text-[11px] tracking-widest py-3 px-4 flex items-center justify-center gap-2 text-center flex-wrap">
   <span class="material-symbols-outlined text-sm flex-shrink-0">check_circle</span>
@@ -339,6 +325,19 @@
 
 <!-- ===================== NAV ===================== -->
 <header id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300">
+  <!-- Top promo marquee (sits above the nav row, stays visible) -->
+  <div class="bg-primary text-black overflow-hidden border-b border-black/20">
+    <div class="flex gap-12 marquee-inner whitespace-nowrap w-max py-2">
+      <span class="font-label text-[10px] tracking-[0.3em] font-bold uppercase">★ NEW DROP · USASackLeague × Hacky Nation Pro Sack — $20</span>
+      <span class="font-label text-[10px] tracking-[0.3em] font-bold uppercase">⬤ Handcrafted in the USA</span>
+      <span class="font-label text-[10px] tracking-[0.3em] font-bold uppercase">★ Limited Edition · Numbered Run</span>
+      <span class="font-label text-[10px] tracking-[0.3em] font-bold uppercase">⚡ Secure Checkout · Stripe Verified</span>
+      <span class="font-label text-[10px] tracking-[0.3em] font-bold uppercase">★ NEW DROP · USASackLeague × Hacky Nation Pro Sack — $20</span>
+      <span class="font-label text-[10px] tracking-[0.3em] font-bold uppercase">⬤ Handcrafted in the USA</span>
+      <span class="font-label text-[10px] tracking-[0.3em] font-bold uppercase">★ Limited Edition · Numbered Run</span>
+      <span class="font-label text-[10px] tracking-[0.3em] font-bold uppercase">⚡ Secure Checkout · Stripe Verified</span>
+    </div>
+  </div>
   <div class="flex justify-between items-center px-6 md:px-10 py-4 max-w-[1440px] mx-auto bg-[#131313]/85 backdrop-blur-md border-b-2 border-primary/30">
     <!-- Logo -->
     <a href="#hero" class="flex items-center gap-2 group">
@@ -387,7 +386,7 @@
 </header>
 
 <!-- ===================== HERO ===================== -->
-<section id="hero" class="relative min-h-screen flex items-center overflow-hidden grain pt-20">
+<section id="hero" class="relative min-h-screen flex items-center overflow-hidden grain pt-28 md:pt-32">
   <!-- background image -->
   <div class="absolute inset-0 z-0">
     <div class="absolute inset-0 bg-gradient-to-r from-[#131313] via-[#131313]/70 to-transparent z-10"></div>
@@ -474,6 +473,150 @@
       </div>
     </div>
   </div>
+</section>
+
+<!-- ===================== THE LINEUP (SACKS — PRE-ORDER) ===================== -->
+<section id="shop" class="py-20 px-6 md:px-10 max-w-[1440px] mx-auto border-b-2 border-white/5">
+  <div class="flex justify-between items-end mb-12 flex-wrap gap-4 reveal">
+    <div>
+      <h2 class="font-display text-headline-lg uppercase italic text-white">THE LINEUP</h2>
+      <p class="font-label text-label-caps text-on-surface-variant uppercase tracking-widest mt-2">Pre-Order Now · Suede Panel Foot Bags · Ships ~3 Weeks</p>
+    </div>
+  </div>
+
+  <!-- Product Grid: 2-col for clean 2x2 sack layout -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-5" id="products-grid">
+
+    <!-- PATRIOT — PRE-ORDER (top left) -->
+    <article class="product-card group cursor-pointer border-2 border-transparent hover:border-primary transition-all duration-300 overflow-hidden bg-surface-container-high flex flex-col reveal"
+      data-id="patriot-sack" data-name="Patriot Foot Bag" data-price="17" data-image="Real Hacky Sack Mockups/RealPatriot.PNG"
+      onclick="openSack('patriot-sack')">
+      <div class="relative bg-[#f2ede4] flex items-center justify-center p-6 h-72 overflow-hidden">
+        <img class="h-56 w-auto object-contain group-hover:scale-105 transition-transform duration-500"
+          src="Real Hacky Sack Mockups/RealPatriot.PNG" alt="Patriot foot bag" />
+      </div>
+      <div class="p-6 flex flex-col flex-1">
+        <span class="font-label text-label-caps bg-primary-container text-black px-2 py-1 mb-3 inline-block self-start">PRE-ORDER · SHIPS ~3 WEEKS</span>
+        <div class="flex items-start justify-between mb-1">
+          <h3 class="font-display font-black text-xl text-white uppercase italic">Patriot</h3>
+          <div class="flex flex-col items-end">
+            <s class="font-display text-on-surface-variant/50 text-sm leading-tight">$20.00</s>
+            <span class="font-display font-black text-xl text-primary">$17.00</span>
+          </div>
+        </div>
+        <p class="font-label text-[10px] tracking-widest text-on-surface-variant/50 mb-1">RED · WHITE · BLUE · 32 PANELS</p>
+        <p class="font-label text-[10px] tracking-widest text-on-surface-variant/40 mb-5">Currently in production · <a href="/pre-order-policy.html" class="underline hover:text-primary transition-colors">Images may vary*</a></p>
+        <button onclick="event.stopPropagation(); addToCart(event)" data-id="patriot-sack" data-name="Patriot Foot Bag" data-price="17" data-image="Real Hacky Sack Mockups/RealPatriot.PNG"
+          class="mt-auto w-full bg-primary text-black font-display font-bold py-3 uppercase tracking-tighter active:scale-95 transition-all flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-sm">add_shopping_cart</span> ADD TO CART
+        </button>
+      </div>
+    </article>
+
+    <!-- SUNSET — PRE-ORDER (top right) -->
+    <article class="product-card group cursor-pointer border-2 border-transparent hover:border-primary transition-all duration-300 overflow-hidden bg-surface-container-high flex flex-col reveal reveal-d1"
+      data-id="sunset-sack" data-name="Sunset Foot Bag" data-price="17" data-image="Real Hacky Sack Mockups/RealSun.PNG"
+      onclick="openSack('sunset-sack')">
+      <div class="relative bg-[#f2ede4] flex items-center justify-center p-6 h-72 overflow-hidden">
+        <img class="h-60 w-auto object-contain group-hover:scale-105 transition-transform duration-500"
+          src="Real Hacky Sack Mockups/RealSun.PNG" alt="Sunset foot bag" />
+      </div>
+      <div class="p-6 flex flex-col flex-1">
+        <span class="font-label text-label-caps bg-primary-container text-black px-2 py-1 mb-3 inline-block self-start">PRE-ORDER · SHIPS ~3 WEEKS</span>
+        <div class="flex items-start justify-between mb-1">
+          <h3 class="font-display font-black text-xl text-white uppercase italic">Sunset</h3>
+          <div class="flex flex-col items-end">
+            <s class="font-display text-on-surface-variant/50 text-sm leading-tight">$20.00</s>
+            <span class="font-display font-black text-xl text-primary">$17.00</span>
+          </div>
+        </div>
+        <p class="font-label text-[10px] tracking-widest text-on-surface-variant/50 mb-1">YELLOW &amp; ORANGE · 32 PANELS</p>
+        <p class="font-label text-[10px] tracking-widest text-on-surface-variant/40 mb-5">Currently in production · <a href="/pre-order-policy.html" class="underline hover:text-primary transition-colors">Images may vary*</a></p>
+        <button onclick="event.stopPropagation(); addToCart(event)" data-id="sunset-sack" data-name="Sunset Foot Bag" data-price="17" data-image="Real Hacky Sack Mockups/RealSun.PNG"
+          class="mt-auto w-full bg-primary text-black font-display font-bold py-3 uppercase tracking-tighter active:scale-95 transition-all flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-sm">add_shopping_cart</span> ADD TO CART
+        </button>
+      </div>
+    </article>
+
+    <!-- BULLDAWGS — PRE-ORDER (bottom left) -->
+    <article class="product-card group cursor-pointer border-2 border-transparent hover:border-primary transition-all duration-300 overflow-hidden bg-surface-container-high flex flex-col reveal"
+      data-id="bulldawgs-sack" data-name="Bulldawgs Foot Bag" data-price="17" data-image="Real Hacky Sack Mockups/RealBulldawgs.PNG"
+      onclick="openSack('bulldawgs-sack')">
+      <div class="relative bg-[#f2ede4] flex items-center justify-center p-6 h-72 overflow-hidden">
+        <img class="h-56 w-auto object-contain group-hover:scale-105 transition-transform duration-500"
+          src="Real Hacky Sack Mockups/RealBulldawgs.PNG" alt="Bulldawgs foot bag" />
+      </div>
+      <div class="p-6 flex flex-col flex-1">
+        <span class="font-label text-label-caps bg-primary-container text-black px-2 py-1 mb-3 inline-block self-start">PRE-ORDER · SHIPS ~3 WEEKS</span>
+        <div class="flex items-start justify-between mb-1">
+          <h3 class="font-display font-black text-xl text-white uppercase italic">Bulldawgs</h3>
+          <div class="flex flex-col items-end">
+            <s class="font-display text-on-surface-variant/50 text-sm leading-tight">$20.00</s>
+            <span class="font-display font-black text-xl text-primary">$17.00</span>
+          </div>
+        </div>
+        <p class="font-label text-[10px] tracking-widest text-on-surface-variant/50 mb-1">BLACK &amp; RED · 14 PANELS</p>
+        <p class="font-label text-[10px] tracking-widest text-on-surface-variant/40 mb-5">Currently in production · <a href="/pre-order-policy.html" class="underline hover:text-primary transition-colors">Images may vary*</a></p>
+        <button onclick="event.stopPropagation(); addToCart(event)" data-id="bulldawgs-sack" data-name="Bulldawgs Foot Bag" data-price="17" data-image="Real Hacky Sack Mockups/RealBulldawgs.PNG"
+          class="mt-auto w-full bg-primary text-black font-display font-bold py-3 uppercase tracking-tighter active:scale-95 transition-all flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-sm">add_shopping_cart</span> ADD TO CART
+        </button>
+      </div>
+    </article>
+
+    <!-- SKY — PRE-ORDER (bottom right) -->
+    <article class="product-card group cursor-pointer border-2 border-transparent hover:border-primary transition-all duration-300 overflow-hidden bg-surface-container-high flex flex-col reveal reveal-d1"
+      data-id="sky-sack" data-name="Sky Foot Bag" data-price="17" data-image="Real Hacky Sack Mockups/RealSky.PNG"
+      onclick="openSack('sky-sack')">
+      <div class="relative bg-[#f2ede4] flex items-center justify-center p-6 h-72 overflow-hidden">
+        <img class="h-56 w-auto object-contain group-hover:scale-105 transition-transform duration-500"
+          src="Real Hacky Sack Mockups/RealSky.PNG" alt="Sky foot bag" />
+      </div>
+      <div class="p-6 flex flex-col flex-1">
+        <span class="font-label text-label-caps bg-primary-container text-black px-2 py-1 mb-3 inline-block self-start">PRE-ORDER · SHIPS ~3 WEEKS</span>
+        <div class="flex items-start justify-between mb-1">
+          <h3 class="font-display font-black text-xl text-white uppercase italic">Sky</h3>
+          <div class="flex flex-col items-end">
+            <s class="font-display text-on-surface-variant/50 text-sm leading-tight">$20.00</s>
+            <span class="font-display font-black text-xl text-primary">$17.00</span>
+          </div>
+        </div>
+        <p class="font-label text-[10px] tracking-widest text-on-surface-variant/50 mb-1">BLUE &amp; WHITE · 14 PANELS</p>
+        <p class="font-label text-[10px] tracking-widest text-on-surface-variant/40 mb-5">Currently in production · <a href="/pre-order-policy.html" class="underline hover:text-primary transition-colors">Images may vary*</a></p>
+        <button onclick="event.stopPropagation(); addToCart(event)" data-id="sky-sack" data-name="Sky Foot Bag" data-price="17" data-image="Real Hacky Sack Mockups/RealSky.PNG"
+          class="mt-auto w-full bg-primary text-black font-display font-bold py-3 uppercase tracking-tighter active:scale-95 transition-all flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-sm">add_shopping_cart</span> ADD TO CART
+        </button>
+      </div>
+    </article>
+
+    <!-- MYSTERY BAG — SOLD OUT, full width row -->
+    <article class="product-card sm:col-span-2 group border-2 border-white/5 overflow-hidden bg-surface-container-high flex flex-col sm:flex-row reveal opacity-75"
+      data-sold-out="true">
+      <div class="relative bg-[#f2ede4] flex items-center justify-center p-6 sm:w-72 flex-shrink-0 overflow-hidden min-h-[200px] sm:min-h-0">
+        <div class="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
+          <span class="font-display font-black text-xl text-white uppercase italic tracking-widest border-2 border-white px-4 py-2">SOLD OUT</span>
+        </div>
+        <img class="w-full h-full object-contain grayscale"
+          src="Untitled design/Untitled design.png" alt="Hand knit foot bags" />
+      </div>
+      <div class="p-6 flex flex-col justify-between flex-1">
+        <div>
+          <span class="font-label text-label-caps bg-white/10 text-white/60 px-2 py-1 mb-3 inline-block">SOLD OUT · CHECK BACK SOON</span>
+          <h3 class="font-display font-black text-xl text-white/60 uppercase italic leading-tight mb-2">Hand Knit Mystery Bag</h3>
+          <p class="text-on-surface-variant/60 text-sm leading-relaxed">Each sack is hand-knit with unique patterns and colors, pulled at random. <strong class="text-white/60">1 piece per order.</strong></p>
+        </div>
+        <div class="flex items-center gap-4 mt-4">
+          <span class="font-display font-black text-2xl text-on-surface-variant">$10.00</span>
+          <a href="#newsletter" class="border-2 border-white/20 text-on-surface-variant font-display font-bold px-6 py-3 uppercase tracking-tighter transition-all flex items-center gap-2 hover:border-primary hover:text-primary text-sm">
+            <span class="material-symbols-outlined text-sm">notifications</span> NOTIFY ME
+          </a>
+        </div>
+      </div>
+    </article>
+
+  </div><!-- /product grid -->
 </section>
 
 <!-- ===================== FEATURED COLLAB · USASackLeague × Hacky Nation ===================== -->
@@ -620,150 +763,6 @@
 
   <!-- internal cross-link / contextual SEO -->
   <p class="font-label text-[10px] tracking-widest text-on-surface-variant/50 uppercase mt-6 reveal">Looking for more? Check the rest of <a href="#shop" class="text-primary underline hover:text-white transition-colors">the lineup</a>, see real <a href="#testimonials" class="text-primary underline hover:text-white transition-colors">player reviews</a>, or read our <a href="/pre-order-policy.html" class="text-primary underline hover:text-white transition-colors">pre-order policy</a>.</p>
-</section>
-
-<!-- ===================== THE LINEUP (SACKS — PRE-ORDER) ===================== -->
-<section id="shop" class="py-20 px-6 md:px-10 max-w-[1440px] mx-auto border-b-2 border-white/5">
-  <div class="flex justify-between items-end mb-12 flex-wrap gap-4 reveal">
-    <div>
-      <h2 class="font-display text-headline-lg uppercase italic text-white">THE LINEUP</h2>
-      <p class="font-label text-label-caps text-on-surface-variant uppercase tracking-widest mt-2">Pre-Order Now · Suede Panel Foot Bags · Ships ~3 Weeks</p>
-    </div>
-  </div>
-
-  <!-- Product Grid: 2-col for clean 2x2 sack layout -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-5" id="products-grid">
-
-    <!-- PATRIOT — PRE-ORDER (top left) -->
-    <article class="product-card group cursor-pointer border-2 border-transparent hover:border-primary transition-all duration-300 overflow-hidden bg-surface-container-high flex flex-col reveal"
-      data-id="patriot-sack" data-name="Patriot Foot Bag" data-price="17" data-image="Untitled design/Untitled design (1).png"
-      onclick="openSack('patriot-sack')">
-      <div class="relative bg-[#f2ede4] flex items-center justify-center p-6 h-72 overflow-hidden">
-        <img class="h-56 w-auto object-contain group-hover:scale-105 transition-transform duration-500"
-          src="Untitled design/Untitled design (1).png" alt="Patriot foot bag" />
-      </div>
-      <div class="p-6 flex flex-col flex-1">
-        <span class="font-label text-label-caps bg-primary-container text-black px-2 py-1 mb-3 inline-block self-start">PRE-ORDER · SHIPS ~3 WEEKS</span>
-        <div class="flex items-start justify-between mb-1">
-          <h3 class="font-display font-black text-xl text-white uppercase italic">Patriot</h3>
-          <div class="flex flex-col items-end">
-            <s class="font-display text-on-surface-variant/50 text-sm leading-tight">$20.00</s>
-            <span class="font-display font-black text-xl text-primary">$17.00</span>
-          </div>
-        </div>
-        <p class="font-label text-[10px] tracking-widest text-on-surface-variant/50 mb-1">RED · WHITE · BLUE · 32 PANELS</p>
-        <p class="font-label text-[10px] tracking-widest text-on-surface-variant/40 mb-5">Currently in production · <a href="/pre-order-policy.html" class="underline hover:text-primary transition-colors">Images may vary*</a></p>
-        <button onclick="event.stopPropagation(); addToCart(event)" data-id="patriot-sack" data-name="Patriot Foot Bag" data-price="17" data-image="Untitled design/Untitled design (1).png"
-          class="mt-auto w-full bg-primary text-black font-display font-bold py-3 uppercase tracking-tighter active:scale-95 transition-all flex items-center justify-center gap-2">
-          <span class="material-symbols-outlined text-sm">add_shopping_cart</span> ADD TO CART
-        </button>
-      </div>
-    </article>
-
-    <!-- SUNSET — PRE-ORDER (top right) -->
-    <article class="product-card group cursor-pointer border-2 border-transparent hover:border-primary transition-all duration-300 overflow-hidden bg-surface-container-high flex flex-col reveal reveal-d1"
-      data-id="sunset-sack" data-name="Sunset Foot Bag" data-price="17" data-image="Untitled design/1.png"
-      onclick="openSack('sunset-sack')">
-      <div class="relative bg-[#f2ede4] flex items-center justify-center p-6 h-72 overflow-hidden">
-        <img class="h-60 w-auto object-contain group-hover:scale-105 transition-transform duration-500"
-          src="Untitled design/1.png" alt="Sunset foot bag" />
-      </div>
-      <div class="p-6 flex flex-col flex-1">
-        <span class="font-label text-label-caps bg-primary-container text-black px-2 py-1 mb-3 inline-block self-start">PRE-ORDER · SHIPS ~3 WEEKS</span>
-        <div class="flex items-start justify-between mb-1">
-          <h3 class="font-display font-black text-xl text-white uppercase italic">Sunset</h3>
-          <div class="flex flex-col items-end">
-            <s class="font-display text-on-surface-variant/50 text-sm leading-tight">$20.00</s>
-            <span class="font-display font-black text-xl text-primary">$17.00</span>
-          </div>
-        </div>
-        <p class="font-label text-[10px] tracking-widest text-on-surface-variant/50 mb-1">YELLOW &amp; ORANGE · 32 PANELS</p>
-        <p class="font-label text-[10px] tracking-widest text-on-surface-variant/40 mb-5">Currently in production · <a href="/pre-order-policy.html" class="underline hover:text-primary transition-colors">Images may vary*</a></p>
-        <button onclick="event.stopPropagation(); addToCart(event)" data-id="sunset-sack" data-name="Sunset Foot Bag" data-price="17" data-image="Untitled design/1.png"
-          class="mt-auto w-full bg-primary text-black font-display font-bold py-3 uppercase tracking-tighter active:scale-95 transition-all flex items-center justify-center gap-2">
-          <span class="material-symbols-outlined text-sm">add_shopping_cart</span> ADD TO CART
-        </button>
-      </div>
-    </article>
-
-    <!-- BULLDAWGS — PRE-ORDER (bottom left) -->
-    <article class="product-card group cursor-pointer border-2 border-transparent hover:border-primary transition-all duration-300 overflow-hidden bg-surface-container-high flex flex-col reveal"
-      data-id="bulldawgs-sack" data-name="Bulldawgs Foot Bag" data-price="17" data-image="Untitled design/4.png"
-      onclick="openSack('bulldawgs-sack')">
-      <div class="relative bg-[#f2ede4] flex items-center justify-center p-6 h-72 overflow-hidden">
-        <img class="h-56 w-auto object-contain group-hover:scale-105 transition-transform duration-500"
-          src="Untitled design/4.png" alt="Bulldawgs foot bag" />
-      </div>
-      <div class="p-6 flex flex-col flex-1">
-        <span class="font-label text-label-caps bg-primary-container text-black px-2 py-1 mb-3 inline-block self-start">PRE-ORDER · SHIPS ~3 WEEKS</span>
-        <div class="flex items-start justify-between mb-1">
-          <h3 class="font-display font-black text-xl text-white uppercase italic">Bulldawgs</h3>
-          <div class="flex flex-col items-end">
-            <s class="font-display text-on-surface-variant/50 text-sm leading-tight">$20.00</s>
-            <span class="font-display font-black text-xl text-primary">$17.00</span>
-          </div>
-        </div>
-        <p class="font-label text-[10px] tracking-widest text-on-surface-variant/50 mb-1">BLACK &amp; RED · 14 PANELS</p>
-        <p class="font-label text-[10px] tracking-widest text-on-surface-variant/40 mb-5">Currently in production · <a href="/pre-order-policy.html" class="underline hover:text-primary transition-colors">Images may vary*</a></p>
-        <button onclick="event.stopPropagation(); addToCart(event)" data-id="bulldawgs-sack" data-name="Bulldawgs Foot Bag" data-price="17" data-image="Untitled design/4.png"
-          class="mt-auto w-full bg-primary text-black font-display font-bold py-3 uppercase tracking-tighter active:scale-95 transition-all flex items-center justify-center gap-2">
-          <span class="material-symbols-outlined text-sm">add_shopping_cart</span> ADD TO CART
-        </button>
-      </div>
-    </article>
-
-    <!-- SKY — PRE-ORDER (bottom right) -->
-    <article class="product-card group cursor-pointer border-2 border-transparent hover:border-primary transition-all duration-300 overflow-hidden bg-surface-container-high flex flex-col reveal reveal-d1"
-      data-id="sky-sack" data-name="Sky Foot Bag" data-price="17" data-image="Untitled design/2.png"
-      onclick="openSack('sky-sack')">
-      <div class="relative bg-[#f2ede4] flex items-center justify-center p-6 h-72 overflow-hidden">
-        <img class="h-56 w-auto object-contain group-hover:scale-105 transition-transform duration-500"
-          src="Untitled design/2.png" alt="Sky foot bag" />
-      </div>
-      <div class="p-6 flex flex-col flex-1">
-        <span class="font-label text-label-caps bg-primary-container text-black px-2 py-1 mb-3 inline-block self-start">PRE-ORDER · SHIPS ~3 WEEKS</span>
-        <div class="flex items-start justify-between mb-1">
-          <h3 class="font-display font-black text-xl text-white uppercase italic">Sky</h3>
-          <div class="flex flex-col items-end">
-            <s class="font-display text-on-surface-variant/50 text-sm leading-tight">$20.00</s>
-            <span class="font-display font-black text-xl text-primary">$17.00</span>
-          </div>
-        </div>
-        <p class="font-label text-[10px] tracking-widest text-on-surface-variant/50 mb-1">BLUE &amp; WHITE · 12 PANELS</p>
-        <p class="font-label text-[10px] tracking-widest text-on-surface-variant/40 mb-5">Currently in production · <a href="/pre-order-policy.html" class="underline hover:text-primary transition-colors">Images may vary*</a></p>
-        <button onclick="event.stopPropagation(); addToCart(event)" data-id="sky-sack" data-name="Sky Foot Bag" data-price="17" data-image="Untitled design/2.png"
-          class="mt-auto w-full bg-primary text-black font-display font-bold py-3 uppercase tracking-tighter active:scale-95 transition-all flex items-center justify-center gap-2">
-          <span class="material-symbols-outlined text-sm">add_shopping_cart</span> ADD TO CART
-        </button>
-      </div>
-    </article>
-
-    <!-- MYSTERY BAG — SOLD OUT, full width row -->
-    <article class="product-card sm:col-span-2 group border-2 border-white/5 overflow-hidden bg-surface-container-high flex flex-col sm:flex-row reveal opacity-75"
-      data-sold-out="true">
-      <div class="relative bg-[#f2ede4] flex items-center justify-center p-6 sm:w-72 flex-shrink-0 overflow-hidden min-h-[200px] sm:min-h-0">
-        <div class="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
-          <span class="font-display font-black text-xl text-white uppercase italic tracking-widest border-2 border-white px-4 py-2">SOLD OUT</span>
-        </div>
-        <img class="w-full h-full object-contain grayscale"
-          src="Untitled design/Untitled design.png" alt="Hand knit foot bags" />
-      </div>
-      <div class="p-6 flex flex-col justify-between flex-1">
-        <div>
-          <span class="font-label text-label-caps bg-white/10 text-white/60 px-2 py-1 mb-3 inline-block">SOLD OUT · CHECK BACK SOON</span>
-          <h3 class="font-display font-black text-xl text-white/60 uppercase italic leading-tight mb-2">Hand Knit Mystery Bag</h3>
-          <p class="text-on-surface-variant/60 text-sm leading-relaxed">Each sack is hand-knit with unique patterns and colors, pulled at random. <strong class="text-white/60">1 piece per order.</strong></p>
-        </div>
-        <div class="flex items-center gap-4 mt-4">
-          <span class="font-display font-black text-2xl text-on-surface-variant">$10.00</span>
-          <a href="#newsletter" class="border-2 border-white/20 text-on-surface-variant font-display font-bold px-6 py-3 uppercase tracking-tighter transition-all flex items-center gap-2 hover:border-primary hover:text-primary text-sm">
-            <span class="material-symbols-outlined text-sm">notifications</span> NOTIFY ME
-          </a>
-        </div>
-      </div>
-    </article>
-
-  </div><!-- /product grid -->
 </section>
 
 <!-- ===================== SACK MERCH ===================== -->
@@ -1546,10 +1545,10 @@
 
   // ===== SACK MODAL =====
   const SACK_DATA = {
-    'patriot-sack':   { name: 'Patriot Foot Bag',   sub: 'RED · WHITE · BLUE · 32 PANELS', image: 'Untitled design/Untitled design (1).png', desc: 'The Patriot is a bold 32-panel suede foot bag in red, white, and blue. Handcrafted and built to play — perfect for the circle.' },
-    'sunset-sack':    { name: 'Sunset Foot Bag',     sub: 'YELLOW & ORANGE · 32 PANELS',    image: 'Untitled design/1.png',                    desc: 'The Sunset is a 32-panel suede foot bag in warm yellow and orange tones. Eye-catching in the circle, built to last.' },
-    'bulldawgs-sack': { name: 'Bulldawgs Foot Bag',  sub: 'BLACK & RED · 14 PANELS',        image: 'Untitled design/4.png',                    desc: 'The Bulldawgs is a 14-panel suede foot bag in black and red. Tight panels for a consistent, responsive kick.' },
-    'sky-sack':       { name: 'Sky Foot Bag',        sub: 'BLUE & WHITE · 12 PANELS',       image: 'Untitled design/2.png',                    desc: 'The Sky is a 12-panel suede foot bag in blue and white. Clean colorway, great feel, made for players who keep it up.' },
+    'patriot-sack':   { name: 'Patriot Foot Bag',   sub: 'RED · WHITE · BLUE · 32 PANELS', image: 'Real Hacky Sack Mockups/RealPatriot.PNG', desc: 'The Patriot is a bold 32-panel suede foot bag in red, white, and blue. Handcrafted and built to play — perfect for the circle.' },
+    'sunset-sack':    { name: 'Sunset Foot Bag',     sub: 'YELLOW & ORANGE · 32 PANELS',    image: 'Real Hacky Sack Mockups/RealSun.PNG',                    desc: 'The Sunset is a 32-panel suede foot bag in warm yellow and orange tones. Eye-catching in the circle, built to last.' },
+    'bulldawgs-sack': { name: 'Bulldawgs Foot Bag',  sub: 'BLACK & RED · 14 PANELS',        image: 'Real Hacky Sack Mockups/RealBulldawgs.PNG',                    desc: 'The Bulldawgs is a 14-panel suede foot bag in black and red. Tight panels for a consistent, responsive kick.' },
+    'sky-sack':       { name: 'Sky Foot Bag',        sub: 'BLUE & WHITE · 14 PANELS',       image: 'Real Hacky Sack Mockups/RealSky.PNG',                    desc: 'The Sky is a 14-panel suede foot bag in blue and white. Clean colorway, great feel, made for players who keep it up.' },
     'usl-pro-sack':   { name: 'USASackLeague X Hacky Nation Pro Sack', sub: 'OFFICIAL USL COLLAB · LIMITED EDITION', image: 'USASL Collab/9cf6a9de-9b2f-4ba1-b459-6ba686aeb7a7.png', desc: 'The official USASackLeague × Hacky Nation Pro Sack. Co-designed with USL for the circle — premium suede, tournament-grade panel construction, limited edition numbered run.', price: 20 },
   };
 
