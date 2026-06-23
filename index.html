@@ -385,64 +385,71 @@
   </div>
 </header>
 
-<!-- ===================== HERO ===================== -->
-<section id="hero" class="relative min-h-screen flex items-center overflow-hidden grain pt-28 md:pt-32">
-  <!-- background image -->
-  <div class="absolute inset-0 z-0">
-    <div class="absolute inset-0 bg-gradient-to-r from-[#131313] via-[#131313]/70 to-transparent z-10"></div>
-    <img class="w-full h-full object-cover opacity-75"
-      src="1202d6e8-e60d-4ef1-adc1-28c2eafb30b7.png"
-      alt="Friends playing foot bag at sunset"/>
-  </div>
+<!-- ===================== HERO (scroll-scrubbed product video) ===================== -->
+<section id="hero" class="relative bg-[#0c0c0c]" style="height:240vh">
+  <div class="hero-pin sticky top-0 h-[100svh] w-full overflow-hidden bg-[#0c0c0c]">
+    <!-- scroll-scrubbed product video -->
+    <video id="hero-video" class="absolute inset-0 w-full h-full object-cover"
+      src="hero-sack.mp4" poster="hero-poster.jpg"
+      muted playsinline preload="auto" aria-hidden="true"></video>
 
-  <!-- blue electric glow -->
-  <div class="absolute top-1/4 right-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl z-0 pointer-events-none" style="animation: float 6s ease-in-out infinite;"></div>
+    <!-- legibility scrims -->
+    <div class="absolute inset-0 bg-black/25 pointer-events-none z-10"></div>
+    <div class="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[#0c0c0c] to-transparent pointer-events-none z-10"></div>
+    <div class="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#0c0c0c] via-[#0c0c0c]/55 to-transparent pointer-events-none z-10"></div>
+    <!-- electric glow -->
+    <div class="absolute top-1/4 right-[15%] w-96 h-96 bg-primary/10 rounded-full blur-3xl z-10 pointer-events-none" style="animation: float 6s ease-in-out infinite;"></div>
 
-  <!-- Logo — decorative right side -->
-  <img src="Untitled design/5.png" alt=""
-    class="absolute right-10 bottom-24 w-44 opacity-15 z-10 pointer-events-none hidden lg:block"
-    style="animation: float 7s ease-in-out 1s infinite;" />
-
-  <div class="relative z-20 px-6 md:px-10 max-w-[1440px] mx-auto w-full">
-    <div class="max-w-3xl">
-      <span class="font-label text-label-caps text-primary block mb-6 reveal">HANDCRAFTED · EST. IN A CIRCLE OF FRIENDS</span>
-      <h1 class="font-display text-display-xl uppercase italic text-white leading-[0.9] mb-6 reveal reveal-d1">
-        PLAY WITH<br>
-        <span class="text-primary">YOUR</span><br>
-        SACK.
-      </h1>
-      <p class="text-body-lg text-on-surface-variant mb-10 max-w-lg reveal reveal-d2">
-        Handcrafted foot bags for the culture. Played everywhere. Born from the ground up. No stadium required.
-      </p>
-      <div class="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 reveal reveal-d3 max-w-md sm:max-w-none">
-        <a href="#collab" class="bg-primary text-black font-display font-extrabold px-6 sm:px-8 py-3.5 sm:py-4 uppercase tracking-tighter sm:skew-x-[-10deg] text-center hover:bg-white transition-all text-sm sm:text-base" title="Shop the USASackLeague x Hacky Nation Pro Sack">
-          ★ SHOP THE COLLAB
-        </a>
-        <a href="#shop" class="border-2 border-primary text-primary font-display font-extrabold px-6 sm:px-8 py-3.5 sm:py-4 uppercase tracking-tighter sm:skew-x-[-10deg] text-center hover:bg-primary hover:text-black transition-all text-sm sm:text-base">
-          SHOP THE LINEUP
-        </a>
+    <!-- copy -->
+    <div class="absolute inset-0 z-20 flex items-end md:items-center">
+      <div id="hero-copy" class="px-6 md:px-10 max-w-[1440px] mx-auto w-full pb-32 md:pb-0 will-change-transform">
+        <div class="max-w-3xl">
+          <span class="font-label text-label-caps text-primary block mb-4 md:mb-6">HANDCRAFTED · EST. IN A CIRCLE OF FRIENDS</span>
+          <h1 class="font-display text-display-xl uppercase italic text-white leading-[0.9] mb-6" style="text-shadow:0 2px 34px rgba(0,0,0,.55)">
+            PLAY WITH<br>
+            <span class="text-primary">YOUR</span><br>
+            SACK.
+          </h1>
+          <p class="text-body-lg text-white/85 mb-8 md:mb-10 max-w-lg" style="text-shadow:0 1px 14px rgba(0,0,0,.6)">
+            Handcrafted foot bags for the culture. Played everywhere. Born from the ground up. No stadium required.
+          </p>
+          <div class="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 max-w-md sm:max-w-none">
+            <a href="#collab" class="bg-primary text-black font-display font-extrabold px-6 sm:px-8 py-3.5 sm:py-4 uppercase tracking-tighter sm:skew-x-[-10deg] text-center hover:bg-white transition-all text-sm sm:text-base" title="Shop the USASackLeague x Hacky Nation Pro Sack">
+              ★ SHOP THE COLLAB
+            </a>
+            <a href="#shop" class="border-2 border-primary text-primary font-display font-extrabold px-6 sm:px-8 py-3.5 sm:py-4 uppercase tracking-tighter sm:skew-x-[-10deg] text-center hover:bg-primary hover:text-black transition-all text-sm sm:text-base">
+              SHOP THE LINEUP
+            </a>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- stat ticker -->
-  <div class="absolute bottom-0 left-0 right-0 z-20 bg-primary/10 backdrop-blur-sm border-t border-primary/20 py-3 px-6">
-    <div class="max-w-[1440px] mx-auto grid grid-cols-2 md:flex md:items-center md:justify-between gap-x-6 gap-y-2">
-      <div class="flex items-center gap-2">
-        <span class="font-display font-black text-xl text-primary">3K+</span>
-        <span class="font-label text-label-caps text-on-surface-variant">Followers</span>
-      </div>
-      <div class="flex items-center gap-2">
-        <span class="font-display font-black text-xl text-primary">48</span>
-        <span class="font-label text-label-caps text-on-surface-variant">States Played</span>
-      </div>
-      <div class="flex items-center gap-2">
-        <span class="font-display font-black text-xl text-primary">100%</span>
-        <span class="font-label text-label-caps text-on-surface-variant">Handmade</span>
-      </div>
-      <div class="flex items-center gap-2">
-        <span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings:'FILL' 0,'wght' 700">all_inclusive</span>
-        <span class="font-label text-label-caps text-on-surface-variant">Circles Formed</span>
+    <!-- scroll cue -->
+    <div id="hero-cue" class="absolute bottom-24 md:bottom-28 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1 transition-opacity duration-500 pointer-events-none">
+      <span class="font-label text-[10px] tracking-[0.3em] text-white/70 uppercase">Scroll</span>
+      <span class="material-symbols-outlined text-primary animate-bounce">keyboard_arrow_down</span>
+    </div>
+
+    <!-- stat ticker -->
+    <div class="absolute bottom-0 left-0 right-0 z-20 bg-primary/10 backdrop-blur-sm border-t border-primary/20 py-3 px-6">
+      <div class="max-w-[1440px] mx-auto grid grid-cols-2 md:flex md:items-center md:justify-between gap-x-6 gap-y-2">
+        <div class="flex items-center gap-2">
+          <span class="font-display font-black text-xl text-primary">3K+</span>
+          <span class="font-label text-label-caps text-on-surface-variant">Followers</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="font-display font-black text-xl text-primary">48</span>
+          <span class="font-label text-label-caps text-on-surface-variant">States Played</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="font-display font-black text-xl text-primary">100%</span>
+          <span class="font-label text-label-caps text-on-surface-variant">Handmade</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings:'FILL' 0,'wght' 700">all_inclusive</span>
+          <span class="font-label text-label-caps text-on-surface-variant">Circles Formed</span>
+        </div>
       </div>
     </div>
   </div>
@@ -1637,6 +1644,62 @@
     });
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ===== HERO SCROLL-SCRUBBED VIDEO =====
+  (function heroScrub() {
+    const section = document.getElementById('hero');
+    const video   = document.getElementById('hero-video');
+    const copy    = document.getElementById('hero-copy');
+    const cue     = document.getElementById('hero-cue');
+    if (!section || !video) return;
+
+    const reduce  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const simple  = window.matchMedia('(max-width: 1024px), (pointer: coarse)').matches;
+
+    // Mobile / reduced-motion: just autoplay the clip as a looping background
+    if (reduce || simple) {
+      section.style.height = '';            // collapse the tall scroll track
+      video.loop = true;
+      video.muted = true; video.setAttribute('muted', '');
+      video.playsInline = true;
+      const play = () => video.play().catch(() => {});
+      video.addEventListener('loadeddata', play);
+      play();
+      return;
+    }
+
+    // Desktop: scrub the video by scroll position
+    video.pause();
+    let dur = 11, target = 0, current = 0, primed = false;
+    video.addEventListener('loadedmetadata', () => { dur = video.duration || 11; onScroll(); });
+
+    function onScroll() {
+      const rect  = section.getBoundingClientRect();
+      const total = section.offsetHeight - window.innerHeight;
+      const done  = Math.min(Math.max(-rect.top, 0), total);
+      const p     = total > 0 ? done / total : 0;
+      target = p * dur;
+      const fade = Math.max(0, 1 - p / 0.55);
+      if (copy) { copy.style.opacity = fade; copy.style.transform = 'translateY(' + ((1 - fade) * -28) + 'px)'; }
+      if (cue)  { cue.style.opacity = p > 0.03 ? '0' : '1'; }
+    }
+    function tick() {
+      current += (target - current) * 0.12;
+      if (Math.abs(target - current) < 0.002) current = target;
+      if (video.readyState >= 2 && !isNaN(current)) { try { video.currentTime = current; } catch (e) {} }
+      requestAnimationFrame(tick);
+    }
+    // prime so the first frames are decodable for seeking
+    video.addEventListener('loadeddata', () => {
+      if (primed) return; primed = true;
+      const kick = video.play(); if (kick && kick.then) kick.then(() => video.pause()).catch(() => {}); else video.pause();
+      onScroll();
+    });
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    requestAnimationFrame(tick);
+    onScroll();
+  })();
 </script>
 </body>
 </html>
