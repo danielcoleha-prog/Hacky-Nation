@@ -385,13 +385,11 @@
   </div>
 </header>
 
-<!-- ===================== HERO (scroll-scrubbed product video) ===================== -->
-<section id="hero" class="relative bg-[#0c0c0c]" style="height:240vh">
-  <div class="hero-pin sticky top-0 h-[100svh] w-full overflow-hidden bg-[#0c0c0c]">
-    <!-- scroll-scrubbed product video -->
-    <video id="hero-video" class="absolute inset-0 w-full h-full object-cover"
-      src="hero-sack.mp4" poster="hero-poster.jpg"
-      muted playsinline preload="auto" aria-hidden="true"></video>
+<!-- ===================== HERO (scroll-scrubbed frame sequence) ===================== -->
+<section id="hero" class="relative bg-[#0c0c0c]" style="height:200vh">
+  <div class="hero-pin sticky top-0 h-[100svh] w-full overflow-hidden bg-[#0c0c0c] bg-center bg-cover" style="background-image:url('hero-poster.jpg')">
+    <!-- scroll-scrubbed frame sequence (canvas) — smooth on desktop AND mobile -->
+    <canvas id="hero-canvas" class="absolute inset-0 w-full h-full" aria-hidden="true"></canvas>
 
     <!-- legibility scrims -->
     <div class="absolute inset-0 bg-black/25 pointer-events-none z-10"></div>
@@ -1645,60 +1643,76 @@
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-  // ===== HERO SCROLL-SCRUBBED VIDEO =====
-  (function heroScrub() {
+  // ===== HERO SCROLL-SCRUBBED FRAME SEQUENCE (canvas — smooth on desktop + mobile) =====
+  (function heroSequence() {
     const section = document.getElementById('hero');
-    const video   = document.getElementById('hero-video');
+    const canvas  = document.getElementById('hero-canvas');
     const copy    = document.getElementById('hero-copy');
     const cue     = document.getElementById('hero-cue');
-    if (!section || !video) return;
+    if (!section || !canvas) return;
 
+    const ctx     = canvas.getContext('2d');
+    const FRAMES  = 56;
     const reduce  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const simple  = window.matchMedia('(max-width: 1024px), (pointer: coarse)').matches;
+    const url     = i => 'hero-frames/f_' + String(i).padStart(3, '0') + '.jpg';
 
-    // Mobile / reduced-motion: just autoplay the clip as a looping background
-    if (reduce || simple) {
-      section.style.height = '';            // collapse the tall scroll track
-      video.loop = true;
-      video.muted = true; video.setAttribute('muted', '');
-      video.playsInline = true;
-      const play = () => video.play().catch(() => {});
-      video.addEventListener('loadeddata', play);
-      play();
-      return;
+    const imgs = new Array(FRAMES);
+    let cw = 0, ch = 0, cur = 0, target = 0, lastDrawn = -1;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    function resize() {
+      const r = canvas.getBoundingClientRect();
+      cw = r.width; ch = r.height;
+      canvas.width  = Math.round(cw * dpr);
+      canvas.height = Math.round(ch * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      lastDrawn = -1; draw(cur);
+    }
+    function draw(idx) {
+      const i = Math.max(0, Math.min(FRAMES - 1, Math.round(idx)));
+      const img = imgs[i];
+      if (!img || !img.complete || !img.naturalWidth) return;   // hold last good frame
+      if (i === lastDrawn) return;
+      lastDrawn = i;
+      const ir = img.naturalWidth / img.naturalHeight, cr = cw / ch;
+      let w, h, x, y;
+      if (cr > ir) { w = cw; h = cw / ir; x = 0; y = (ch - h) / 2; }
+      else         { h = ch; w = ch * ir; x = (cw - w) / 2; y = 0; }
+      ctx.clearRect(0, 0, cw, ch);
+      ctx.drawImage(img, x, y, w, h);
     }
 
-    // Desktop: scrub the video by scroll position
-    video.pause();
-    let dur = 11, target = 0, current = 0, primed = false;
-    video.addEventListener('loadedmetadata', () => { dur = video.duration || 11; onScroll(); });
+    // preload frames; paint the first as soon as it lands
+    for (let i = 0; i < FRAMES; i++) {
+      const im = new Image();
+      if (i === 0) im.onload = () => { resize(); };
+      im.src = url(i + 1);
+      imgs[i] = im;
+    }
 
     function onScroll() {
+      if (reduce) return;
       const rect  = section.getBoundingClientRect();
       const total = section.offsetHeight - window.innerHeight;
       const done  = Math.min(Math.max(-rect.top, 0), total);
       const p     = total > 0 ? done / total : 0;
-      target = p * dur;
+      target = p * (FRAMES - 1);
       const fade = Math.max(0, 1 - p / 0.55);
       if (copy) { copy.style.opacity = fade; copy.style.transform = 'translateY(' + ((1 - fade) * -28) + 'px)'; }
       if (cue)  { cue.style.opacity = p > 0.03 ? '0' : '1'; }
     }
     function tick() {
-      current += (target - current) * 0.12;
-      if (Math.abs(target - current) < 0.002) current = target;
-      if (video.readyState >= 2 && !isNaN(current)) { try { video.currentTime = current; } catch (e) {} }
+      cur += (target - cur) * 0.18;
+      if (Math.abs(target - cur) < 0.01) cur = target;
+      draw(cur);
       requestAnimationFrame(tick);
     }
-    // prime so the first frames are decodable for seeking
-    video.addEventListener('loadeddata', () => {
-      if (primed) return; primed = true;
-      const kick = video.play(); if (kick && kick.then) kick.then(() => video.pause()).catch(() => {}); else video.pause();
-      onScroll();
-    });
+
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    requestAnimationFrame(tick);
-    onScroll();
+    window.addEventListener('resize', () => { resize(); onScroll(); });
+    resize(); onScroll();
+    if (reduce) { draw(Math.floor(FRAMES * 0.5)); }   // static mid-frame, no scrub
+    else { requestAnimationFrame(tick); }
   })();
 </script>
 </body>
