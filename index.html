@@ -388,8 +388,10 @@
 <!-- ===================== HERO (scroll-scrubbed frame sequence) ===================== -->
 <section id="hero" class="relative bg-[#0c0c0c]" style="height:200vh">
   <div class="hero-pin sticky top-0 h-[100svh] w-full overflow-hidden bg-[#0c0c0c] bg-center bg-cover" style="background-image:url('hero-poster.jpg')">
-    <!-- scroll-scrubbed frame sequence (canvas) — smooth on desktop AND mobile -->
-    <canvas id="hero-canvas" class="absolute inset-0 w-full h-full" aria-hidden="true"></canvas>
+    <!-- desktop: scroll-scrubbed frame sequence (canvas) -->
+    <canvas id="hero-canvas" class="hidden md:block absolute inset-0 w-full h-full" aria-hidden="true"></canvas>
+    <!-- mobile: original static hero image (no scrub) -->
+    <img class="md:hidden absolute inset-0 w-full h-full object-cover" src="1202d6e8-e60d-4ef1-adc1-28c2eafb30b7.png" alt="Friends playing foot bag at sunset" />
 
     <!-- legibility scrims -->
     <div class="absolute inset-0 bg-black/25 pointer-events-none z-10"></div>
@@ -1651,8 +1653,18 @@
     const cue     = document.getElementById('hero-cue');
     if (!section || !canvas) return;
 
+    // Mobile: keep the original static hero image, no scroll-scrub
+    const simple = window.matchMedia('(max-width: 1023px), (pointer: coarse)').matches;
+    if (simple) {
+      section.style.height = '';          // collapse the tall scroll track -> one-screen hero
+      canvas.style.display = 'none';
+      if (cue)  cue.style.display = 'none';
+      if (copy) { copy.style.opacity = ''; copy.style.transform = ''; }
+      return;                             // no frame preload, no scrub on mobile
+    }
+
     const ctx     = canvas.getContext('2d');
-    const FRAMES  = 56;
+    const FRAMES  = 80;
     const reduce  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const url     = i => 'hero-frames/f_' + String(i).padStart(3, '0') + '.jpg';
 
