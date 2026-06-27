@@ -3,8 +3,8 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 // Server-side product whitelist — clients cannot manipulate prices
 const PRODUCTS = {
   'mystery-bag':    { name: 'Hand Knit Mystery Bag',  price: 1000 },
-  'shirt-white':    { name: 'Hacky Nation Tee — White', price: 1900 },
-  'shirt-black':    { name: 'Hacky Nation Tee — Black', price: 1900 },
+  'shirt-white':    { name: 'Hacky Nation Tee — White', price: 2000 },
+  'shirt-black':    { name: 'Hacky Nation Tee — Black', price: 2000 },
   'sunset-sack':    { name: 'Sunset Foot Bag',          price: 1700, bundlePrice: 1500 },
   'bulldawgs-sack': { name: 'Bulldawgs Foot Bag',       price: 1700, bundlePrice: 1500 },
   'sky-sack':       { name: 'Sky Foot Bag',             price: 1700, bundlePrice: 1500 },
