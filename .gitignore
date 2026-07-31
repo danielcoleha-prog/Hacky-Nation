@@ -5,3 +5,37 @@ node_modules/
 # macOS metadata
 .DS_Store
 ._*
+
+# ─────────────────────────────────────────────────────────────
+# Business & customer data — NEVER commit.
+# netlify.toml publishes from the repo root, so any committed
+# file is fetchable at hackynation.com/<path>. Committing these
+# would publish customer emails, payment records and contracts.
+# ─────────────────────────────────────────────────────────────
+Contracts/
+Order Sheets/
+*.csv
+*.xlsx
+*.xls
+*.docx
+*.doc
+
+# Business PDFs (fulfillment, contracts, shipment lists).
+# Design/print PDFs (logos, print files) are deliberately not matched.
+Contract*.pdf
+USL_*.pdf
+Hacky Nation Master Sheet*.pdf
+*shipment list*.pdf
+shirts organizer.pdf
+hacky count*.pdf
+
+# ─────────────────────────────────────────────────────────────
+# Local working archives — large, not for deploy.
+# Source files live here; the site only ships what's in src/.
+# ─────────────────────────────────────────────────────────────
+Inspiration for new site/
+Branding/
+Sacks/
+Posts/
+*.zip
+**/_orig/
