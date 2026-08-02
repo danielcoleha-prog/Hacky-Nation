@@ -3,18 +3,20 @@ import { useParallax } from '../lib/useParallax';
 import Seal from './Seal';
 
 /**
- * Two heroes, because the desktop art has the headline baked into it.
+ * Two posters, swapped by breakpoint — both bake the "Play With Your Sack."
+ * headline into the art, so the <h1> stays in the document for SEO and screen
+ * readers but is visually sr-only at every size; it never renders twice.
  *
- *  lg and up — the finished poster (hero-poster-*.webp, 3:2) is the whole hero.
- *              The only HTML over it is the CTA pair; the <h1> stays in the
- *              document for SEO and screen readers, just visually hidden so the
- *              headline never renders twice. The hero box keeps the art's exact
- *              aspect ratio so the buttons can be anchored in percentages and
- *              never drift off the cream onto the baked type.
+ * Neither image leaves a top margin the way the previous poster did, so a
+ * fixed-nav floating straight over row 0 would sit on top of the headline
+ * letters. `heroClear` below is a flat-cream strip, sized to the nav, that
+ * runs before the art at every breakpoint to give the nav somewhere to float.
  *
- *  below lg  — real HTML headline on flat cream, with the text-free scene photo
- *              full-bleed underneath at its own ratio, so the hand is never
- *              cropped out of frame.
+ * The desktop poster (3072×1643) has an open cream band under "SACK." for the
+ * CTAs to sit in, same as before. The mobile poster (2000×3134) doesn't — the
+ * hand-and-sack cluster runs close to full width near the bottom — so on
+ * mobile the CTAs sit below the image instead, on the section's own cream,
+ * which matches the art's cream exactly and reads as one continuous surface.
  */
 export default function Hero() {
   const stageRef = useParallax();
@@ -36,134 +38,80 @@ export default function Hero() {
     </>
   );
 
+  const heroClear = <div aria-hidden="true" className="h-20 w-full bg-paper md:h-24" />;
+
   return (
     <section ref={stageRef} className="relative isolate bg-paper" aria-labelledby="hero-heading">
-      {/* ---------- below lg: HTML headline on cream ----------
-          `lg:contents` dissolves these wrappers at desktop so the <h1> can go
-          sr-only on its own — it must stay in the accessibility tree and the
-          crawlable markup even though the poster art carries the words. */}
-      {/* pt clears the fixed nav, which floats over the art on this page */}
-      <div className="paper-grain relative mx-auto max-w-site px-5 pt-28 md:px-8 lg:contents">
-        <div className="relative z-10 lg:contents">
-          <p className="eyebrow animate-rise-in lg:hidden">Handmade suede footbags</p>
+      <h1 id="hero-heading" className="sr-only">
+        Play With Your Sack.
+      </h1>
 
-          <h1
-            id="hero-heading"
-            className="mt-5 animate-rise-in font-display text-display-hero text-ink [animation-delay:80ms] lg:sr-only lg:mt-0"
-          >
-            <span className="overprint block" data-text="Play" style={{ '--mis-color': 'var(--press-red)' }}>
-              Play
-            </span>
-            <span className="overprint block" data-text="With" style={{ '--mis-color': 'var(--press-yellow)' }}>
-              With
-            </span>
-            <span className="overprint block" data-text="Your" style={{ '--mis-color': 'var(--press-red)' }}>
-              Your
-            </span>
-            <span
-              className="overprint block text-blue"
-              data-text="Sack."
-              style={{ '--mis-color': 'var(--press-ink)', '--mis-x': '4px', '--mis-y': '4px' }}
-            >
-              Sack.
-            </span>
-          </h1>
-
-          <p className="mt-6 max-w-xs animate-rise-in font-body text-body-lg text-ink-soft [animation-delay:160ms] lg:hidden">
-            Premium suede, stitched one at a time. Built for the circle.
-          </p>
-
-          <div className="mt-8 flex animate-rise-in flex-col gap-3 pb-9 sm:flex-row [animation-delay:240ms] lg:hidden">
-            {ctas}
-          </div>
-        </div>
-      </div>
-
-      {/* ---------- below lg: collage rebuilt in CSS ----------
-          The scene photo is gone here — at a phone's aspect ratio it had to be
-          letterboxed or cropped, and either way the composition fought the
-          layout. These are the same elements as real layers: halftone field,
-          yellow circle, red strip, then the hand-and-sack cutout on top. */}
-      <div className="relative isolate w-full overflow-hidden lg:hidden">
-        <div className="relative aspect-[5/6] w-full sm:aspect-[4/3]">
-          {/* halftone field, right edge */}
-          <div
-            aria-hidden="true"
-            className="halftone-coarse parallax-layer absolute inset-y-0 right-0 w-[52%] opacity-70"
-            style={{ '--depth': '2px' }}
-          />
-          <div
-            aria-hidden="true"
-            className="halftone parallax-layer absolute inset-y-0 right-0 w-[46%]"
-            style={{ '--depth': '2px' }}
-          />
-          {/* solid blue bleed at the far edge */}
-          <div aria-hidden="true" className="absolute inset-y-0 right-0 w-[7%] bg-blue" />
-
-          {/* yellow circle, behind the sack */}
-          <div
-            aria-hidden="true"
-            className="parallax-layer absolute right-[26%] top-[10%] aspect-square w-[42%] rounded-full bg-yellow sm:w-[32%]"
-            style={{ '--depth': '3px' }}
-          />
-
-          {/* red angled strip, under the hand */}
-          <div
-            aria-hidden="true"
-            className="parallax-layer absolute bottom-[16%] left-[8%] h-[9%] w-[62%] -rotate-[5deg] bg-red sm:h-[10%] sm:w-[48%]"
-            style={{ '--depth': '4px' }}
-          />
-
+      {/* ---------- below lg: mobile poster, full bleed ---------- */}
+      <div className="lg:hidden">
+        {heroClear}
+        <div className="relative aspect-[2000/3134] w-full">
           <img
-            src="/img/hero-hand-800.webp"
-            srcSet="/img/hero-hand-800.webp 800w, /img/hero-hand-1200.webp 1200w"
-            sizes="(min-width: 640px) 70vw, 96vw"
-            alt="A hand reaching through torn paper holding a handmade Hacky Nation suede footbag"
+            src="/img/hero-mobile-1400.webp"
+            srcSet="/img/hero-mobile-900.webp 900w, /img/hero-mobile-1400.webp 1400w, /img/hero-mobile-2000.webp 2000w"
+            sizes="100vw"
+            alt="Play with your sack — a hand reaching through torn paper holding a handmade Hacky Nation suede footbag"
             width={2000}
-            height={2000}
+            height={3134}
             fetchPriority="high"
             decoding="async"
-            className="parallax-layer absolute left-1/2 top-1/2 h-auto w-[96%] max-w-[480px] -translate-x-1/2 -translate-y-1/2 object-contain sm:w-[74%]"
-            style={{ '--depth': '6px', filter: 'drop-shadow(0 26px 30px rgba(20,17,13,0.32))' }}
+            className="h-full w-full object-cover"
           />
+        </div>
 
-          {/* seals, tucked into the cream at bottom-left */}
-          <div className="absolute bottom-3 left-4 z-10 flex items-end gap-2">
+        <div className="paper-grain relative bg-paper px-5 pb-10 pt-7 md:px-8">
+          <p className="eyebrow animate-rise-in">Handmade suede footbags</p>
+          <p className="mt-3 max-w-xs animate-rise-in font-body text-body-lg text-ink-soft [animation-delay:80ms]">
+            Premium suede, stitched one at a time. Built for the circle.
+          </p>
+          <div className="mt-6 flex animate-rise-in flex-col gap-3 sm:flex-row [animation-delay:160ms]">
+            {ctas}
+          </div>
+          <div className="mt-6 flex animate-rise-in items-center gap-2 [animation-delay:220ms]">
             <Seal variant="paper" size="sm" lines={['PREMIUM', 'SUEDE']} className="shadow-press-sm" />
             <Seal variant="red" burst size="sm" lines={['EST.', '2025']} className="rotate-[-10deg]" />
           </div>
         </div>
       </div>
 
-      {/* ---------- lg and up: the finished poster ---------- */}
-      <div className="relative hidden aspect-[3072/2048] w-full lg:block">
-        <img
-          src="/img/hero-poster-2000.webp"
-          srcSet="/img/hero-poster-1400.webp 1400w, /img/hero-poster-2000.webp 2000w, /img/hero-poster-3072.webp 3072w"
-          sizes="100vw"
-          alt="Play with your sack — a hand reaching through torn paper holding a handmade Hacky Nation suede footbag"
-          width={3072}
-          height={2048}
-          fetchPriority="high"
-          decoding="async"
-          className="h-full w-full object-cover"
-        />
+      {/* ---------- lg and up: desktop poster, full bleed ---------- */}
+      <div className="hidden lg:block">
+        {heroClear}
+        <div className="relative aspect-[3072/1643] w-full">
+          <img
+            src="/img/hero-poster-2000.webp"
+            srcSet="/img/hero-poster-1400.webp 1400w, /img/hero-poster-2000.webp 2000w, /img/hero-poster-3072.webp 3072w"
+            sizes="100vw"
+            alt="Play with your sack — a hand reaching through torn paper holding a handmade Hacky Nation suede footbag"
+            width={3072}
+            height={1643}
+            fetchPriority="high"
+            decoding="async"
+            className="h-full w-full object-cover"
+          />
 
-        {/* Anchored in percentages against the art's own box, so the pair always
-            lands in the cream below the baked "SACK." lockup. */}
-        <div
-          className="parallax-layer absolute bottom-[16.5%] left-[4%] flex animate-rise-in gap-4 [animation-delay:300ms] xl:left-[5%]"
-          style={{ '--depth': '4px' }}
-        >
-          {ctas}
-        </div>
-
-        {/* Rotating guarantee stamp, tucked into the cream under the CTAs. */}
-        <div
-          className="parallax-layer absolute bottom-[6%] right-[6%] hidden xl:block"
-          style={{ '--depth': '7px' }}
-        >
-          <Seal variant="paper" size="lg" lines={['PREMIUM', 'SUEDE', '· 2025 ·']} className="rotate-[-8deg] shadow-press-sm" />
+          {/* Anchored in percentages against the art's own box, so the pair
+              lands in the open cream below the baked "SACK." lockup. */}
+          {/* One flex row — CTAs plus the guarantee stamp, which only joins at
+              xl. Letting flexbox lay them out left-to-right (instead of two
+              separately-anchored absolute blocks) means they can't overlap no
+              matter how the cream band's width shifts with the art. */}
+          <div
+            className="parallax-layer absolute bottom-[10%] left-[4%] flex flex-wrap items-center gap-4 animate-rise-in [animation-delay:200ms] xl:left-[5%]"
+            style={{ '--depth': '4px' }}
+          >
+            {ctas}
+            <Seal
+              variant="paper"
+              size="md"
+              lines={['PREMIUM', 'SUEDE', '2025']}
+              className="hidden rotate-[-6deg] shadow-press-sm xl:grid"
+            />
+          </div>
         </div>
       </div>
     </section>
