@@ -38,18 +38,21 @@ export default function StripeReturn() {
   return (
     <div
       role="status"
-      className={`relative z-30 border-b-2 border-ink px-6 py-3 text-center font-label text-label-lg uppercase ${
+      className={`relative z-30 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 border-b-2 border-ink px-6 py-3 text-center font-display text-label-lg uppercase ${
         isSuccess ? 'bg-blue text-paper' : 'bg-yellow text-ink'
       }`}
     >
+      <span className="material-symbols-outlined text-[18px]" aria-hidden="true">
+        {isSuccess ? 'check_circle' : 'info'}
+      </span>
       {isSuccess
-        ? "Order confirmed — check your email for the receipt. Welcome to the circle."
+        ? 'Order confirmed — check your email for the receipt. Welcome to the circle.'
         : 'Checkout cancelled. Your cart is still here whenever you are.'}
       <button
         type="button"
         onClick={() => setFlash(null)}
         aria-label="Dismiss"
-        className="ml-3 underline"
+        className="underline underline-offset-2"
       >
         Dismiss
       </button>

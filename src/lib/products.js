@@ -83,6 +83,9 @@ export const SACKS = [
     colors: ['#1B4FC4', '#16130E', '#F1E8DA'],
     accent: '#1B4FC4',
     badge: 'COLLAB',
+    // Not a transparent cutout — this one is a photograph on a light surface,
+    // so it's framed full-bleed instead of floated like the others.
+    cutout: false,
   },
 ];
 

@@ -1,25 +1,29 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SACKS, formatPrice } from '../lib/products';
+import SectionHeading from './SectionHeading';
 import Seal from './Seal';
 
 /**
- * Selectable sack carousel. Arrows (and ← / → keys, and swipe) step through the
- * lineup; the active sack's title and price sit under the stage, and the whole
- * stage links to that sack's product page.
+ * Selectable sack carousel. Arrows, ← / → keys and swipe step through the
+ * lineup; the active sack's spec sits in a printed card alongside, and the whole
+ * stage links through to that sack's product page.
  */
 export default function SackCarousel() {
   const [index, setIndex] = useState(0);
+  const [dir, setDir] = useState(1);
   const touchStartX = useRef(null);
   const count = SACKS.length;
   const active = SACKS[index];
 
   const step = useCallback(
-    (delta) => setIndex((i) => (i + delta + count) % count),
+    (delta) => {
+      setDir(delta);
+      setIndex((i) => (i + delta + count) % count);
+    },
     [count]
   );
 
-  /* Arrow keys drive the carousel while it has focus within. */
   const onKeyDown = (e) => {
     if (e.key === 'ArrowLeft') {
       e.preventDefault();
@@ -41,7 +45,7 @@ export default function SackCarousel() {
     touchStartX.current = null;
   };
 
-  /* Preload neighbours so stepping doesn't flash. */
+  /* Preload neighbours so stepping never flashes. */
   useEffect(() => {
     [(index + 1) % count, (index - 1 + count) % count].forEach((i) => {
       const img = new Image();
@@ -53,183 +57,208 @@ export default function SackCarousel() {
     <section
       id="shop"
       aria-labelledby="carousel-heading"
-      className="paper-grain relative overflow-hidden border-y-2 border-ink bg-paper-deep py-16 md:py-24"
+      className="paper-grain relative overflow-hidden bg-paper py-16 md:py-24"
       onKeyDown={onKeyDown}
     >
-      {/* faint halftone wash on the left */}
-      <div
-        aria-hidden="true"
-        className="halftone pointer-events-none absolute inset-y-0 left-0 w-[30%] rotate-180 opacity-25"
-      />
+      <div className="relative z-10 mx-auto max-w-site px-5 md:px-8">
+        <SectionHeading
+          index="01"
+          kicker="The lineup"
+          title="Shop sacks"
+          id="carousel-heading"
+          mis="blue"
+          aside="Premium suede. Handmade one at a time. Built to last."
+        />
 
-      <div className="relative z-10 mx-auto max-w-site px-6 md:px-10">
-        <header className="mb-10 flex flex-wrap items-end justify-between gap-4 md:mb-14">
-          <div>
-            <p className="font-label text-label-caps uppercase text-blue">The Lineup</p>
-            <h2
-              id="carousel-heading"
-              className="mt-2 font-display text-display-xl uppercase text-ink"
-            >
-              Shop Sacks
-            </h2>
-          </div>
-          <p className="max-w-xs font-label text-label-caps uppercase leading-relaxed text-ink-soft">
-            Premium suede. Handmade.
-            <br />
-            Built to last.
-          </p>
-        </header>
-
-        <div className="grid items-center gap-10 lg:grid-cols-[1fr_auto] lg:gap-16">
+        <div className="mt-12 grid items-start gap-8 lg:mt-16 lg:grid-cols-[1.25fr_0.75fr] lg:gap-12">
           {/* ---------- stage ---------- */}
-          <div
-            className="relative"
-            onTouchStart={onTouchStart}
-            onTouchEnd={onTouchEnd}
-          >
-            <div className="relative mx-auto flex aspect-[4/3] max-w-[620px] items-center justify-center">
-              {/* colour halo keyed to the active sack */}
+          <div className="reveal relative" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+            <div className="relative overflow-hidden border-2 border-ink bg-paper-deep">
               <div
                 aria-hidden="true"
-                className="absolute aspect-square w-[62%] rounded-full transition-colors duration-500"
-                style={{ backgroundColor: active.accent, opacity: 0.28 }}
-              />
-              <div
-                aria-hidden="true"
-                className="absolute bottom-[14%] left-[8%] h-[8%] w-[46%] -rotate-[4deg] bg-red/85"
+                className="dotfield pointer-events-none absolute inset-0 opacity-[0.13]"
               />
 
-              {SACKS.map((sack, i) => (
-                <Link
-                  key={sack.id}
-                  to={`/sacks/${sack.id}`}
-                  aria-hidden={i !== index}
-                  tabIndex={i === index ? 0 : -1}
-                  className={`absolute inset-0 grid place-content-center transition-all duration-500 ${
-                    i === index
-                      ? 'pointer-events-auto scale-100 opacity-100'
-                      : 'pointer-events-none scale-90 opacity-0'
-                  }`}
-                >
-                  <img
-                    src={sack.image}
-                    alt={`${sack.fullName} — ${sack.sub.toLowerCase()}`}
-                    width={900}
-                    height={900}
-                    loading={i === 0 ? 'eager' : 'lazy'}
-                    decoding="async"
-                    className="h-auto w-[78%] max-w-[420px] justify-self-center object-contain drop-shadow-cut transition-transform duration-300 hover:scale-[1.03]"
-                  />
-                </Link>
-              ))}
+              {/* colour wash keyed to the active sack — sits behind the product
+                  and stays smaller than it, so the sack reads as the subject.
+                  Hidden for photo products, which fill the frame themselves. */}
+              {active.cutout !== false && (
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute left-1/2 top-1/2 aspect-square w-[62%] -translate-x-1/2 -translate-y-1/2 rounded-full transition-colors duration-500"
+                  style={{ backgroundColor: active.accent, opacity: 0.26 }}
+                />
+              )}
+
+              <div className="relative flex aspect-[5/4] items-center justify-center">
+                {SACKS.map((sack, i) => (
+                  <Link
+                    key={sack.id}
+                    to={`/sacks/${sack.id}`}
+                    aria-hidden={i !== index}
+                    tabIndex={i === index ? 0 : -1}
+                    className={`group absolute inset-0 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                      sack.cutout === false ? '' : 'p-8'
+                    } ${
+                      i === index
+                        ? 'pointer-events-auto translate-x-0 opacity-100'
+                        : 'pointer-events-none opacity-0'
+                    }`}
+                    style={
+                      i === index
+                        ? undefined
+                        : { transform: `translateX(${dir > 0 ? '-8%' : '8%'}) scale(0.92)` }
+                    }
+                  >
+                    {/* Cutouts are sized off the box height — a percentage width
+                        against an auto-sized track collapses to the image's
+                        natural size. Photo products fill the frame instead. */}
+                    <img
+                      src={sack.image}
+                      alt={`${sack.fullName} — ${sack.sub.toLowerCase()}`}
+                      width={900}
+                      height={900}
+                      loading={i === 0 ? 'eager' : 'lazy'}
+                      decoding="async"
+                      className={
+                        sack.cutout === false
+                          ? 'h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]'
+                          : 'h-full w-auto max-w-full object-contain transition-transform duration-300 group-hover:scale-[1.04]'
+                      }
+                      style={
+                        sack.cutout === false
+                          ? undefined
+                          : { filter: 'drop-shadow(0 22px 26px rgba(20,17,13,0.28))' }
+                      }
+                    />
+                  </Link>
+                ))}
+              </div>
 
               {active.badge && (
                 <Seal
                   variant="red"
                   burst
+                  size="md"
                   lines={[active.badge]}
-                  className="absolute -top-2 right-[6%] rotate-[8deg]"
+                  className="absolute right-4 top-4 rotate-[9deg]"
                 />
               )}
             </div>
 
-            {/* ---------- arrows + counter ---------- */}
-            <div className="mt-8 flex items-center justify-center gap-6">
-              <button
-                type="button"
-                onClick={() => step(-1)}
-                aria-label="Previous sack"
-                className="grid h-12 w-12 place-content-center border-2 border-ink bg-paper text-ink transition-colors hover:bg-ink hover:text-paper"
-              >
-                <span className="material-symbols-outlined" aria-hidden="true">
-                  arrow_back
-                </span>
-              </button>
+            {/* ---------- controls ---------- */}
+            <div className="mt-5 flex items-center justify-between gap-4 border-t-2 border-ink pt-4">
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => step(-1)}
+                  aria-label="Previous sack"
+                  className="grid h-11 w-11 place-content-center border-2 border-ink bg-paper transition-all duration-150 hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-press-sm active:translate-x-0 active:translate-y-0 active:shadow-none"
+                >
+                  <span className="material-symbols-outlined text-[20px]" aria-hidden="true">
+                    arrow_back
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => step(1)}
+                  aria-label="Next sack"
+                  className="grid h-11 w-11 place-content-center border-2 border-ink bg-paper transition-all duration-150 hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-press-sm active:translate-x-0 active:translate-y-0 active:shadow-none"
+                >
+                  <span className="material-symbols-outlined text-[20px]" aria-hidden="true">
+                    arrow_forward
+                  </span>
+                </button>
+              </div>
 
-              <p aria-live="polite" className="font-label text-label-caps uppercase text-ink-soft">
+              {/* segmented progress, doubles as a picker */}
+              <ul className="flex flex-1 items-center gap-1.5" aria-label="Choose a sack">
+                {SACKS.map((sack, i) => (
+                  <li key={sack.id} className="flex-1">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setDir(i > index ? 1 : -1);
+                        setIndex(i);
+                      }}
+                      aria-current={i === index}
+                      aria-label={sack.fullName}
+                      className={`h-2 w-full border-2 border-ink transition-colors duration-200 ${
+                        i === index ? 'bg-blue' : 'bg-paper hover:bg-ink/15'
+                      }`}
+                    />
+                  </li>
+                ))}
+              </ul>
+
+              <p
+                aria-live="polite"
+                className="font-display text-label-caps tabular-nums text-ink-soft"
+                style={{ fontVariationSettings: "'wght' 700, 'wdth' 100" }}
+              >
                 <span className="text-ink">{String(index + 1).padStart(2, '0')}</span>
-                {' / '}
+                <span className="mx-1">/</span>
                 {String(count).padStart(2, '0')}
               </p>
-
-              <button
-                type="button"
-                onClick={() => step(1)}
-                aria-label="Next sack"
-                className="grid h-12 w-12 place-content-center border-2 border-ink bg-paper text-ink transition-colors hover:bg-ink hover:text-paper"
-              >
-                <span className="material-symbols-outlined" aria-hidden="true">
-                  arrow_forward
-                </span>
-              </button>
             </div>
           </div>
 
-          {/* ---------- detail rail ---------- */}
-          <div className="lg:w-[300px]">
-            <div className="border-2 border-ink bg-paper p-6 shadow-card">
-              <p className="font-label text-label-caps uppercase text-blue">{active.sub}</p>
+          {/* ---------- detail card ---------- */}
+          <div className="reveal card relative p-6 shadow-press md:p-7">
+            <p className="eyebrow">{active.sub}</p>
 
-              <h3 className="mt-3 font-display text-display-lg uppercase text-ink">
-                {active.name}
-              </h3>
+            <h3 className="mt-3 font-display text-display-lg text-ink">{active.name}</h3>
 
-              <div className="mt-3 flex items-baseline gap-3">
-                <span className="font-display text-3xl text-ink">{formatPrice(active.price)}</span>
-                {active.compareAt > active.price && (
-                  <span className="font-label text-label-lg text-ink-soft line-through">
-                    {formatPrice(active.compareAt)}
-                  </span>
-                )}
-              </div>
-
-              <p className="mt-4 font-body text-body-md text-ink-soft">{active.desc}</p>
-
-              <p
-                className={`mt-5 inline-block px-2 py-1 font-label text-label-caps uppercase ${
-                  active.preorder ? 'bg-yellow text-ink' : 'bg-blue text-paper'
-                }`}
+            <div className="mt-3 flex items-baseline gap-3">
+              <span
+                className="font-display text-[2rem] leading-none text-ink"
+                style={{ fontVariationSettings: "'wght' 900, 'wdth' 100" }}
               >
-                {active.preorder ? 'Pre-order · ships ~3 weeks' : 'In stock · ships fast'}
-              </p>
-
-              <Link
-                to={`/sacks/${active.id}`}
-                className="btn-primary mt-6 w-full"
-              >
-                View Product
-                <span aria-hidden="true">→</span>
-              </Link>
+                {formatPrice(active.price)}
+              </span>
+              {active.compareAt > active.price && (
+                <span className="font-body text-body-md text-ink-faint line-through">
+                  {formatPrice(active.compareAt)}
+                </span>
+              )}
             </div>
 
-            {/* thumbnail selector */}
-            <ul className="mt-6 flex flex-wrap gap-3" aria-label="Choose a sack">
-              {SACKS.map((sack, i) => (
-                <li key={sack.id}>
-                  <button
-                    type="button"
-                    onClick={() => setIndex(i)}
-                    aria-current={i === index}
-                    aria-label={sack.fullName}
-                    className={`grid h-14 w-14 place-content-center border-2 bg-paper transition-all ${
-                      i === index
-                        ? 'border-blue ring-2 ring-blue ring-offset-2 ring-offset-paper-deep'
-                        : 'border-ink/25 hover:border-ink'
-                    }`}
-                  >
-                    <img
-                      src={sack.image}
-                      alt=""
-                      width={56}
-                      height={56}
-                      loading="lazy"
-                      decoding="async"
-                      className="h-11 w-11 object-contain"
-                    />
-                  </button>
-                </li>
+            <p className="mt-4 font-body text-body-md text-ink-soft">{active.desc}</p>
+
+            <dl className="mt-5 grid grid-cols-2 gap-px border-2 border-ink bg-ink/15">
+              <div className="bg-paper px-3 py-2.5">
+                <dt className="label text-[10px] text-ink-faint">Panels</dt>
+                <dd
+                  className="mt-1 font-display text-display-sm text-ink"
+                  style={{ fontVariationSettings: "'wght' 900, 'wdth' 100" }}
+                >
+                  {active.panels}
+                </dd>
+              </div>
+              <div className="bg-paper px-3 py-2.5">
+                <dt className="label text-[10px] text-ink-faint">Status</dt>
+                <dd className="mt-1 font-display text-[13px] uppercase leading-tight text-ink">
+                  {active.preorder ? 'Pre-order' : 'In stock'}
+                </dd>
+              </div>
+            </dl>
+
+            <div className="mt-5 flex items-center gap-2">
+              {active.colors.map((c) => (
+                <span
+                  key={c}
+                  className="h-6 w-6 rounded-full border-2 border-ink"
+                  style={{ backgroundColor: c }}
+                  aria-hidden="true"
+                />
               ))}
-            </ul>
+              <span className="label ml-1 text-ink-faint">Colorway</span>
+            </div>
+
+            <Link to={`/sacks/${active.id}`} className="btn-blue mt-6 w-full">
+              View product
+              <span aria-hidden="true">→</span>
+            </Link>
           </div>
         </div>
       </div>

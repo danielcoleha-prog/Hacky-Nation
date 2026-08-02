@@ -1,27 +1,62 @@
 const VARIANTS = {
-  yellow: 'bg-yellow text-ink border-ink',
-  blue: 'bg-blue text-paper border-blue-deep',
-  red: 'bg-red text-paper border-red-deep',
-  ink: 'bg-ink text-paper border-ink',
+  yellow: 'bg-yellow text-ink',
+  blue: 'bg-blue text-paper',
+  red: 'bg-red text-paper',
+  ink: 'bg-ink text-paper',
+  paper: 'bg-paper text-ink',
 };
 
 /**
- * Small printed seal — the "PREMIUM SUEDE / HANDMADE / EST. 2025" stamps.
- * `burst` swaps the circle for a starburst clip.
+ * Printed seal — the stamps and starbursts stuck onto the layout.
+ * `burst` swaps the disc for a starburst; `ring` draws the inner hairline that
+ * makes a disc read as a rubber stamp rather than a plain dot.
  */
-export default function Seal({ variant = 'yellow', lines = [], burst = false, className = '' }) {
+export default function Seal({
+  variant = 'yellow',
+  lines = [],
+  burst = false,
+  size = 'md',
+  ring = true,
+  className = '',
+}) {
+  const dims = {
+    sm: burst ? 'h-16 w-16' : 'h-14 w-14',
+    md: burst ? 'h-[86px] w-[86px]' : 'h-[74px] w-[74px]',
+    lg: burst ? 'h-28 w-28' : 'h-24 w-24',
+  }[size];
+
+  /* Tailwind emits `relative` after `absolute`, so a hard-coded `relative` here
+     would silently beat any positioning a caller passes in. Only add it when the
+     caller hasn't positioned the seal itself — an absolute/fixed seal is already
+     a containing block for the ring. */
+  const positioned = /(^|\s)(absolute|fixed|sticky)(\s|$)/.test(className);
+
   return (
     <span
-      className={`grid select-none place-content-center border-2 text-center font-label uppercase leading-[1.15] ${
-        burst ? 'starburst h-[72px] w-[72px] border-0 sm:h-20 sm:w-20' : 'h-14 w-14 rounded-full sm:h-[68px] sm:w-[68px]'
-      } ${VARIANTS[variant]} ${className}`}
       aria-hidden="true"
+      className={`${positioned ? '' : 'relative'} grid select-none place-content-center text-center ${dims} ${
+        VARIANTS[variant]
+      } ${burst ? 'starburst' : 'rounded-full border-2 border-current'} ${className}`}
     >
-      {lines.map((line) => (
-        <span key={line} className="block text-[8px] font-bold tracking-[0.1em] sm:text-[9px]">
-          {line}
-        </span>
-      ))}
+      {ring && !burst && (
+        <span className="pointer-events-none absolute inset-[5px] rounded-full border border-current opacity-45" />
+      )}
+
+      <span className="relative px-1">
+        {lines.map((line) => (
+          <span
+            key={line}
+            className="block font-display leading-[1.2]"
+            style={{
+              fontSize: size === 'lg' ? '11px' : '9px',
+              letterSpacing: '0.1em',
+              fontVariationSettings: "'wght' 800, 'wdth' 100",
+            }}
+          >
+            {line}
+          </span>
+        ))}
+      </span>
     </span>
   );
 }

@@ -2,15 +2,23 @@ import { useEffect, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { getSack, SACKS, formatPrice, SACK_BUNDLE_PRICE } from '../lib/products';
 import { useCart } from '../lib/CartContext';
-import Seal from './../components/Seal';
+import { useReveal } from '../lib/useReveal';
+import Seal from '../components/Seal';
+
+const SPECS = (sack) => [
+  { k: 'Panels', v: sack.panels },
+  { k: 'Material', v: 'Premium suede' },
+  { k: 'Fill', v: 'Weighted pellet' },
+  { k: 'Made', v: 'By hand, USA' },
+];
 
 export default function ProductPage() {
   const { id } = useParams();
   const sack = getSack(id);
   const { addItem } = useCart();
   const [qty, setQty] = useState(1);
+  useReveal([id]);
 
-  /* New product, fresh scroll position and quantity. */
   useEffect(() => {
     window.scrollTo(0, 0);
     setQty(1);
@@ -31,34 +39,33 @@ export default function ProductPage() {
 
   return (
     <main className="paper-grain relative bg-paper">
-      <div className="relative z-10 mx-auto max-w-site px-6 py-10 md:px-10 md:py-16">
+      <div className="relative z-10 mx-auto max-w-site px-5 py-8 md:px-8 md:py-12">
         <nav aria-label="Breadcrumb" className="mb-8">
-          <ol className="flex items-center gap-2 font-label text-label-caps uppercase text-ink-soft">
-            <li>
-              <Link to="/" className="hover:text-blue">Home</Link>
-            </li>
+          <ol className="flex items-center gap-2 label text-ink-faint">
+            <li><Link to="/" className="transition-colors hover:text-blue">Home</Link></li>
             <li aria-hidden="true">/</li>
-            <li>
-              <Link to="/#shop" className="hover:text-blue">Sacks</Link>
-            </li>
+            <li><Link to="/#shop" className="transition-colors hover:text-blue">Sacks</Link></li>
             <li aria-hidden="true">/</li>
             <li className="text-ink">{sack.name}</li>
           </ol>
         </nav>
 
-        <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
-          {/* ---------- gallery ---------- */}
-          <div className="relative">
-            <div className="relative grid aspect-square place-content-center overflow-hidden border-2 border-ink bg-paper-deep">
-              <div
-                aria-hidden="true"
-                className="absolute aspect-square w-[62%] rounded-full"
-                style={{ backgroundColor: sack.accent, opacity: 0.28 }}
-              />
-              <div
-                aria-hidden="true"
-                className="halftone absolute inset-y-0 right-0 w-1/3 opacity-40"
-              />
+        <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+          {/* ---------- gallery ----------
+              self-start so the column hugs the image; stretched to the detail
+              column's height, the seal's bottom anchor lands far below it. */}
+          <div className="relative self-start">
+            <div className="relative flex aspect-square items-center justify-center overflow-hidden border-2 border-ink bg-paper-deep shadow-press">
+              {sack.cutout !== false && (
+                <>
+                  <div aria-hidden="true" className="dotfield pointer-events-none absolute inset-0 opacity-[0.13]" />
+                  <div
+                    aria-hidden="true"
+                    className="absolute left-1/2 top-1/2 aspect-square w-[58%] -translate-x-1/2 -translate-y-1/2 rounded-full"
+                    style={{ backgroundColor: sack.accent, opacity: 0.26 }}
+                  />
+                </>
+              )}
               <img
                 src={sack.image}
                 alt={`${sack.fullName} — ${sack.sub.toLowerCase()}`}
@@ -66,29 +73,51 @@ export default function ProductPage() {
                 height={900}
                 fetchPriority="high"
                 decoding="async"
-                className="relative z-10 h-auto w-[76%] justify-self-center object-contain drop-shadow-cut"
+                className={
+                  sack.cutout === false
+                    ? 'h-full w-full object-cover'
+                    : 'relative z-10 h-[72%] w-auto max-w-[82%] object-contain'
+                }
+                style={
+                  sack.cutout === false
+                    ? undefined
+                    : { filter: 'drop-shadow(0 26px 30px rgba(20,17,13,0.3))' }
+                }
               />
             </div>
 
             <Seal
               variant={sack.preorder ? 'yellow' : 'blue'}
               burst
+              size="lg"
               lines={sack.preorder ? ['PRE', 'ORDER'] : ['IN', 'STOCK']}
-              className="absolute -bottom-4 -left-4 rotate-[-8deg]"
+              className="absolute -bottom-5 -left-4 rotate-[-9deg]"
             />
           </div>
 
           {/* ---------- detail ---------- */}
           <div>
-            <p className="font-label text-label-caps uppercase text-blue">{sack.sub}</p>
-            <h1 className="mt-3 font-display text-display-xl uppercase text-ink">
-              {sack.fullName}
+            <p className="eyebrow">{sack.sub}</p>
+
+            <h1 className="mt-3 font-display text-display-xl text-ink">
+              <span
+                className="overprint"
+                data-text={sack.fullName}
+                style={{ '--mis-color': sack.accent, '--mis-x': '-3px', '--mis-y': '3px' }}
+              >
+                {sack.fullName}
+              </span>
             </h1>
 
-            <div className="mt-4 flex items-baseline gap-3">
-              <span className="font-display text-4xl text-ink">{formatPrice(sack.price)}</span>
+            <div className="mt-5 flex items-baseline gap-3">
+              <span
+                className="font-display text-[2.6rem] leading-none tabular-nums text-ink"
+                style={{ fontVariationSettings: "'wght' 900, 'wdth' 95" }}
+              >
+                {formatPrice(sack.price)}
+              </span>
               {sack.compareAt > sack.price && (
-                <span className="font-label text-label-lg text-ink-soft line-through">
+                <span className="font-body text-body-md text-ink-faint line-through">
                   {formatPrice(sack.compareAt)}
                 </span>
               )}
@@ -96,29 +125,24 @@ export default function ProductPage() {
 
             <p className="mt-5 max-w-md font-body text-body-lg text-ink-soft">{sack.desc}</p>
 
-            <ul className="mt-6 flex flex-col gap-2">
-              {[
-                `${sack.panels} suede panels`,
-                'Handmade one at a time',
-                'Weighted for a true kick',
-              ].map((spec) => (
-                <li key={spec} className="flex items-center gap-2 font-body text-body-md text-ink">
-                  <span className="material-symbols-outlined text-lg text-blue" aria-hidden="true">
-                    check
-                  </span>
-                  {spec}
-                </li>
+            <dl className="mt-7 grid grid-cols-2 gap-px border-2 border-ink bg-ink/15 sm:grid-cols-4">
+              {SPECS(sack).map((spec) => (
+                <div key={spec.k} className="bg-paper px-3 py-3">
+                  <dt className="label text-[10px] text-ink-faint">{spec.k}</dt>
+                  <dd className="mt-1.5 font-display text-[13px] uppercase leading-tight text-ink">
+                    {spec.v}
+                  </dd>
+                </div>
               ))}
-            </ul>
+            </dl>
 
-            {/* colourway */}
             <div className="mt-6">
-              <p className="font-label text-label-caps uppercase text-ink-soft">Colorway</p>
-              <div className="mt-2 flex gap-2">
+              <p className="label text-ink-faint">Colorway</p>
+              <div className="mt-2.5 flex gap-2">
                 {sack.colors.map((c) => (
                   <span
                     key={c}
-                    className="h-8 w-8 border-2 border-ink"
+                    className="h-9 w-9 rounded-full border-2 border-ink"
                     style={{ backgroundColor: c }}
                     aria-hidden="true"
                   />
@@ -126,25 +150,24 @@ export default function ProductPage() {
               </div>
             </div>
 
-            {/* qty + add */}
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              <div className="flex items-center border-2 border-ink">
+            <div className="mt-8 flex flex-wrap items-stretch gap-3">
+              <div className="flex items-center border-2 border-ink bg-paper">
                 <button
                   type="button"
                   onClick={() => setQty((q) => Math.max(1, q - 1))}
                   aria-label="Decrease quantity"
-                  className="grid h-12 w-12 place-content-center text-ink hover:bg-ink hover:text-paper"
+                  className="grid h-[52px] w-12 place-content-center text-ink transition-colors hover:bg-ink hover:text-paper"
                 >
                   −
                 </button>
-                <span className="w-12 text-center font-label text-label-lg" aria-live="polite">
+                <span className="w-11 text-center font-display text-[15px] tabular-nums" aria-live="polite">
                   {qty}
                 </span>
                 <button
                   type="button"
                   onClick={() => setQty((q) => Math.min(20, q + 1))}
                   aria-label="Increase quantity"
-                  className="grid h-12 w-12 place-content-center text-ink hover:bg-ink hover:text-paper"
+                  className="grid h-[52px] w-12 place-content-center text-ink transition-colors hover:bg-ink hover:text-paper"
                 >
                   +
                 </button>
@@ -153,19 +176,20 @@ export default function ProductPage() {
               <button
                 type="button"
                 onClick={() => addItem(sack.id, { qty })}
-                className="btn-primary flex-1 min-w-[200px]"
+                className="btn-primary min-w-[220px] flex-1 py-4"
               >
-                Add To Cart — {formatPrice(sack.price * qty)}
+                Add to cart — {formatPrice(sack.price * qty)}
               </button>
             </div>
 
-            <p className="mt-4 border-2 border-blue bg-blue/10 px-4 py-3 font-label text-label-caps uppercase leading-relaxed text-blue-deep">
+            <p className="mt-4 flex items-center gap-2.5 border-2 border-blue bg-blue px-4 py-3 label leading-[1.7] text-paper">
+              <span className="material-symbols-outlined text-[17px]" aria-hidden="true">sell</span>
               Buy 2 or more sacks — {formatPrice(SACK_BUNDLE_PRICE)} each
             </p>
 
-            <p className="mt-4 font-body text-body-md text-ink-soft">
+            <p className="mt-4 font-body text-body-sm text-ink-soft">
               {sack.preorder ? 'Currently in production · ships in ~3 weeks · ' : 'Ready to ship · '}
-              <a href="/pre-order-policy.html" className="underline hover:text-blue">
+              <a href="/pre-order-policy.html" className="underline underline-offset-2 hover:text-blue">
                 Images may vary*
               </a>
             </p>
@@ -173,18 +197,27 @@ export default function ProductPage() {
         </div>
 
         {/* ---------- other sacks ---------- */}
-        <section aria-labelledby="more-heading" className="mt-20">
-          <h2 id="more-heading" className="font-display text-display-lg uppercase text-ink">
-            More Sacks
-          </h2>
-          <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-4">
+        <section aria-labelledby="more-heading" className="mt-20 border-t-2 border-ink pt-6 md:mt-28">
+          <div className="flex items-end justify-between gap-4">
+            <h2 id="more-heading" className="font-display text-display-lg text-ink">
+              More sacks
+            </h2>
+            <Link to="/#shop" className="label text-blue underline underline-offset-4">
+              See all
+            </Link>
+          </div>
+
+          <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-5">
             {others.map((other) => (
               <Link
                 key={other.id}
                 to={`/sacks/${other.id}`}
-                className="group border-2 border-ink bg-paper p-4 shadow-card transition-transform hover:-translate-y-1"
+                className="reveal card card-hover group p-3"
               >
-                <div className="grid place-content-center bg-paper-deep py-4">
+                <div className="relative flex h-[8.5rem] items-center justify-center overflow-hidden border-2 border-ink bg-paper-deep">
+                  {other.cutout !== false && (
+                    <div aria-hidden="true" className="dotfield pointer-events-none absolute inset-0 opacity-[0.12]" />
+                  )}
                   <img
                     src={other.image}
                     alt=""
@@ -192,11 +225,15 @@ export default function ProductPage() {
                     height={200}
                     loading="lazy"
                     decoding="async"
-                    className="h-24 w-24 object-contain transition-transform group-hover:scale-105"
+                    className={
+                      other.cutout === false
+                        ? 'h-full w-full object-cover transition-transform duration-300 group-hover:scale-110'
+                        : 'relative h-24 w-24 object-contain transition-transform duration-300 group-hover:scale-110'
+                    }
                   />
                 </div>
-                <p className="mt-3 font-label text-label-lg uppercase text-ink">{other.name}</p>
-                <p className="font-body text-body-md text-ink-soft">{formatPrice(other.price)}</p>
+                <p className="mt-3 font-display text-[14px] uppercase text-ink">{other.name}</p>
+                <p className="mt-0.5 font-body text-body-sm text-ink-soft">{formatPrice(other.price)}</p>
               </Link>
             ))}
           </div>

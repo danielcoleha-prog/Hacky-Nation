@@ -92,7 +92,7 @@ export default function CustomPage() {
     <main className="paper-grain relative bg-paper">
       <div className="relative z-10 mx-auto max-w-site px-6 py-10 md:px-10 md:py-16">
         <nav aria-label="Breadcrumb" className="mb-8">
-          <ol className="flex items-center gap-2 font-label text-label-caps uppercase text-ink-soft">
+          <ol className="flex items-center gap-2 label text-ink-soft">
             <li>
               <Link to="/" className="hover:text-blue">Home</Link>
             </li>
@@ -102,9 +102,15 @@ export default function CustomPage() {
         </nav>
 
         <header className="mb-12 max-w-2xl">
-          <p className="font-label text-label-caps uppercase text-blue">Custom Orders</p>
-          <h1 className="mt-3 font-display text-display-xl uppercase text-ink">
-            Build Your Own
+          <p className="eyebrow">Custom Orders</p>
+          <h1 className="mt-3 font-display text-display-xl text-ink">
+            <span
+              className="overprint"
+              data-text="Build your own"
+              style={{ '--mis-color': 'var(--press-blue)' }}
+            >
+              Build your own
+            </span>
           </h1>
           <p className="mt-4 font-body text-body-lg text-ink-soft">
             Spec your sack below and we'll come back with a quote and a timeline.
@@ -116,25 +122,30 @@ export default function CustomPage() {
         <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
           {/* ---------- preview ---------- */}
           <div className="lg:sticky lg:top-28 lg:self-start">
-            <div className="relative grid aspect-square place-content-center overflow-hidden border-2 border-ink bg-paper-deep">
+            <div className="relative flex aspect-square items-center justify-center overflow-hidden border-2 border-ink bg-paper-deep shadow-press">
+              <div aria-hidden="true" className="dotfield pointer-events-none absolute inset-0 opacity-[0.13]" />
               <div
                 aria-hidden="true"
-                className="absolute aspect-square w-[64%] rounded-full transition-colors duration-300"
-                style={{ backgroundColor: swatches[0]?.hex || '#1B4FC4', opacity: 0.3 }}
+                className="absolute left-1/2 top-1/2 aspect-square w-[58%] -translate-x-1/2 -translate-y-1/2 rounded-full transition-colors duration-300"
+                style={{ backgroundColor: swatches[0]?.hex || '#1B4FC4', opacity: 0.26 }}
               />
+              {/* Sized off the box height — a percentage width inside a
+                  content-sized track collapses to the image's natural size. */}
               <img
                 src="/img/products/patriot-sack.webp"
                 alt="Reference photo of a Hacky Nation suede footbag"
                 width={700}
                 height={700}
                 decoding="async"
-                className="relative z-10 h-auto w-[74%] justify-self-center object-contain drop-shadow-cut"
+                className="relative z-10 h-[68%] w-auto max-w-[80%] object-contain"
+                style={{ filter: 'drop-shadow(0 24px 28px rgba(20,17,13,0.3))' }}
               />
               <Seal
                 variant="red"
                 burst
+                size="md"
                 lines={['MAKE IT', 'YOURS']}
-                className="absolute bottom-4 left-4 rotate-[-10deg]"
+                className="absolute bottom-5 left-5 rotate-[-10deg]"
               />
             </div>
 
@@ -144,15 +155,15 @@ export default function CustomPage() {
               with your quote.
             </p>
 
-            <dl className="mt-5 border-2 border-ink bg-paper p-5">
+            <dl className="mt-5 card p-5">
               <div className="flex justify-between gap-4 border-b-2 border-ink/10 pb-2">
-                <dt className="font-label text-label-caps uppercase text-ink-soft">Pattern</dt>
-                <dd className="font-label text-label-lg uppercase text-ink">
+                <dt className="label text-ink-soft">Pattern</dt>
+                <dd className="font-display text-label-lg uppercase text-ink">
                   {activePattern.label} · {activePattern.panels} panels
                 </dd>
               </div>
               <div className="flex items-center justify-between gap-4 border-b-2 border-ink/10 py-2">
-                <dt className="font-label text-label-caps uppercase text-ink-soft">Colors</dt>
+                <dt className="label text-ink-soft">Colors</dt>
                 <dd className="flex gap-1.5">
                   {swatches.length ? (
                     swatches.map((c) => (
@@ -164,15 +175,15 @@ export default function CustomPage() {
                       />
                     ))
                   ) : (
-                    <span className="font-label text-label-caps uppercase text-ink-soft">
+                    <span className="label text-ink-soft">
                       Pick up to 3
                     </span>
                   )}
                 </dd>
               </div>
               <div className="flex justify-between gap-4 pt-2">
-                <dt className="font-label text-label-caps uppercase text-ink-soft">Patch</dt>
-                <dd className="font-label text-label-lg uppercase text-ink">
+                <dt className="label text-ink-soft">Patch</dt>
+                <dd className="font-display text-label-lg uppercase text-ink">
                   {patch === 'custom-text' && text ? `“${text}”` : PATCHES.find((p) => p.id === patch).label}
                 </dd>
               </div>
@@ -182,7 +193,7 @@ export default function CustomPage() {
           {/* ---------- configurator ---------- */}
           {status === 'done' ? (
             <div className="border-2 border-ink bg-blue p-8 text-paper">
-              <h2 className="font-display text-display-lg uppercase">Request sent.</h2>
+              <h2 className="font-display text-display-lg">Request sent.</h2>
               <p className="mt-3 font-body text-body-lg text-paper/85">
                 We'll get back to you at {email} with a quote and a mockup, usually
                 within a couple of days.
@@ -194,7 +205,7 @@ export default function CustomPage() {
           ) : (
             <form onSubmit={onSubmit} name="custom-sack" className="flex flex-col gap-8">
               <fieldset>
-                <legend className="font-display text-display-md uppercase text-ink">
+                <legend className="font-display text-display-md text-ink">
                   1. Choose your pattern
                 </legend>
                 <div className="mt-3 flex flex-wrap gap-3">
@@ -207,11 +218,11 @@ export default function CustomPage() {
                       className={`border-2 px-4 py-3 text-left transition-colors ${
                         pattern === p.id
                           ? 'border-blue bg-blue text-paper'
-                          : 'border-ink/25 text-ink hover:border-ink'
+                          : 'border-ink/30 text-ink hover:border-ink'
                       }`}
                     >
-                      <span className="block font-label text-label-lg uppercase">{p.label}</span>
-                      <span className="block font-label text-label-caps uppercase opacity-70">
+                      <span className="block font-display text-label-lg uppercase">{p.label}</span>
+                      <span className="block label opacity-70">
                         {p.panels} panels
                       </span>
                     </button>
@@ -220,7 +231,7 @@ export default function CustomPage() {
               </fieldset>
 
               <fieldset>
-                <legend className="font-display text-display-md uppercase text-ink">
+                <legend className="font-display text-display-md text-ink">
                   2. Choose your colors
                 </legend>
                 <p className="mt-1 font-body text-body-md text-ink-soft">Pick up to three.</p>
@@ -238,7 +249,7 @@ export default function CustomPage() {
                         className={`h-11 w-11 rounded-full border-2 transition-all ${
                           on
                             ? 'border-ink ring-2 ring-blue ring-offset-2 ring-offset-paper'
-                            : 'border-ink/25 hover:border-ink'
+                            : 'border-ink/30 hover:border-ink'
                         }`}
                         style={{ backgroundColor: c.hex }}
                       />
@@ -248,7 +259,7 @@ export default function CustomPage() {
               </fieldset>
 
               <fieldset>
-                <legend className="font-display text-display-md uppercase text-ink">
+                <legend className="font-display text-display-md text-ink">
                   3. Center patch
                 </legend>
                 <div className="mt-3 flex flex-wrap gap-3">
@@ -258,10 +269,10 @@ export default function CustomPage() {
                       type="button"
                       onClick={() => setPatch(p.id)}
                       aria-pressed={patch === p.id}
-                      className={`border-2 px-5 py-3 font-label text-label-lg uppercase transition-colors ${
+                      className={`border-2 px-5 py-3 font-display text-label-lg uppercase transition-colors ${
                         patch === p.id
                           ? 'border-blue bg-blue text-paper'
-                          : 'border-ink/25 text-ink hover:border-ink'
+                          : 'border-ink/30 text-ink hover:border-ink'
                       }`}
                     >
                       {p.label}
@@ -273,7 +284,7 @@ export default function CustomPage() {
                   <div className="mt-4">
                     <label
                       htmlFor="patch-text"
-                      className="font-label text-label-caps uppercase text-ink-soft"
+                      className="label text-ink-soft"
                     >
                       Patch text
                     </label>
@@ -291,7 +302,7 @@ export default function CustomPage() {
               </fieldset>
 
               <fieldset>
-                <legend className="font-display text-display-md uppercase text-ink">
+                <legend className="font-display text-display-md text-ink">
                   4. How many?
                 </legend>
                 <div className="mt-3 flex flex-wrap gap-3">
@@ -301,10 +312,10 @@ export default function CustomPage() {
                       type="button"
                       onClick={() => setQty(range)}
                       aria-pressed={qty === range}
-                      className={`border-2 px-5 py-3 font-label text-label-lg uppercase transition-colors ${
+                      className={`border-2 px-5 py-3 font-display text-label-lg uppercase transition-colors ${
                         qty === range
                           ? 'border-blue bg-blue text-paper'
-                          : 'border-ink/25 text-ink hover:border-ink'
+                          : 'border-ink/30 text-ink hover:border-ink'
                       }`}
                     >
                       {range}
@@ -314,11 +325,11 @@ export default function CustomPage() {
               </fieldset>
 
               <fieldset>
-                <legend className="font-display text-display-md uppercase text-ink">
+                <legend className="font-display text-display-md text-ink">
                   5. Your details
                 </legend>
 
-                <label htmlFor="custom-email" className="mt-3 block font-label text-label-caps uppercase text-ink-soft">
+                <label htmlFor="custom-email" className="mt-3 block label text-ink-soft">
                   Email
                 </label>
                 <input
@@ -333,7 +344,7 @@ export default function CustomPage() {
                   className="mt-2 w-full max-w-md border-2 border-ink bg-paper px-4 py-3 font-body text-body-md text-ink focus:outline-none"
                 />
 
-                <label htmlFor="custom-notes" className="mt-4 block font-label text-label-caps uppercase text-ink-soft">
+                <label htmlFor="custom-notes" className="mt-4 block label text-ink-soft">
                   Anything else?
                 </label>
                 <textarea

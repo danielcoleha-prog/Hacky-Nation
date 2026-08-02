@@ -1,19 +1,20 @@
 import { Link } from 'react-router-dom';
 import { useParallax } from '../lib/useParallax';
+import Seal from './Seal';
 
 /**
  * Two heroes, because the desktop art has the headline baked into it.
  *
  *  lg and up — the finished poster (hero-poster-*.webp, 3:2) is the whole hero.
- *              The only HTML over it is the CTA pair; the <h1> is still in the
+ *              The only HTML over it is the CTA pair; the <h1> stays in the
  *              document for SEO and screen readers, just visually hidden so the
- *              headline doesn't render twice. The hero box keeps the art's exact
+ *              headline never renders twice. The hero box keeps the art's exact
  *              aspect ratio so the buttons can be anchored in percentages and
- *              never drift out of the cream against the baked type.
+ *              never drift off the cream onto the baked type.
  *
- *  below lg  — the earlier treatment: real HTML headline on flat cream, with the
- *              text-free scene photo (hero-scene-*.webp) full-bleed underneath at
- *              its own ratio, so the hand is never cropped out of frame.
+ *  below lg  — real HTML headline on flat cream, with the text-free scene photo
+ *              full-bleed underneath at its own ratio, so the hand is never
+ *              cropped out of frame.
  */
 export default function Hero() {
   const stageRef = useParallax();
@@ -21,14 +22,14 @@ export default function Hero() {
   const ctas = (
     <>
       <a href="#shop" className="btn-primary group">
-        Shop Collection
-        <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">
+        Shop the lineup
+        <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1">
           →
         </span>
       </a>
       <Link to="/custom" className="btn-secondary group">
-        Build Your Own
-        <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">
+        Build your own
+        <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1">
           →
         </span>
       </Link>
@@ -36,36 +37,47 @@ export default function Hero() {
   );
 
   return (
-    <section
-      ref={stageRef}
-      className="relative isolate bg-paper"
-      aria-labelledby="hero-heading"
-    >
-      {/* Visible on mobile, screen-reader-only on desktop where the art carries it. */}
-      <div className="mx-auto max-w-site px-6 pt-20 md:px-10 lg:px-0 lg:pt-0">
-        <h1
-          id="hero-heading"
-          className="font-display text-display-hero uppercase text-ink lg:sr-only"
-        >
-          Play
-          <br />
-          With
-          <br />
-          Your
-          <br />
-          <span className="text-blue">Sack.</span>
-        </h1>
+    <section ref={stageRef} className="relative isolate bg-paper" aria-labelledby="hero-heading">
+      {/* ---------- below lg: HTML headline on cream ----------
+          `lg:contents` dissolves these wrappers at desktop so the <h1> can go
+          sr-only on its own — it must stay in the accessibility tree and the
+          crawlable markup even though the poster art carries the words. */}
+      <div className="paper-grain relative mx-auto max-w-site px-5 pt-14 md:px-8 lg:contents">
+        <div className="relative z-10 lg:contents">
+          <p className="eyebrow animate-rise-in lg:hidden">Handmade suede footbags</p>
 
-        <p className="mt-7 max-w-sm font-label text-label-lg uppercase leading-relaxed text-ink-soft lg:hidden">
-          Handmade suede footbags
-          <br />
-          built for <span className="text-blue">good times.</span>
-        </p>
+          <h1
+            id="hero-heading"
+            className="mt-5 animate-rise-in font-display text-display-hero text-ink [animation-delay:80ms] lg:sr-only lg:mt-0"
+          >
+            <span className="overprint block" data-text="Play" style={{ '--mis-color': 'var(--press-red)' }}>
+              Play
+            </span>
+            <span className="overprint block" data-text="With" style={{ '--mis-color': 'var(--press-yellow)' }}>
+              With
+            </span>
+            <span className="overprint block" data-text="Your" style={{ '--mis-color': 'var(--press-red)' }}>
+              Your
+            </span>
+            <span
+              className="overprint block text-blue"
+              data-text="Sack."
+              style={{ '--mis-color': 'var(--press-ink)', '--mis-x': '4px', '--mis-y': '4px' }}
+            >
+              Sack.
+            </span>
+          </h1>
 
-        <div className="mt-9 flex flex-col gap-3 pb-10 sm:flex-row sm:gap-4 lg:hidden">{ctas}</div>
+          <p className="mt-6 max-w-xs animate-rise-in font-body text-body-lg text-ink-soft [animation-delay:160ms] lg:hidden">
+            Premium suede, stitched one at a time. Built for the circle.
+          </p>
+
+          <div className="mt-8 flex animate-rise-in flex-col gap-3 pb-9 sm:flex-row [animation-delay:240ms] lg:hidden">
+            {ctas}
+          </div>
+        </div>
       </div>
 
-      {/* ---------- below lg: text-free scene at its own ratio ---------- */}
       <div className="lg:hidden">
         <div className="aspect-[4030/2549] w-full">
           <img
@@ -99,10 +111,18 @@ export default function Hero() {
         {/* Anchored in percentages against the art's own box, so the pair always
             lands in the cream below the baked "SACK." lockup. */}
         <div
-          className="parallax-layer absolute bottom-[17%] left-[4%] flex gap-4 xl:left-[5%]"
+          className="parallax-layer absolute bottom-[16.5%] left-[4%] flex animate-rise-in gap-4 [animation-delay:300ms] xl:left-[5%]"
           style={{ '--depth': '4px' }}
         >
           {ctas}
+        </div>
+
+        {/* Rotating guarantee stamp, tucked into the cream under the CTAs. */}
+        <div
+          className="parallax-layer absolute bottom-[6%] right-[6%] hidden xl:block"
+          style={{ '--depth': '7px' }}
+        >
+          <Seal variant="paper" size="lg" lines={['PREMIUM', 'SUEDE', '· 2025 ·']} className="rotate-[-8deg] shadow-press-sm" />
         </div>
       </div>
     </section>

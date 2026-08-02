@@ -1,3 +1,5 @@
+import SectionHeading from './SectionHeading';
+
 /* Keep this list in sync with the FAQPage JSON-LD in index.html. */
 const FAQS = [
   {
@@ -6,7 +8,7 @@ const FAQS = [
   },
   {
     q: "What's the best hacky sack to buy?",
-    a: 'Hacky Nation hand knit foot bags are handcrafted one at a time with unique patterns and colors — no two are exactly alike. They\'re durable, balanced, and built for real players.',
+    a: "Hacky Nation foot bags are handcrafted one at a time with unique patterns and colors — no two are exactly alike. They're durable, balanced, and built for real players.",
   },
   {
     q: 'What is the difference between a hacky sack and a footbag?',
@@ -18,37 +20,47 @@ const FAQS = [
   },
   {
     q: 'Where can I buy a hacky sack online?',
-    a: 'Right here. Hacky Nation sells hand knit foot bags and limited edition hacky sack drops shipped across the US.',
+    a: 'Right here. Hacky Nation sells handmade suede foot bags and limited edition drops shipped across the US.',
   },
 ];
 
 export default function FAQ() {
   return (
-    <section id="faq" className="border-b-2 border-ink bg-paper-deep py-16 md:py-24">
-      <div className="mx-auto max-w-3xl px-6 md:px-10">
-        <header className="mb-10 text-center">
-          <p className="font-label text-label-caps uppercase text-blue">Questions</p>
-          <h2 className="mt-2 font-display text-display-xl uppercase text-ink">
-            Frequently Asked
-          </h2>
-        </header>
+    <section id="faq" className="relative border-t-2 border-ink bg-paper-deep py-16 md:py-24">
+      <div className="mx-auto max-w-site px-5 md:px-8">
+        <SectionHeading
+          index="06"
+          kicker="Questions"
+          title="Frequently asked"
+          mis="blue"
+          aside="Still stuck? buyhackynation@gmail.com"
+        />
 
-        <div className="flex flex-col gap-3">
-          {FAQS.map((item) => (
+        <div className="mx-auto mt-12 max-w-3xl lg:mt-16">
+          {FAQS.map((item, i) => (
             <details
               key={item.q}
-              className="group border-2 border-ink bg-paper px-5 py-4 [&_summary::-webkit-details-marker]:hidden"
+              className="reveal group border-b-2 border-ink first:border-t-2 [&_summary::-webkit-details-marker]:hidden"
             >
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4">
-                <span className="font-label text-label-lg uppercase text-ink">{item.q}</span>
+              <summary className="flex cursor-pointer list-none items-center gap-5 py-5">
                 <span
-                  className="material-symbols-outlined shrink-0 text-blue transition-transform group-open:rotate-45"
+                  className="font-display text-label-caps text-blue"
+                  style={{ fontVariationSettings: "'wght' 700, 'wdth' 100" }}
+                  aria-hidden="true"
+                >
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span className="flex-1 font-display text-display-md text-ink">{item.q}</span>
+                <span
+                  className="material-symbols-outlined shrink-0 text-ink transition-transform duration-300 group-open:rotate-45"
                   aria-hidden="true"
                 >
                   add
                 </span>
               </summary>
-              <p className="mt-3 font-body text-body-md text-ink-soft">{item.a}</p>
+              <p className="max-w-2xl pb-6 pl-[3.1rem] font-body text-body-md text-ink-soft">
+                {item.a}
+              </p>
             </details>
           ))}
         </div>

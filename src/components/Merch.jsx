@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useCart } from '../lib/CartContext';
 import { SHIRTS, SIZES, MYSTERY_BAG, formatPrice } from '../lib/products';
+import SectionHeading from './SectionHeading';
+import Seal from './Seal';
 
 function ShirtCard({ shirt }) {
   const { addItem } = useCart();
@@ -17,8 +19,9 @@ function ShirtCard({ shirt }) {
   }
 
   return (
-    <article className="flex flex-col border-2 border-ink bg-paper shadow-card">
-      <div className="grid place-content-center border-b-2 border-ink bg-paper-deep p-6">
+    <article className="reveal card card-hover flex flex-col">
+      <div className="relative grid place-content-center overflow-hidden border-b-2 border-ink bg-paper-deep p-6">
+        <div aria-hidden="true" className="dotfield pointer-events-none absolute inset-0 opacity-[0.12]" />
         <img
           src={shirt.image}
           alt={`${shirt.fullName} — front`}
@@ -26,18 +29,28 @@ function ShirtCard({ shirt }) {
           height={400}
           loading="lazy"
           decoding="async"
-          className="h-56 w-full object-contain"
+          className="relative h-52 w-full object-contain"
+        />
+        <span
+          className="absolute left-3 top-3 h-5 w-5 rounded-full border-2 border-ink"
+          style={{ backgroundColor: shirt.swatch }}
+          aria-hidden="true"
         />
       </div>
 
       <div className="flex flex-1 flex-col p-5">
-        <p className="font-label text-label-caps uppercase text-blue">{shirt.sub}</p>
-        <h3 className="mt-2 font-display text-display-md uppercase text-ink">{shirt.name}</h3>
-        <p className="mt-1 font-display text-xl text-ink">{formatPrice(shirt.price)}</p>
+        <p className="eyebrow">{shirt.colorway} · Unisex</p>
+        <h3 className="mt-2 font-display text-display-md text-ink">{shirt.name}</h3>
+        <p
+          className="mt-1.5 font-display text-[1.35rem] leading-none text-ink"
+          style={{ fontVariationSettings: "'wght' 900, 'wdth' 100" }}
+        >
+          {formatPrice(shirt.price)}
+        </p>
 
-        <fieldset className="mt-4">
-          <legend className="font-label text-label-caps uppercase text-ink-soft">Size</legend>
-          <div className="mt-2 flex flex-wrap gap-2">
+        <fieldset className="mt-5">
+          <legend className="label text-ink-faint">Size</legend>
+          <div className="mt-2 flex flex-wrap gap-1.5">
             {SIZES.map((s) => (
               <button
                 key={s}
@@ -47,9 +60,9 @@ function ShirtCard({ shirt }) {
                   setError(false);
                 }}
                 aria-pressed={size === s}
-                className={`h-10 min-w-[44px] border-2 px-2 font-label text-label-caps uppercase transition-colors ${
+                className={`h-10 min-w-[42px] border-2 px-2 font-display text-label-caps uppercase transition-colors duration-150 ${
                   size === s
-                    ? 'border-blue bg-blue text-paper'
+                    ? 'border-ink bg-ink text-paper'
                     : 'border-ink/25 text-ink hover:border-ink'
                 }`}
               >
@@ -59,14 +72,17 @@ function ShirtCard({ shirt }) {
           </div>
         </fieldset>
 
-        {error && (
-          <p role="alert" className="mt-3 font-label text-label-caps uppercase text-red">
-            Pick a size first
-          </p>
-        )}
+        <p
+          role={error ? 'alert' : undefined}
+          className={`mt-2.5 label text-red transition-opacity duration-150 ${
+            error ? 'opacity-100' : 'pointer-events-none opacity-0'
+          }`}
+        >
+          Pick a size first
+        </p>
 
-        <button type="button" onClick={onAdd} className="btn-primary mt-auto w-full pt-4 sm:pt-4">
-          Add To Cart
+        <button type="button" onClick={onAdd} className="btn-primary mt-auto w-full">
+          Add to cart
         </button>
       </div>
     </article>
@@ -77,21 +93,25 @@ export default function Merch() {
   const { addItem } = useCart();
 
   return (
-    <section id="merch" className="paper-grain relative border-b-2 border-ink bg-paper py-16 md:py-24">
-      <div className="relative z-10 mx-auto max-w-site px-6 md:px-10">
-        <header className="mb-10">
-          <p className="font-label text-label-caps uppercase text-blue">Wear It</p>
-          <h2 className="mt-2 font-display text-display-xl uppercase text-ink">Sack Merch</h2>
-        </header>
+    <section id="merch" className="relative border-t-2 border-ink bg-paper-deep py-16 md:py-24">
+      <div className="relative z-10 mx-auto max-w-site px-5 md:px-8">
+        <SectionHeading
+          index="02"
+          kicker="Wear it"
+          title="Sack merch"
+          mis="red"
+          aside="Heavyweight tees and one-of-one knit bags."
+        />
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3">
           {SHIRTS.map((shirt) => (
             <ShirtCard key={shirt.id} shirt={shirt} />
           ))}
 
           {/* Mystery bag — no size, so it adds straight to the cart. */}
-          <article className="flex flex-col border-2 border-ink bg-paper shadow-card">
-            <div className="grid place-content-center border-b-2 border-ink bg-yellow/25 p-6">
+          <article className="reveal card card-hover flex flex-col">
+            <div className="relative grid place-content-center overflow-hidden border-b-2 border-ink bg-yellow/30 p-6">
+              <div aria-hidden="true" className="dotfield pointer-events-none absolute inset-0 opacity-[0.12]" />
               <img
                 src={MYSTERY_BAG.image}
                 alt={MYSTERY_BAG.fullName}
@@ -99,31 +119,39 @@ export default function Merch() {
                 height={400}
                 loading="lazy"
                 decoding="async"
-                className="h-56 w-full object-contain"
+                className="relative h-52 w-full object-contain"
+              />
+              <Seal
+                variant="red"
+                burst
+                size="sm"
+                lines={['1 OF 1']}
+                className="absolute -right-2 -top-2 rotate-[12deg]"
               />
             </div>
 
             <div className="flex flex-1 flex-col p-5">
-              <p className="font-label text-label-caps uppercase text-blue">{MYSTERY_BAG.sub}</p>
-              <h3 className="mt-2 font-display text-display-md uppercase text-ink">
-                {MYSTERY_BAG.name}
-              </h3>
-              <div className="mt-1 flex items-baseline gap-2">
-                <span className="font-display text-xl text-ink">
+              <p className="eyebrow">Hand knit · Random colorway</p>
+              <h3 className="mt-2 font-display text-display-md text-ink">{MYSTERY_BAG.name}</h3>
+              <div className="mt-1.5 flex items-baseline gap-2">
+                <span
+                  className="font-display text-[1.35rem] leading-none text-ink"
+                  style={{ fontVariationSettings: "'wght' 900, 'wdth' 100" }}
+                >
                   {formatPrice(MYSTERY_BAG.price)}
                 </span>
-                <span className="font-label text-label-caps text-ink-soft line-through">
+                <span className="font-body text-body-sm text-ink-faint line-through">
                   {formatPrice(MYSTERY_BAG.compareAt)}
                 </span>
               </div>
-              <p className="mt-3 font-body text-body-md text-ink-soft">{MYSTERY_BAG.desc}</p>
+              <p className="mt-4 font-body text-body-md text-ink-soft">{MYSTERY_BAG.desc}</p>
 
               <button
                 type="button"
                 onClick={() => addItem(MYSTERY_BAG.id)}
-                className="btn-primary mt-auto w-full pt-4"
+                className="btn-primary mt-auto w-full"
               >
-                Add To Cart
+                Add to cart
               </button>
             </div>
           </article>
