@@ -7,8 +7,10 @@ const ITEMS = [
 export default function TrustStrip() {
   return (
     <section aria-label="Why shop Hacky Nation" className="relative bg-paper">
-      {/* torn rip where the cream meets the ink band */}
-      <div aria-hidden="true" className="torn-top h-6 w-full bg-ink" />
+      {/* Torn rip where the cream meets the ink band. Hidden at lg and up, where
+          the hero poster already ends in its own black torn edge — two rips
+          stacked read as a mistake. */}
+      <div aria-hidden="true" className="torn-top h-6 w-full bg-ink lg:hidden" />
 
       <div className="bg-ink">
         <ul className="mx-auto grid max-w-site grid-cols-1 gap-6 px-6 pb-8 pt-2 sm:grid-cols-3 md:px-10 md:pb-10">
