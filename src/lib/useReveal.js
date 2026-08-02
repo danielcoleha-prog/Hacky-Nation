@@ -15,6 +15,9 @@ export function useReveal(deps = []) {
     const targets = document.querySelectorAll('.reveal:not(.in)');
     if (!targets.length) return;
 
+    /* Only now is it safe to hide anything — see the .reveals-armed rules. */
+    document.documentElement.classList.add('reveals-armed');
+
     const io = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
