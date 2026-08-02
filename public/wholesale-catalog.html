@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Hacky Nation — Wholesale Catalog 2026 (Print)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300..900&family=Space+Grotesk:wght@400..700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --blue:      #2FA3F0;  /* brand blue — fills, rules, big numbers */
+    --blue-ink:  #0B76BF;  /* darker blue for small text legibility in print */
+    --blue-tint: #EAF6FE;  /* light blue panel fill */
+    --ink:       #111111;
+    --muted:     #5A5A5A;
+    --faint:     #8A8A8A;
+    --tile:      #F4F1EA;  /* warm cream product tile */
+    --line:      #DDDDDD;
+  }
+
+  @page { size: 8.5in 11in; margin: 0; }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: #fff;
+    color: var(--ink);
+    font-family: 'Lexend', -apple-system, 'Helvetica Neue', Arial, sans-serif;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    width: 8.5in;
+    height: 11in;
+    padding: 0.55in 0.6in;
+    background: #fff;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    page-break-after: always;
+    break-after: page;
+  }
+  .page:last-child { page-break-after: auto; break-after: auto; }
+
+  /* screen-only preview framing; print stays pure white */
+  @media screen {
+    body { background: #9a9a9a; padding: 24px 0; }
+    .page { margin: 0 auto 24px; box-shadow: 0 6px 28px rgba(0,0,0,.35); }
+  }
+
+  .display {
+    font-weight: 900;
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+  }
+  .label {
+    font-family: 'Space Grotesk', 'Lexend', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+  }
+
+  /* ---------- COVER ---------- */
+  .cover { align-items: center; justify-content: center; text-align: center; }
+  .cover-logo { width: 2.15in; height: auto; margin-bottom: 0.5in; }
+  .cover-eyebrow { font-size: 11pt; letter-spacing: 0.3em; color: var(--blue-ink); margin-bottom: 14px; }
+  .cover-title { font-size: 60pt; color: var(--ink); }
+  .cover-rule { width: 1.5in; height: 3px; background: var(--blue); margin: 0.34in auto; }
+  .cover-sub { font-size: 13pt; color: var(--muted); font-weight: 400; }
+  .cover-foot {
+    position: absolute; left: 0; right: 0; bottom: 0.62in;
+    font-size: 8.5pt; letter-spacing: 0.16em; color: var(--faint);
+  }
+
+  /* ---------- PAGE HEADER ---------- */
+  .head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-bottom: 0.14in; border-bottom: 2px solid var(--line); margin-bottom: 0.3in;
+  }
+  .head-brand { display: flex; align-items: center; gap: 10px; }
+  .head-logo { width: 0.42in; height: 0.42in; object-fit: contain; }
+  .head-name { font-size: 12pt; font-weight: 900; font-style: italic; text-transform: uppercase; letter-spacing: -0.01em; }
+  .head-meta { font-size: 8.5pt; letter-spacing: 0.22em; color: var(--muted); }
+
+  h2.section { font-size: 25pt; margin-bottom: 0.26in; }
+
+  /* ---------- COLLECTION ---------- */
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.24in; }
+  .card { border: 1.5px solid var(--line); border-radius: 3px; overflow: hidden; background: #fff; }
+  .card-img { background: var(--tile); height: 2.5in; display: flex; align-items: center; justify-content: center; }
+  .card-img img { max-height: 2.1in; max-width: 80%; object-fit: contain; }
+  .card-body { padding: 13px 15px 15px; }
+  .card-name { font-size: 15pt; margin-bottom: 7px; }
+  .card-spec { font-family: 'Space Grotesk', sans-serif; font-size: 7.5pt; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .card-retail { font-family: 'Space Grotesk', sans-serif; font-size: 8.5pt; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blue-ink); }
+
+  .collection-note {
+    margin-top: auto; padding-top: 0.22in; border-top: 1.5px solid var(--line);
+    font-size: 10.5pt; line-height: 1.5; color: var(--muted);
+  }
+  .collection-note strong { color: var(--ink); font-weight: 700; }
+
+  /* ---------- PRICING ---------- */
+  .price-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.24in; margin-bottom: 0.26in; }
+  .price-card { border: 1.5px solid var(--line); border-radius: 3px; padding: 0.24in; }
+  .price-card.featured { border-color: var(--blue); background: var(--blue-tint); }
+  .pill {
+    display: inline-block; font-family: 'Space Grotesk', sans-serif; font-size: 7.5pt; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase; padding: 5px 9px; margin-bottom: 11px; border-radius: 2px;
+  }
+  .pill-solid { background: var(--blue); color: #fff; }
+  .pill-outline { border: 1.5px solid var(--ink); color: var(--ink); }
+  .price-title { font-size: 16pt; margin-bottom: 6px; }
+  .price-amount { font-size: 40pt; font-weight: 900; font-style: italic; color: var(--blue-ink); letter-spacing: -0.03em; line-height: 1; }
+  .price-unit { font-size: 11pt; color: var(--muted); font-weight: 400; font-style: normal; letter-spacing: 0; }
+  .price-min { font-size: 10pt; color: var(--ink); font-weight: 600; margin: 8px 0 12px; }
+  .price-list { list-style: none; }
+  .price-list li { font-size: 9.5pt; line-height: 1.45; color: var(--muted); margin-bottom: 7px; padding-left: 16px; position: relative; }
+  .price-list li::before { content: '→'; position: absolute; left: 0; color: var(--blue); font-weight: 700; }
+  .price-list strong { color: var(--ink); font-weight: 700; }
+
+  /* math bar */
+  .math {
+    display: flex; align-items: center; justify-content: space-around;
+    background: var(--blue-tint); border: 1.5px solid var(--blue);
+    border-radius: 3px; padding: 0.2in 0.1in; margin-bottom: 0.24in;
+  }
+  .math-cell { text-align: center; }
+  .math-num { font-size: 22pt; font-weight: 900; font-style: italic; letter-spacing: -0.03em; color: var(--ink); line-height: 1; }
+  .math-num.profit { color: var(--blue-ink); }
+  .math-cap { font-family: 'Space Grotesk', sans-serif; font-size: 6.5pt; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+  .math-arrow { font-size: 15pt; color: var(--blue); font-weight: 700; }
+
+  /* trust row */
+  .trust {
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'Space Grotesk', sans-serif; font-size: 8pt; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--muted); padding-bottom: 0.2in;
+    border-bottom: 1.5px solid var(--line); margin-bottom: 0.22in;
+  }
+  .trust strong { color: var(--ink); font-weight: 700; }
+
+  /* how to order */
+  h3.sub { font-size: 15pt; margin-bottom: 0.16in; }
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.2in; margin-bottom: 0.24in; }
+  .step { text-align: center; }
+  .step-num {
+    width: 30px; height: 30px; border: 2px solid var(--blue); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; margin: 0 auto 9px;
+    font-weight: 900; font-size: 12pt; color: var(--blue-ink);
+  }
+  .step p { font-size: 9pt; line-height: 1.4; color: var(--muted); }
+  .step strong { color: var(--ink); font-weight: 700; }
+
+  /* CTA */
+  .cta {
+    margin-top: auto; background: var(--blue-tint); border: 1.5px solid var(--blue);
+    border-radius: 3px; padding: 0.24in; text-align: center;
+  }
+  .cta-title { font-size: 15pt; margin-bottom: 8px; }
+  .cta-links { font-size: 10pt; color: var(--blue-ink); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- ============ PAGE 1 — COVER ============ -->
+<section class="page cover">
+  <img class="cover-logo" src="catalog-logo-white.png" alt="Hacky Nation" />
+  <p class="label cover-eyebrow">Handcrafted Suede Foot Bags</p>
+  <h1 class="display cover-title">Wholesale<br/>Catalog</h1>
+  <div class="cover-rule"></div>
+  <p class="cover-sub">Stock &amp; Custom Hacky Sacks · 2026</p>
+  <p class="label cover-foot">hackynation.com · @hacky_nation · buyhackynation@gmail.com</p>
+</section>
+
+<!-- ============ PAGE 2 — THE COLLECTION ============ -->
+<section class="page">
+  <div class="head">
+    <div class="head-brand">
+      <img class="head-logo" src="catalog-logo-white.png" alt="" />
+      <span class="head-name">Hacky Nation</span>
+    </div>
+    <span class="label head-meta">Wholesale 2026</span>
+  </div>
+
+  <h2 class="display section">The Collection</h2>
+
+  <div class="grid">
+    <article class="card">
+      <div class="card-img"><img src="Real%20Hacky%20Sack%20Mockups/RealPatriot.PNG" alt="Patriot foot bag" /></div>
+      <div class="card-body">
+        <h3 class="display card-name">Patriot</h3>
+        <p class="card-spec">Red · White · Blue · 32 Panels</p>
+        <p class="card-retail">Retails $17+</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-img"><img src="Real%20Hacky%20Sack%20Mockups/RealSun.PNG" alt="Sunset foot bag" /></div>
+      <div class="card-body">
+        <h3 class="display card-name">Sunset</h3>
+        <p class="card-spec">Yellow &amp; Orange · 32 Panels</p>
+        <p class="card-retail">Retails $17+</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-img"><img src="Real%20Hacky%20Sack%20Mockups/RealBulldawgs.PNG" alt="Bulldawgs foot bag" /></div>
+      <div class="card-body">
+        <h3 class="display card-name">Bulldawgs</h3>
+        <p class="card-spec">Black &amp; Red · 14 Panels</p>
+        <p class="card-retail">Retails $17+</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-img"><img src="Real%20Hacky%20Sack%20Mockups/RealSky.PNG" alt="Sky foot bag" /></div>
+      <div class="card-body">
+        <h3 class="display card-name">Sky</h3>
+        <p class="card-spec">Blue &amp; White · 14 Panels</p>
+        <p class="card-retail">Retails $17+</p>
+      </div>
+    </article>
+  </div>
+
+  <p class="collection-note">
+    Every sack is <strong>handmade from premium suede panels.</strong> Mix &amp; match any colors to hit your 48-piece minimum.
+  </p>
+</section>
+
+<!-- ============ PAGE 3 — WHOLESALE PRICING ============ -->
+<section class="page">
+  <div class="head">
+    <div class="head-brand">
+      <img class="head-logo" src="catalog-logo-white.png" alt="" />
+      <span class="head-name">Hacky Nation</span>
+    </div>
+    <span class="label head-meta">Wholesale 2026</span>
+  </div>
+
+  <h2 class="display section">Wholesale Pricing</h2>
+
+  <div class="price-row">
+    <div class="price-card featured">
+      <span class="pill pill-solid">Stock Sacks</span>
+      <h3 class="display price-title">Ready to Ship</h3>
+      <p class="price-amount">$8.00<span class="price-unit"> / sack</span></p>
+      <p class="price-min">Minimum 48 — mix &amp; match any colors</p>
+      <ul class="price-list">
+        <li>Choose from <strong>Patriot, Sunset, Bulldawgs &amp; Sky</strong></li>
+        <li>Retails at <strong>$17+</strong> — keep roughly <strong>53% margin</strong></li>
+        <li>Handmade suede · <strong>we ship straight to you</strong></li>
+      </ul>
+    </div>
+
+    <div class="price-card">
+      <span class="pill pill-outline">Custom Sacks</span>
+      <h3 class="display price-title">Built Your Way</h3>
+      <p class="price-amount">$10.00<span class="price-unit"> / sack</span></p>
+      <p class="price-min">Minimum 48 per custom design</p>
+      <ul class="price-list">
+        <li>Pick your <strong>panel count</strong> (12 / 14 / 32)</li>
+        <li>Pick your <strong>colors</strong> &amp; colorway</li>
+        <li>Add <strong>your logo</strong> — DTF or screen print</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="math">
+    <div class="math-cell">
+      <p class="math-num">$384</p>
+      <p class="math-cap">Your cost · 48 stock sacks</p>
+    </div>
+    <span class="math-arrow">→</span>
+    <div class="math-cell">
+      <p class="math-num">$816</p>
+      <p class="math-cap">Retail @ $17 each</p>
+    </div>
+    <span class="math-arrow">→</span>
+    <div class="math-cell">
+      <p class="math-num profit">~$432</p>
+      <p class="math-cap">Your profit</p>
+    </div>
+  </div>
+
+  <div class="trust">
+    <span><strong>Handmade</strong> in the USA</span>
+    <span><strong>Premium</strong> suede panels</span>
+    <span><strong>We ship</strong> to you</span>
+    <span><strong>Free</strong> samples available</span>
+  </div>
+
+  <h3 class="display sub">How to Order</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <p>Reply with your <strong>mix &amp; quantity</strong> (or ask for free samples)</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <p>We send a quick <strong>invoice</strong> — pay securely online</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <p>We <strong>ship straight to you</strong>, ready for the shelf</p>
+    </div>
+  </div>
+
+  <div class="cta">
+    <h3 class="display cta-title">Let's get your shop stocked.</h3>
+    <p class="cta-links">buyhackynation@gmail.com · @hacky_nation · hackynation.com</p>
+  </div>
+</section>
+
+</body>
+</html>

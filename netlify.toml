@@ -1,10 +1,13 @@
 [build]
+  command   = "npm run build"
+  publish   = "dist"
   functions = "netlify/functions"
-  publish   = "."
 
 [functions]
   node_bundler = "esbuild"
 
+# SPA fallback. Real files emitted into dist/ (returns.html, _headers, assets/…)
+# are served before this rule is evaluated, so static pages keep working.
 [[redirects]]
   from   = "/*"
   to     = "/index.html"

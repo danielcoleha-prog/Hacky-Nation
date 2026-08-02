@@ -1,0 +1,178 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Tanker — Fontshare / ITF Free Font License. Regular is the only weight shipped. */
+@font-face {
+  font-family: 'Tanker';
+  src: url('/fonts/Tanker-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-paper text-ink font-body antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Tanker has no bold cut — never let the browser synthesise one. */
+  .font-display {
+    font-weight: 400 !important;
+    font-synthesis: none;
+  }
+
+  ::selection {
+    @apply bg-blue text-paper;
+  }
+
+  :focus-visible {
+    outline: 3px solid theme('colors.blue.DEFAULT');
+    outline-offset: 3px;
+  }
+
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+    line-height: 1;
+  }
+}
+
+@layer components {
+  /* ---- Paper grain -------------------------------------------------------
+     Multiplied over the cream so the whole page reads as printed stock
+     rather than flat #F1E8DA. Sits behind content, never intercepts clicks.
+
+     Generated rather than photographic: feTurbulence with stitchTiles='stitch'
+     tiles seamlessly at any section height, where a scanned texture shows a
+     visible repeat seam. It also costs zero network requests. */
+  .paper-grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.62' numOctaves='5' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23g)' opacity='0.5'/%3E%3C/svg%3E");
+    background-size: 240px 240px;
+    mix-blend-mode: multiply;
+    opacity: 0.16;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ---- Halftone ----------------------------------------------------------
+     Pure CSS dot grid, masked so it dissolves leftward. Two grids at
+     different pitches give the density falloff seen in the reference. */
+  .halftone {
+    background-image: radial-gradient(circle, theme('colors.blue.DEFAULT') 1.7px, transparent 1.8px);
+    background-size: 11px 11px;
+    -webkit-mask-image: linear-gradient(to left, #000 0%, #000 26%, transparent 82%);
+    mask-image: linear-gradient(to left, #000 0%, #000 26%, transparent 82%);
+  }
+
+  .halftone-coarse {
+    background-image: radial-gradient(circle, theme('colors.blue.DEFAULT') 3px, transparent 3.1px);
+    background-size: 22px 22px;
+    -webkit-mask-image: linear-gradient(to left, #000 0%, #000 12%, transparent 62%);
+    mask-image: linear-gradient(to left, #000 0%, #000 12%, transparent 62%);
+  }
+
+  /* ---- Torn paper edge ---------------------------------------------------
+     A ragged horizontal rip used where an ink band meets the cream. */
+  .torn-top {
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='24' preserveAspectRatio='none'%3E%3Cpath d='M0 8 L28 3 L61 11 L96 4 L131 12 L169 5 L204 13 L241 6 L279 12 L316 4 L353 11 L391 3 L428 10 L467 5 L503 13 L541 6 L578 12 L616 4 L654 11 L691 3 L729 10 L767 6 L804 13 L842 5 L879 11 L917 4 L954 12 L992 6 L1029 10 L1067 3 L1104 11 L1142 5 L1179 12 L1200 7 L1200 24 L0 24 Z' fill='%23000'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='24' preserveAspectRatio='none'%3E%3Cpath d='M0 8 L28 3 L61 11 L96 4 L131 12 L169 5 L204 13 L241 6 L279 12 L316 4 L353 11 L391 3 L428 10 L467 5 L503 13 L541 6 L578 12 L616 4 L654 11 L691 3 L729 10 L767 6 L804 13 L842 5 L879 11 L917 4 L954 12 L992 6 L1029 10 L1067 3 L1104 11 L1142 5 L1179 12 L1200 7 L1200 24 L0 24 Z' fill='%23000'/%3E%3C/svg%3E");
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+  }
+
+  /* ---- Starburst badge --------------------------------------------------- */
+  .starburst {
+    clip-path: polygon(
+      50% 0%, 59% 9%, 71% 4%, 75% 16%, 88% 15%, 87% 28%, 98% 33%, 92% 44%,
+      100% 53%, 90% 60%, 96% 71%, 84% 75%, 85% 88%, 72% 85%, 67% 96%, 57% 90%,
+      50% 100%, 43% 90%, 33% 96%, 28% 85%, 15% 88%, 16% 75%, 4% 71%, 10% 60%,
+      0% 53%, 8% 44%, 2% 33%, 13% 28%, 12% 15%, 25% 16%, 29% 4%, 41% 9%
+    );
+  }
+
+  /* ---- Buttons ----------------------------------------------------------- */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 font-label text-label-lg uppercase
+           px-7 py-4 transition-all duration-150 border-2 border-ink;
+  }
+
+  .btn-primary {
+    @apply btn bg-ink text-paper hover:bg-blue hover:border-blue;
+  }
+
+  /* Opaque, not transparent — this button sits over the halftone field and
+     the dots must not show through it. */
+  .btn-secondary {
+    @apply btn bg-paper text-ink hover:bg-ink hover:text-paper;
+  }
+
+  .btn-blue {
+    @apply btn bg-blue text-paper border-blue hover:bg-blue-deep hover:border-blue-deep;
+  }
+
+  /* ---- Scroll reveal ----------------------------------------------------- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Horizontal scroller without a visible bar. */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Parallax layers read --px / --py, written by useParallax.
+   The vars default to 0 so layers sit still until (and unless) the hook runs. */
+.parallax-layer {
+  --px: 0;
+  --py: 0;
+  transform: translate3d(calc(var(--px) * var(--depth, 0px)), calc(var(--py) * var(--depth, 0px)), 0);
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  .parallax-layer {
+    transform: none !important;
+  }
+}

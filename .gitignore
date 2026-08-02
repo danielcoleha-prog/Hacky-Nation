@@ -39,3 +39,9 @@ Sacks/
 Posts/
 *.zip
 **/_orig/
+
+# Vite build output
+dist/
+
+# Local reference material (old markup, art direction uploads)
+_ref/

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Form declarations</title>
+</head>
+<body>
+  <!--
+    Netlify detects forms by parsing deployed HTML at build time. Forms rendered
+    by React are invisible to that scan, so every form the app posts must be
+    declared here with matching `name` and field names.
+
+    Nothing renders this page — the React components POST urlencoded to
+    /__forms.html and Netlify captures the submission.
+  -->
+
+  <form name="newsletter" netlify netlify-honeypot="bot-field" hidden>
+    <input type="hidden" name="form-name" value="newsletter" />
+    <input type="text" name="bot-field" />
+    <input type="email" name="email" />
+  </form>
+
+  <form name="custom-sack" netlify netlify-honeypot="bot-field" hidden>
+    <input type="hidden" name="form-name" value="custom-sack" />
+    <input type="text" name="bot-field" />
+    <input type="email" name="email" />
+    <input type="text" name="pattern" />
+    <input type="text" name="panels" />
+    <input type="text" name="colors" />
+    <input type="text" name="patch" />
+    <input type="text" name="patch-text" />
+    <input type="text" name="quantity" />
+    <textarea name="notes"></textarea>
+  </form>
+</body>
+</html>
