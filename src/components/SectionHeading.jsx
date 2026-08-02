@@ -11,6 +11,9 @@ export default function SectionHeading({
   id,
   mis = 'red',
   className = '',
+  /* `as="h1"` for a page's primary heading — sections default to h2 so a page
+     that leads with this component isn't left without an h1. */
+  as: Tag = 'h2',
 }) {
   const misColor = {
     red: 'var(--press-red)',
@@ -34,11 +37,11 @@ export default function SectionHeading({
 
           <div>
             {kicker && <p className="eyebrow mb-2.5">{kicker}</p>}
-            <h2 id={id} className="font-display text-display-xl text-ink">
+            <Tag id={id} className="font-display text-display-xl text-ink">
               <span className="overprint" data-text={title} style={{ '--mis-color': misColor }}>
                 {title}
               </span>
-            </h2>
+            </Tag>
           </div>
         </div>
 

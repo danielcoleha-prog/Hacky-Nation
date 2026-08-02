@@ -3,13 +3,18 @@ import { Link, useLocation } from 'react-router-dom';
 import { useCart } from '../lib/CartContext';
 
 const LINKS = [
-  { label: 'Shop', to: '/#shop' },
+  { label: 'Shop', to: '/shop' },
   { label: 'Custom', to: '/custom' },
   { label: 'Story', to: '/#why' },
   { label: 'Community', to: '/#community' },
 ];
 
-export default function Nav() {
+/**
+ * `overlay` floats the bar on top of the page instead of sitting above it, so
+ * the hero art can start at the very top. It goes solid as soon as you scroll,
+ * which is also when it stops having artwork behind it to read against.
+ */
+export default function Nav({ overlay = false }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { count, openCart } = useCart();
@@ -17,19 +22,23 @@ export default function Nav() {
 
   useEffect(() => setMenuOpen(false), [pathname, hash]);
 
-  /* The bar gains its rule and shadow only once you've left the top, so the
-     hero meets the nav cleanly on first paint. */
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  const floating = overlay && !scrolled && !menuOpen;
+
   return (
     <header
-      className={`sticky top-0 z-40 bg-paper/95 backdrop-blur-sm transition-shadow duration-200 ${
-        scrolled ? 'border-b-2 border-ink shadow-[0_4px_0_0_rgba(20,17,13,0.08)]' : 'border-b-2 border-ink/0'
+      className={`z-40 w-full transition-colors duration-300 ${
+        overlay ? 'fixed top-0 left-0' : 'sticky top-0'
+      } ${
+        floating
+          ? 'border-b-2 border-transparent bg-transparent'
+          : 'border-b-2 border-ink bg-paper/95 backdrop-blur-sm'
       }`}
     >
       <div className="mx-auto flex max-w-site items-center justify-between gap-6 px-5 py-3 md:px-8">
@@ -48,13 +57,12 @@ export default function Nav() {
         </Link>
 
         <nav aria-label="Main" className="hidden lg:block">
-          <ul className="flex items-center gap-9">
+          <ul className="flex items-center gap-8">
             {LINKS.map((link) => (
               <li key={link.label}>
                 <Link
                   to={link.to}
-                  className="group relative block py-1 font-display text-label-caps uppercase text-ink"
-                  style={{ fontVariationSettings: "'wght' 700, 'wdth' 105" }}
+                  className="group relative block py-1 font-body text-label-caps font-bold uppercase tracking-[0.06em] text-ink"
                 >
                   {link.label}
                   <span className="absolute -bottom-0.5 left-0 h-[2px] w-0 bg-blue transition-all duration-200 group-hover:w-full" />
@@ -74,12 +82,7 @@ export default function Nav() {
             <span className="material-symbols-outlined text-[20px]" aria-hidden="true">
               shopping_bag
             </span>
-            <span
-              className="font-display text-label-caps tabular-nums"
-              style={{ fontVariationSettings: "'wght' 800, 'wdth' 100" }}
-            >
-              {count}
-            </span>
+            <span className="font-body text-label-caps font-bold tabular-nums">{count}</span>
           </button>
 
           <button

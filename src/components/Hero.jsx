@@ -21,12 +21,12 @@ export default function Hero() {
 
   const ctas = (
     <>
-      <a href="#shop" className="btn-primary group">
+      <Link to="/shop" className="btn-primary group">
         Shop the lineup
         <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1">
           →
         </span>
-      </a>
+      </Link>
       <Link to="/custom" className="btn-secondary group">
         Build your own
         <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1">
@@ -42,7 +42,8 @@ export default function Hero() {
           `lg:contents` dissolves these wrappers at desktop so the <h1> can go
           sr-only on its own — it must stay in the accessibility tree and the
           crawlable markup even though the poster art carries the words. */}
-      <div className="paper-grain relative mx-auto max-w-site px-5 pt-14 md:px-8 lg:contents">
+      {/* pt clears the fixed nav, which floats over the art on this page */}
+      <div className="paper-grain relative mx-auto max-w-site px-5 pt-28 md:px-8 lg:contents">
         <div className="relative z-10 lg:contents">
           <p className="eyebrow animate-rise-in lg:hidden">Handmade suede footbags</p>
 
@@ -78,19 +79,59 @@ export default function Hero() {
         </div>
       </div>
 
-      <div className="lg:hidden">
-        <div className="aspect-[4030/2549] w-full">
+      {/* ---------- below lg: collage rebuilt in CSS ----------
+          The scene photo is gone here — at a phone's aspect ratio it had to be
+          letterboxed or cropped, and either way the composition fought the
+          layout. These are the same elements as real layers: halftone field,
+          yellow circle, red strip, then the hand-and-sack cutout on top. */}
+      <div className="relative isolate w-full overflow-hidden lg:hidden">
+        <div className="relative aspect-[5/6] w-full sm:aspect-[4/3]">
+          {/* halftone field, right edge */}
+          <div
+            aria-hidden="true"
+            className="halftone-coarse parallax-layer absolute inset-y-0 right-0 w-[52%] opacity-70"
+            style={{ '--depth': '2px' }}
+          />
+          <div
+            aria-hidden="true"
+            className="halftone parallax-layer absolute inset-y-0 right-0 w-[46%]"
+            style={{ '--depth': '2px' }}
+          />
+          {/* solid blue bleed at the far edge */}
+          <div aria-hidden="true" className="absolute inset-y-0 right-0 w-[7%] bg-blue" />
+
+          {/* yellow circle, behind the sack */}
+          <div
+            aria-hidden="true"
+            className="parallax-layer absolute right-[26%] top-[10%] aspect-square w-[42%] rounded-full bg-yellow sm:w-[32%]"
+            style={{ '--depth': '3px' }}
+          />
+
+          {/* red angled strip, under the hand */}
+          <div
+            aria-hidden="true"
+            className="parallax-layer absolute bottom-[16%] left-[8%] h-[9%] w-[62%] -rotate-[5deg] bg-red sm:h-[10%] sm:w-[48%]"
+            style={{ '--depth': '4px' }}
+          />
+
           <img
-            src="/img/hero-scene-1600.webp"
-            srcSet="/img/hero-scene-1000.webp 1000w, /img/hero-scene-1600.webp 1600w"
-            sizes="100vw"
+            src="/img/hero-hand-800.webp"
+            srcSet="/img/hero-hand-800.webp 800w, /img/hero-hand-1200.webp 1200w"
+            sizes="(min-width: 640px) 70vw, 96vw"
             alt="A hand reaching through torn paper holding a handmade Hacky Nation suede footbag"
-            width={4030}
-            height={2549}
+            width={2000}
+            height={2000}
             fetchPriority="high"
             decoding="async"
-            className="h-full w-full object-cover"
+            className="parallax-layer absolute left-1/2 top-1/2 h-auto w-[96%] max-w-[480px] -translate-x-1/2 -translate-y-1/2 object-contain sm:w-[74%]"
+            style={{ '--depth': '6px', filter: 'drop-shadow(0 26px 30px rgba(20,17,13,0.32))' }}
           />
+
+          {/* seals, tucked into the cream at bottom-left */}
+          <div className="absolute bottom-3 left-4 z-10 flex items-end gap-2">
+            <Seal variant="paper" size="sm" lines={['PREMIUM', 'SUEDE']} className="shadow-press-sm" />
+            <Seal variant="red" burst size="sm" lines={['EST.', '2025']} className="rotate-[-10deg]" />
+          </div>
         </div>
       </div>
 

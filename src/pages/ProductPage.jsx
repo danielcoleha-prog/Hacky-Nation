@@ -44,7 +44,7 @@ export default function ProductPage() {
           <ol className="flex items-center gap-2 label text-ink-faint">
             <li><Link to="/" className="transition-colors hover:text-blue">Home</Link></li>
             <li aria-hidden="true">/</li>
-            <li><Link to="/#shop" className="transition-colors hover:text-blue">Sacks</Link></li>
+            <li><Link to="/shop" className="transition-colors hover:text-blue">Sacks</Link></li>
             <li aria-hidden="true">/</li>
             <li className="text-ink">{sack.name}</li>
           </ol>
@@ -202,7 +202,7 @@ export default function ProductPage() {
             <h2 id="more-heading" className="font-display text-display-lg text-ink">
               More sacks
             </h2>
-            <Link to="/#shop" className="label text-blue underline underline-offset-4">
+            <Link to="/shop" className="label text-blue underline underline-offset-4">
               See all
             </Link>
           </div>

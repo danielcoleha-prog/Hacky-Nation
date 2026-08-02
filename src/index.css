@@ -83,15 +83,18 @@
 }
 
 @layer components {
-  /* ---- Eyebrow / kicker ------------------------------------------------- */
+  /* ---- Small type --------------------------------------------------------
+     Satoshi, not the display face. Archivo at small sizes with wide uniform
+     tracking read as monospaced; a neutral grotesk with restrained spacing is
+     cleaner and lets the headlines carry all the character. */
   .eyebrow {
-    @apply font-display text-eyebrow uppercase text-blue;
-    font-variation-settings: 'wght' 700, 'wdth' 110;
+    @apply font-body text-eyebrow font-bold uppercase text-blue;
+    letter-spacing: 0.13em;
   }
 
   .label {
-    @apply font-display text-label-caps uppercase;
-    font-variation-settings: 'wght' 700, 'wdth' 105;
+    @apply font-body text-label-caps font-bold uppercase;
+    letter-spacing: 0.06em;
   }
 
   /* ---- Ink misregistration ----------------------------------------------
@@ -190,9 +193,9 @@
      click rather than a glow. */
   .btn {
     @apply relative inline-flex items-center justify-center gap-2 whitespace-nowrap
-           border-2 border-ink px-7 py-3.5 font-display text-label-lg uppercase
+           border-2 border-ink px-7 py-3.5 font-body text-label-lg font-bold uppercase
            transition-[transform,box-shadow,background-color,color] duration-150;
-    font-variation-settings: 'wght' 800, 'wdth' 105;
+    letter-spacing: 0.06em;
   }
 
   .btn-primary {
@@ -265,12 +268,17 @@
 }
 
 /* Parallax layers read --px / --py, written by useParallax. Defaults keep every
-   layer still until (and unless) the hook actually runs. */
+   layer still until (and unless) the hook actually runs.
+
+   Uses the standalone `translate` property rather than `transform`: a layer is
+   very often also centred with -translate-x-1/2 or tilted with -rotate-5, and
+   `transform` here would silently overwrite those. `translate` composes with
+   them instead. */
 .parallax-layer {
   --px: 0;
   --py: 0;
-  transform: translate3d(calc(var(--px) * var(--depth, 0px)), calc(var(--py) * var(--depth, 0px)), 0);
-  will-change: transform;
+  translate: calc(var(--px) * var(--depth, 0px)) calc(var(--py) * var(--depth, 0px));
+  will-change: translate;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -285,5 +293,5 @@
   }
 
   .reveal { opacity: 1; transform: none; }
-  .parallax-layer { transform: none !important; }
+  .parallax-layer { translate: none !important; }
 }
