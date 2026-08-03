@@ -148,13 +148,7 @@ export default function ProductPage() {
             <p className="eyebrow">{sack.sub}</p>
 
             <h1 className="mt-3 font-display text-display-xl text-ink">
-              <span
-                className="overprint"
-                data-text={sack.fullName}
-                style={{ '--mis-color': sack.accent, '--mis-x': '-3px', '--mis-y': '3px' }}
-              >
-                {sack.fullName}
-              </span>
+              {sack.fullName}
             </h1>
 
             <div className="mt-5 flex items-baseline gap-3">

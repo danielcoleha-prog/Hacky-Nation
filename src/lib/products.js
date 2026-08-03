@@ -111,7 +111,7 @@ export const SHIRTS = [
     // Back is shown first everywhere — it carries the PLAY WITH YOUR SACK.
     // print, which is the reason to want the tee. Front is the hover state.
     imageFront: '/img/products/shirt-white.webp',
-    imageBack: null,
+    imageBack: '/img/products/shirt-white-back.webp',
     desc: 'Unisex tee. Hacky Nation logo on the front chest, PLAY WITH YOUR SACK. across the back.',
     price: 20,
     colorway: 'White',
@@ -124,7 +124,7 @@ export const SHIRTS = [
     sub: 'BLACK · UNISEX · S–XXL',
     image: '/img/products/shirt-black.webp',
     imageFront: '/img/products/shirt-black.webp',
-    imageBack: null,
+    imageBack: '/img/products/shirt-black-back.webp',
     desc: 'Unisex tee. Hacky Nation logo on the front chest, PLAY WITH YOUR SACK. across the back.',
     price: 20,
     colorway: 'Black',
@@ -133,6 +133,14 @@ export const SHIRTS = [
 ];
 
 export const SIZES = ['S', 'M', 'L', 'XL', 'XXL'];
+
+/** Past custom builds, cycled wherever we show "what yours could look like". */
+export const CUSTOM_MOCKUPS = [
+  { src: '/img/customs/custom-1.webp', alt: 'Custom sack with a phoenix crest' },
+  { src: '/img/customs/custom-2.webp', alt: 'Custom sack in blue and red team colors' },
+  { src: '/img/customs/custom-3.webp', alt: 'Custom sack with a bulldog mascot' },
+  { src: '/img/customs/custom-4.webp', alt: 'Custom sack with a Beach Club patch' },
+];
 
 /** Flat lookup across everything sellable. */
 export const ALL_PRODUCTS = [...SACKS, MYSTERY_BAG, ...SHIRTS];

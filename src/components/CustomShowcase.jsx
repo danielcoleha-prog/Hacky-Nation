@@ -1,46 +1,31 @@
 import DiagonalMarqueeCarousel from './ui/DiagonalMarqueeCarousel';
-import CartoonButton from './ui/CartoonButton';
+import { CUSTOM_MOCKUPS } from '../lib/products';
 
 /**
- * Diagonal wall of past custom builds. Replaces the old bundle builder —
- * cross-selling now lives on the product page, where you are already looking
- * at a sack, rather than as a standalone configurator on the landing page.
+ * Purely visual band — a diagonal wall of past custom builds, no copy or CTA.
+ * The custom pitch itself lives in CustomBanner further down the page, so
+ * repeating a headline and button here just competed with it.
  *
  * Cards fall back to labelled placeholders until real photos are supplied;
  * pass a `cards` array of { id, url, title } to swap them in.
  */
-export default function CustomShowcase({ cards }) {
+const CARDS = CUSTOM_MOCKUPS.map((m, i) => ({
+  id: `custom-${i + 1}`,
+  url: m.src,
+  title: m.alt,
+  tone: ['#E8DBC3', '#DCE4F2', '#F2DCDC', '#EFE7CF'][i % 4],
+}));
+
+export default function CustomShowcase({ cards = CARDS }) {
   return (
     <section
       id="customs"
-      aria-labelledby="customs-heading"
+      aria-label="Custom builds we have made"
       className="relative overflow-hidden bg-paper"
     >
       <div className="relative h-[460px] w-full md:h-[560px]">
         <DiagonalMarqueeCarousel cards={cards} className="absolute inset-0 h-full w-full" />
 
-        {/* Centre plate keeps the headline legible over the moving cards. */}
-        <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center px-5">
-          <div className="pointer-events-auto max-w-lg border-2 border-ink bg-paper/95 px-7 py-8 text-center shadow-press backdrop-blur-sm md:px-10 md:py-10">
-            <p className="eyebrow">Made to order</p>
-            <h2 id="customs-heading" className="mt-3 font-display text-display-lg text-ink">
-              <span
-                className="overprint"
-                data-text="Customs we have made"
-                style={{ '--mis-color': 'var(--press-red)' }}
-              >
-                Customs we have made
-              </span>
-            </h2>
-            <p className="mx-auto mt-4 max-w-sm font-body text-body-md text-ink-soft">
-              Your colors, your panels, your patch. Send us what you want and we
-              will build it.
-            </p>
-            <div className="mt-7 flex justify-center">
-              <CartoonButton to="/custom" label="Build your own" color="bg-blue" />
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );

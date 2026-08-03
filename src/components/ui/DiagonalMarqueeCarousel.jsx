@@ -23,11 +23,18 @@ const PLACEHOLDER_CARDS = [
 
 function Card({ card, cardClassName = '' }) {
   const isPlaceholder = !card.url;
+  /* Product shots are transparent cutouts, so they get contained on a tinted
+     panel; `cover` would crop the sack out of its own card. */
+  const isCutout = card.cutout !== false && !isPlaceholder;
 
   return (
     <div
       className={`group relative h-[190px] w-[260px] shrink-0 overflow-hidden rounded-xl border-2 border-ink shadow-press-sm md:h-[230px] md:w-[320px] ${cardClassName}`}
-      style={isPlaceholder ? { backgroundColor: card.tone || 'var(--press-ink)' } : undefined}
+      style={
+        isPlaceholder || isCutout
+          ? { backgroundColor: card.tone || 'var(--press-paper-deep, #E8DBC3)' }
+          : undefined
+      }
     >
       {isPlaceholder ? (
         <div className="flex h-full w-full flex-col items-center justify-center gap-2 px-4 text-center">
@@ -40,8 +47,14 @@ function Card({ card, cardClassName = '' }) {
         </div>
       ) : (
         <>
-          <img src={card.url} alt={card.title} loading="lazy" decoding="async" className="h-full w-full object-cover" />
-          <div className="absolute inset-0 bg-ink/25" />
+          <img
+            src={card.url}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className={`h-full w-full ${isCutout ? 'object-contain p-5' : 'object-cover'}`}
+          />
+          {!isCutout && <div className="absolute inset-0 bg-ink/25" />}
         </>
       )}
     </div>

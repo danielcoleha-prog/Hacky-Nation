@@ -125,6 +125,9 @@
      off behind the black, the way a screenprint drifts when the screens aren't
      perfectly aligned. Set --mis-x/--mis-y to taste; data-text carries a copy
      of the string for the pseudo-element. */
+  /* Misregistered ghost behind a headline. Reserved for LIGHT text on a dark
+     ground — over dark text on cream the offset copy reads as a 3D drop shadow
+     rather than a printing artefact, so those headings use plain type. */
   .overprint {
     position: relative;
     display: inline-block;

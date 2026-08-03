@@ -3,17 +3,17 @@ import SectionHeading from './SectionHeading';
 /**
  * Where you can buy the sacks in person. Replaces the old review wall.
  *
- * Slots are placeholders sized for real store logos — drop a `logo` (and
- * optional `href`) onto an entry and it renders the image instead of the
- * lettermark, with nothing else changing.
+ * Entries with a `logo` render the image in a solid frame; any without one
+ * fall back to a dashed placeholder slot. Add `href` to make a card clickable.
+ * The trailing "And more!" tile keeps the list from reading as exhaustive.
  */
 const STOCKISTS = [
-  { id: 's1', name: 'Store name' },
-  { id: 's2', name: 'Store name' },
-  { id: 's3', name: 'Store name' },
-  { id: 's4', name: 'Store name' },
-  { id: 's5', name: 'Store name' },
-  { id: 's6', name: 'Store name' },
+  { id: 's1', name: "Shriver's", logo: '/img/stockists/logo-1.webp' },
+  { id: 's2', name: 'The Mod Hatter', logo: '/img/stockists/logo-2.webp' },
+  { id: 's3', name: 'Surf Shack LBI South', logo: '/img/stockists/logo-3.webp' },
+  { id: 's4', name: "Fisherman's Cove", logo: '/img/stockists/logo-4.webp' },
+  { id: 's5', name: 'Air Circus', logo: '/img/stockists/logo-5.webp' },
+  { id: 's6', name: 'Alpine', logo: '/img/stockists/logo-6.webp' },
 ];
 
 export default function Stockists() {
@@ -28,7 +28,7 @@ export default function Stockists() {
           aside="Carrying Hacky Nation? Get in touch and we'll add you here."
         />
 
-        <ul className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+        <ul className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7">
           {STOCKISTS.map((store) => {
             const inner = store.logo ? (
               <img
@@ -36,7 +36,7 @@ export default function Stockists() {
                 alt={store.name}
                 loading="lazy"
                 decoding="async"
-                className="max-h-14 w-auto object-contain"
+                className="max-h-16 w-auto max-w-full object-contain"
               />
             ) : (
               <div className="text-center">
@@ -59,18 +59,26 @@ export default function Stockists() {
                     {inner}
                   </a>
                 ) : (
-                  <div className="flex aspect-[4/3] items-center justify-center border-2 border-dashed border-ink/35 bg-paper-deep p-4">
+                  <div
+                    className={`flex aspect-[4/3] items-center justify-center bg-paper-deep p-4 ${
+                      store.logo ? 'border-2 border-ink' : 'border-2 border-dashed border-ink/35'
+                    }`}
+                  >
                     {inner}
                   </div>
                 )}
               </li>
             );
           })}
-        </ul>
 
-        <p className="mt-8 font-body text-body-sm text-ink-faint">
-          Store logos are placeholders — send them over and they'll go straight in.
-        </p>
+          {/* We sell through other shops too — this closes the grid rather than
+              implying the list is exhaustive. */}
+          <li className="reveal">
+            <div className="flex aspect-[4/3] items-center justify-center border-2 border-dashed border-ink/35 bg-paper-deep p-4">
+              <span className="font-display text-display-sm text-ink-soft">And more!</span>
+            </div>
+          </li>
+        </ul>
       </div>
     </section>
   );

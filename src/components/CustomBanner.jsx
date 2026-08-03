@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import Seal from './Seal';
-import FadingGallery from './ui/FadingGallery';
+import FadingSack from './ui/FadingSack';
 
 const STEPS = [
   { n: '01', label: 'Pick a pattern' },
@@ -79,16 +79,7 @@ export default function CustomBanner() {
             aria-hidden="true"
             className="absolute left-1/2 top-1/2 aspect-square w-[78%] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-dashed border-paper/25"
           />
-          <img
-            src="/img/products/patriot-sack.webp"
-            alt="A custom Hacky Nation suede footbag"
-            width={520}
-            height={520}
-            loading="lazy"
-            decoding="async"
-            className="relative h-auto w-full max-w-[340px] animate-bobble object-contain"
-            style={{ filter: 'drop-shadow(0 26px 30px rgba(0,0,0,0.5))' }}
-          />
+          <FadingSack className="relative mx-auto w-full max-w-[340px] animate-bobble" />
           <Seal
             variant="red"
             burst

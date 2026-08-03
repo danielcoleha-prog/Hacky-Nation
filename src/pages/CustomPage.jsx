@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Seal from '../components/Seal';
-import FadingGallery from '../components/ui/FadingGallery';
+import FadingSack from '../components/ui/FadingSack';
 
 /* Panel count is the only construction choice — the old "pattern" names were
    really just panel counts wearing different labels. */
 const PANEL_OPTIONS = [
-  { id: '14', label: '14 panels', panels: 14, hint: 'Tighter, more responsive' },
-  { id: '32', label: '32 panels', panels: 32, hint: 'Rounder, softer feel' },
+  { id: '14', label: '14 panels', panels: 14, hint: 'Softer, easier to stall' },
+  { id: '32', label: '32 panels', panels: 32, hint: 'Rounder and tighter, more responsive' },
 ];
 
 const COLORS = [
@@ -32,15 +32,19 @@ const QTY_RANGES = ['10-25', '26-50', '51-100', '100+'];
 
 const PATCHES = [
   { id: 'hacky-nation', label: 'Hacky Nation' },
-  { id: 'custom-text', label: 'Custom Text' },
+  { id: 'custom-logo', label: 'Your Logo' },
   { id: 'none', label: 'No Patch' },
 ];
+
+const LOGO_TYPES = 'image/png,image/jpeg,image/svg+xml';
+const LOGO_MAX_BYTES = 5 * 1024 * 1024;
 
 export default function CustomPage() {
   const [panelChoice, setPanelChoice] = useState(PANEL_OPTIONS[1].id);
   const [colors, setColors] = useState(['blue', 'red']);
   const [patch, setPatch] = useState(PATCHES[0].id);
-  const [text, setText] = useState('');
+  const [logo, setLogo] = useState(null);
+  const [logoError, setLogoError] = useState('');
   const [qty, setQty] = useState(QTY_RANGES[0]);
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -85,7 +89,7 @@ export default function CustomPage() {
       panels: String(activePanels.panels),
       colors: swatches.map((c) => c.label).join(', '),
       patch: PATCHES.find((p) => p.id === patch).label,
-      'patch-text': patch === 'custom-text' ? text : '',
+      'patch-logo': patch === 'custom-logo' && logo ? logo.name : '',
       quantity: qty,
       notes,
     });
@@ -118,13 +122,7 @@ export default function CustomPage() {
         <header className="mb-12 max-w-2xl">
           <p className="eyebrow">Custom Orders</p>
           <h1 className="mt-3 font-display text-display-xl text-ink">
-            <span
-              className="overprint"
-              data-text="Build your own"
-              style={{ '--mis-color': 'var(--press-blue)' }}
-            >
-              Build your own
-            </span>
+            Build your own
           </h1>
           <p className="mt-4 font-body text-body-lg text-ink-soft">
             Spec your sack below and we'll come back with a quote and a timeline.
@@ -143,16 +141,7 @@ export default function CustomPage() {
                 className="absolute left-1/2 top-1/2 aspect-square w-[58%] -translate-x-1/2 -translate-y-1/2 rounded-full transition-colors duration-300"
                 style={{ backgroundColor: swatches[0]?.hex || '#1B4FC4', opacity: 0.26 }}
               />
-              {/* Sized off the box height — a percentage width inside a
-                  content-sized track collapses to the image's natural size. */}
-              <img
-                src="/img/products/patriot-sack.webp"
-                alt="Reference photo of a Hacky Nation suede footbag"
-                width={700}
-                height={700}
-                decoding="async"
-                className="relative z-10 h-[68%] w-auto max-w-[80%] object-contain"
-              />
+              <FadingSack className="relative z-10 mx-auto w-[74%]" />
               <Seal
                 variant="red"
                 burst
@@ -162,10 +151,10 @@ export default function CustomPage() {
               />
             </div>
 
-            {/* The photo is a reference, not a render — say so plainly. */}
+            {/* These are real builds, not a render of the current spec. */}
             <p className="mt-3 font-body text-body-md text-ink-soft">
-              Reference photo. Your spec is summarised below — we'll send a real mockup
-              with your quote.
+              Customs we have made. Your spec is summarised below — we'll send a real
+              mockup with your quote.
             </p>
 
             <dl className="mt-5 card p-5">
@@ -197,20 +186,10 @@ export default function CustomPage() {
               <div className="flex justify-between gap-4 pt-2">
                 <dt className="label text-ink-soft">Patch</dt>
                 <dd className="font-display text-label-lg uppercase text-ink">
-                  {patch === 'custom-text' && text ? `“${text}”` : PATCHES.find((p) => p.id === patch).label}
+                  {patch === 'custom-logo' && logo ? logo.name : PATCHES.find((p) => p.id === patch).label}
                 </dd>
               </div>
             </dl>
-
-            {/* Past builds, cross-fading. Placeholders until the photos land. */}
-            <div className="mt-6">
-              <p className="label text-ink-soft">Customs we have made</p>
-              <FadingGallery
-                className="mt-3 aspect-[4/3] w-full border-2 border-ink shadow-press-sm"
-                placeholderCount={4}
-                label="Custom build"
-              />
-            </div>
           </div>
 
           {/* ---------- configurator ---------- */}
@@ -301,23 +280,46 @@ export default function CustomPage() {
                   ))}
                 </div>
 
-                {patch === 'custom-text' && (
+                {patch === 'custom-logo' && (
                   <div className="mt-4">
-                    <label
-                      htmlFor="patch-text"
-                      className="label text-ink-soft"
-                    >
-                      Patch text
+                    <label htmlFor="patch-logo" className="label text-ink-soft">
+                      Upload your logo
                     </label>
+
                     <input
-                      id="patch-text"
-                      type="text"
-                      maxLength={18}
-                      value={text}
-                      onChange={(e) => setText(e.target.value)}
-                      placeholder="YOUR TEXT"
-                      className="mt-2 w-full max-w-sm border-2 border-ink bg-paper px-4 py-3 font-body text-body-md text-ink focus:outline-none"
+                      id="patch-logo"
+                      type="file"
+                      accept={LOGO_TYPES}
+                      onChange={(e) => {
+                        const file = e.target.files?.[0] || null;
+                        if (!file) { setLogo(null); setLogoError(''); return; }
+                        if (file.size > LOGO_MAX_BYTES) {
+                          setLogo(null);
+                          setLogoError('That file is over 5MB — send a smaller one.');
+                          return;
+                        }
+                        setLogo(file);
+                        setLogoError('');
+                      }}
+                      className="mt-2 block w-full max-w-sm cursor-pointer border-2 border-ink bg-paper px-4 py-3 font-body text-body-md text-ink file:mr-4 file:cursor-pointer file:border-0 file:bg-ink file:px-3 file:py-1.5 file:font-body file:text-[12px] file:font-bold file:uppercase file:tracking-[0.06em] file:text-paper focus:outline-none"
                     />
+
+                    <p className="mt-2 font-body text-body-sm text-ink-faint">
+                      PNG, JPG or SVG, up to 5MB. A transparent PNG works best.
+                    </p>
+
+                    {logoError && (
+                      <p role="alert" className="mt-2 label text-red">{logoError}</p>
+                    )}
+
+                    {logo && (
+                      <p className="mt-2 flex items-center gap-2 font-body text-body-sm text-ink-soft">
+                        <span className="material-symbols-outlined text-[17px] text-blue" aria-hidden="true">
+                          check_circle
+                        </span>
+                        {logo.name}
+                      </p>
+                    )}
                   </div>
                 )}
               </fieldset>

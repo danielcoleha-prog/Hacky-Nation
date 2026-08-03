@@ -28,16 +28,20 @@ export default function Community() {
         />
 
         <div className="mt-12 grid gap-6 lg:mt-16 lg:grid-cols-[1.35fr_0.65fr]">
-          {/* the one real photo, framed at close to native resolution */}
+          {/* Looping clip. Muted + playsInline are what make autoplay legal on
+              iOS and Chrome; the poster covers the gap before the first frame
+              decodes, and preload="none" keeps it off the critical path. */}
           <figure className="reveal relative border-2 border-ink bg-ink shadow-press">
-            <img
-              src="/lifestyle/beach-lineup.webp"
-              alt="Four Hacky Nation suede footbags lined up on the sand at the beach"
-              width={1000}
-              height={562}
-              loading="lazy"
-              decoding="async"
-              className="aspect-[16/9] w-full object-cover"
+            <video
+              src="/video/in-the-wild.mp4"
+              poster="/video/in-the-wild-poster.webp"
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="none"
+              aria-label="Hacky Nation sacks being played in the wild"
+              className="aspect-video w-full object-cover"
             />
             <figcaption className="flex items-center justify-between gap-4 border-t-2 border-ink bg-paper px-5 py-3.5">
               <span className="label text-ink">The lineup, in the wild</span>

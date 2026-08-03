@@ -36,19 +36,18 @@ export default function FAQ() {
         />
 
         <div className="mx-auto mt-12 max-w-3xl lg:mt-16">
-          {FAQS.map((item, i) => (
+          {FAQS.map((item) => (
             <details
               key={item.q}
               className="reveal group border-b-2 border-ink first:border-t-2 [&_summary::-webkit-details-marker]:hidden"
             >
               <summary className="flex cursor-pointer list-none items-center gap-5 py-5">
-                <span
-                  className="font-display text-label-caps text-blue"
-                  aria-hidden="true"
-                >
-                  {String(i + 1).padStart(2, '0')}
+                {/* Questions use the body face, not the display face: every one
+                    ends in a "?", which Newake has no glyph for — set in the
+                    display face the mark alone falls back to Archivo. */}
+                <span className="flex-1 font-body text-[1.15rem] font-semibold leading-snug text-ink md:text-[1.3rem]">
+                  {item.q}
                 </span>
-                <span className="flex-1 font-display text-display-md text-ink">{item.q}</span>
                 <span
                   className="material-symbols-outlined shrink-0 text-ink transition-transform duration-300 group-open:rotate-45"
                   aria-hidden="true"
@@ -56,7 +55,7 @@ export default function FAQ() {
                   add
                 </span>
               </summary>
-              <p className="max-w-2xl pb-6 pl-[3.1rem] font-body text-body-md text-ink-soft">
+              <p className="max-w-2xl pb-6 font-body text-body-md text-ink-soft">
                 {item.a}
               </p>
             </details>

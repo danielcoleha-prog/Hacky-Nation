@@ -37,9 +37,7 @@ export default function SectionHeading({
           <div>
             {kicker && <p className="eyebrow mb-2.5">{kicker}</p>}
             <Tag id={id} className="font-display text-display-xl text-ink">
-              <span className="overprint" data-text={title} style={{ '--mis-color': misColor }}>
-                {title}
-              </span>
+              {title}
             </Tag>
           </div>
         </div>
