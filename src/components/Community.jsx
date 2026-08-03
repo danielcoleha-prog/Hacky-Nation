@@ -21,7 +21,6 @@ export default function Community() {
     >
       <div className="mx-auto max-w-site px-5 md:px-8">
         <SectionHeading
-          index="04"
           kicker="The nation"
           title="@hacky_nation"
           mis="blue"
@@ -42,11 +41,11 @@ export default function Community() {
             />
             <figcaption className="flex items-center justify-between gap-4 border-t-2 border-ink bg-paper px-5 py-3.5">
               <span className="label text-ink">The lineup, in the wild</span>
-              <span className="label text-ink-faint">Haddonfield, NJ</span>
+              
             </figcaption>
 
             <Seal
-              variant="yellow"
+              variant="red"
               burst
               size="md"
               lines={['IN THE', 'WILD']}
@@ -63,7 +62,7 @@ export default function Community() {
                 style={{ '--dot': '#F2E9D8' }}
               />
               <div className="relative">
-                <p className="eyebrow text-yellow">Get featured</p>
+                <p className="eyebrow text-red">Get featured</p>
                 <p className="mt-4 font-display text-display-md text-paper">
                   Post your circle. Tag us.
                 </p>
@@ -78,8 +77,7 @@ export default function Community() {
               {STATS.map((s) => (
                 <div key={s.label} className="bg-ink px-2 py-3 text-center">
                   <dd
-                    className="font-display text-[1.35rem] leading-none text-paper"
-                    style={{ fontVariationSettings: "'wght' 900, 'wdth' 92" }}
+                    className="font-numeric text-[1.35rem] leading-none text-paper"
                   >
                     {s.value}
                   </dd>

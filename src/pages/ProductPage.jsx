@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
-import { getSack, SACKS, formatPrice, SACK_BUNDLE_PRICE } from '../lib/products';
+import { getProduct, isSack, SACKS, SIZES, formatPrice, SACK_BUNDLE_PRICE } from '../lib/products';
 import { useCart } from '../lib/CartContext';
 import { useReveal } from '../lib/useReveal';
 import Seal from '../components/Seal';
@@ -9,19 +9,29 @@ const SPECS = (sack) => [
   { k: 'Panels', v: sack.panels },
   { k: 'Material', v: 'Premium suede' },
   { k: 'Fill', v: 'Weighted pellet' },
-  { k: 'Made', v: 'By hand, USA' },
+  { k: 'Made', v: 'By hand' },
 ];
 
 export default function ProductPage() {
   const { id } = useParams();
-  const sack = getSack(id);
+  /* Resolves any sellable product, not just sacks — the tees and mystery bag
+     have their own pages now and share this template. */
+  const sack = getProduct(id);
   const { addItem } = useCart();
   const [qty, setQty] = useState(1);
+  const [size, setSize] = useState(null);
+  const [sizeError, setSizeError] = useState(false);
+  /* Tees lead with the back (the PLAY WITH YOUR SACK. print); everything else
+     has a single view. */
+  const [showFront, setShowFront] = useState(false);
   useReveal([id]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     setQty(1);
+    setSize(null);
+    setSizeError(false);
+    setShowFront(false);
   }, [id]);
 
   useEffect(() => {
@@ -35,7 +45,18 @@ export default function ProductPage() {
 
   if (!sack) return <Navigate to="/" replace />;
 
-  const others = SACKS.filter((s) => s.id !== sack.id);
+  const others = SACKS.filter((s) => s.id !== sack.id).slice(0, 4);
+  const needsSize = Array.isArray(sack.sizes) || sack.id.startsWith('shirt');
+  const isASack = isSack(sack.id);
+
+  function handleAdd() {
+    if (needsSize && !size) {
+      setSizeError(true);
+      return;
+    }
+    setSizeError(false);
+    addItem(sack.id, needsSize ? { qty, size } : { qty });
+  }
 
   return (
     <main className="paper-grain relative bg-paper">
@@ -44,7 +65,7 @@ export default function ProductPage() {
           <ol className="flex items-center gap-2 label text-ink-faint">
             <li><Link to="/" className="transition-colors hover:text-blue">Home</Link></li>
             <li aria-hidden="true">/</li>
-            <li><Link to="/shop" className="transition-colors hover:text-blue">Sacks</Link></li>
+            <li><Link to="/shop" className="transition-colors hover:text-blue">Shop</Link></li>
             <li aria-hidden="true">/</li>
             <li className="text-ink">{sack.name}</li>
           </ol>
@@ -66,32 +87,59 @@ export default function ProductPage() {
                   />
                 </>
               )}
-              <img
-                src={sack.image}
-                alt={`${sack.fullName} — ${sack.sub.toLowerCase()}`}
-                width={900}
-                height={900}
-                fetchPriority="high"
-                decoding="async"
-                className={
-                  sack.cutout === false
-                    ? 'h-full w-full object-cover'
-                    : 'relative z-10 h-[72%] w-auto max-w-[82%] object-contain'
-                }
-                style={
-                  sack.cutout === false
-                    ? undefined
-                    : { filter: 'drop-shadow(0 26px 30px rgba(20,17,13,0.3))' }
-                }
-              />
+              {needsSize && !showFront && !sack.imageBack ? (
+                <div className="relative z-10 flex flex-col items-center gap-3 px-8 text-center">
+                  <span className="material-symbols-outlined text-[38px] text-ink-faint" aria-hidden="true">
+                    add_a_photo
+                  </span>
+                  <span className="label text-ink-faint">Back photo placeholder</span>
+                  <span className="font-body text-body-sm text-ink-faint">PLAY WITH YOUR SACK.</span>
+                </div>
+              ) : (
+                <img
+                  src={needsSize ? (showFront ? sack.imageFront || sack.image : sack.imageBack || sack.image) : sack.image}
+                  alt={`${sack.fullName} — ${needsSize ? (showFront ? 'front' : 'back') : sack.sub.toLowerCase()}`}
+                  width={900}
+                  height={900}
+                  fetchPriority="high"
+                  decoding="async"
+                  className="relative z-10 h-[72%] w-auto max-w-[82%] object-contain"
+                  style={{ filter: 'drop-shadow(0 26px 30px rgba(16,26,46,0.3))' }}
+                />
+              )}
             </div>
 
+            {/* Tees only — a real toggle rather than hover, since this is the
+                page where you decide, and hover is unavailable on touch. */}
+            {needsSize && (
+              <div className="mt-4 flex gap-2" role="group" aria-label="Choose view">
+                {[
+                  { key: 'back', label: 'Back', on: !showFront },
+                  { key: 'front', label: 'Front', on: showFront },
+                ].map((view) => (
+                  <button
+                    key={view.key}
+                    type="button"
+                    onClick={() => setShowFront(view.key === 'front')}
+                    aria-pressed={view.on}
+                    className={`flex-1 border-2 border-ink px-4 py-2.5 label transition-colors ${
+                      view.on ? 'bg-ink text-paper' : 'bg-paper text-ink hover:bg-paper-deep'
+                    }`}
+                  >
+                    {view.label}
+                  </button>
+                ))}
+              </div>
+            )}
+
             <Seal
-              variant={sack.preorder ? 'yellow' : 'blue'}
+              variant={sack.preorder ? 'red' : 'blue'}
               burst
               size="lg"
               lines={sack.preorder ? ['PRE', 'ORDER'] : ['IN', 'STOCK']}
-              className="absolute -bottom-5 -left-4 rotate-[-9deg]"
+              /* Tees add a Back/Front toggle under the image, which the
+                 bottom-left anchor would collide with — sit above it there. */
+              className={`absolute rotate-[-9deg] ${needsSize ? '-left-4 -top-5' : '-bottom-5 -left-4'}`}
             />
           </div>
 
@@ -111,8 +159,7 @@ export default function ProductPage() {
 
             <div className="mt-5 flex items-baseline gap-3">
               <span
-                className="font-display text-[2.6rem] leading-none tabular-nums text-ink"
-                style={{ fontVariationSettings: "'wght' 900, 'wdth' 95" }}
+                className="font-numeric text-[2.6rem] leading-none text-ink"
               >
                 {formatPrice(sack.price)}
               </span>
@@ -125,6 +172,7 @@ export default function ProductPage() {
 
             <p className="mt-5 max-w-md font-body text-body-lg text-ink-soft">{sack.desc}</p>
 
+            {isASack && (
             <dl className="mt-7 grid grid-cols-2 gap-px border-2 border-ink bg-ink/15 sm:grid-cols-4">
               {SPECS(sack).map((spec) => (
                 <div key={spec.k} className="bg-paper px-3 py-3">
@@ -135,7 +183,9 @@ export default function ProductPage() {
                 </div>
               ))}
             </dl>
+            )}
 
+            {sack.colors && (
             <div className="mt-6">
               <p className="label text-ink-faint">Colorway</p>
               <div className="mt-2.5 flex gap-2">
@@ -149,6 +199,32 @@ export default function ProductPage() {
                 ))}
               </div>
             </div>
+            )}
+
+            {/* size picker — tees only, and required before adding */}
+            {needsSize && (
+              <div className="mt-6">
+                <p className="label text-ink-faint">Size</p>
+                <div className="mt-2.5 flex flex-wrap gap-2">
+                  {SIZES.map((s2) => (
+                    <button
+                      key={s2}
+                      type="button"
+                      onClick={() => { setSize(s2); setSizeError(false); }}
+                      aria-pressed={size === s2}
+                      className={`h-11 min-w-[3rem] border-2 border-ink px-3 label transition-colors ${
+                        size === s2 ? 'bg-ink text-paper' : 'bg-paper text-ink hover:bg-paper-deep'
+                      }`}
+                    >
+                      {s2}
+                    </button>
+                  ))}
+                </div>
+                {sizeError && (
+                  <p role="alert" className="mt-2.5 label text-red">Pick a size first</p>
+                )}
+              </div>
+            )}
 
             <div className="mt-8 flex flex-wrap items-stretch gap-3">
               <div className="flex items-center border-2 border-ink bg-paper">
@@ -160,7 +236,7 @@ export default function ProductPage() {
                 >
                   −
                 </button>
-                <span className="w-11 text-center font-display text-[15px] tabular-nums" aria-live="polite">
+                <span className="w-11 text-center font-numeric text-[15px]" aria-live="polite">
                   {qty}
                 </span>
                 <button
@@ -175,17 +251,19 @@ export default function ProductPage() {
 
               <button
                 type="button"
-                onClick={() => addItem(sack.id, { qty })}
+                onClick={handleAdd}
                 className="btn-primary min-w-[220px] flex-1 py-4"
               >
                 Add to cart — {formatPrice(sack.price * qty)}
               </button>
             </div>
 
+            {isASack && (
             <p className="mt-4 flex items-center gap-2.5 border-2 border-blue bg-blue px-4 py-3 label leading-[1.7] text-paper">
               <span className="material-symbols-outlined text-[17px]" aria-hidden="true">sell</span>
               Buy 2 or more sacks — {formatPrice(SACK_BUNDLE_PRICE)} each
             </p>
+            )}
 
             <p className="mt-4 font-body text-body-sm text-ink-soft">
               {sack.preorder ? 'Currently in production · ships in ~3 weeks · ' : 'Ready to ship · '}
@@ -196,45 +274,62 @@ export default function ProductPage() {
           </div>
         </div>
 
-        {/* ---------- other sacks ---------- */}
+        {/* ---------- add another sack ----------
+            The cross-sell that replaced the old standalone bundle builder.
+            Each card adds straight to the cart without leaving this page, so
+            reaching the 2-sack price never costs you the product you were
+            already looking at. The name still links through for anyone who
+            wants the full page instead. */}
         <section aria-labelledby="more-heading" className="mt-20 border-t-2 border-ink pt-6 md:mt-28">
-          <div className="flex items-end justify-between gap-4">
-            <h2 id="more-heading" className="font-display text-display-lg text-ink">
-              More sacks
-            </h2>
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <h2 id="more-heading" className="font-display text-display-lg text-ink">
+                Add another sack
+              </h2>
+              <p className="mt-2 font-body text-body-md text-ink-soft">
+                Any 2 sacks drop to {formatPrice(SACK_BUNDLE_PRICE)} each — mix any colorways.
+              </p>
+            </div>
             <Link to="/shop" className="label text-blue underline underline-offset-4">
-              See all
+              Shop all
             </Link>
           </div>
 
           <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-5">
             {others.map((other) => (
-              <Link
-                key={other.id}
-                to={`/sacks/${other.id}`}
-                className="reveal card card-hover group p-3"
-              >
-                <div className="relative flex h-[8.5rem] items-center justify-center overflow-hidden border-2 border-ink bg-paper-deep">
-                  {other.cutout !== false && (
-                    <div aria-hidden="true" className="dotfield pointer-events-none absolute inset-0 opacity-[0.12]" />
-                  )}
+              <article key={other.id} className="reveal card group flex flex-col p-3">
+                <Link
+                  to={`/sacks/${other.id}`}
+                  className="relative flex h-[8.5rem] items-center justify-center overflow-hidden border-2 border-ink bg-paper-deep"
+                >
+                  <div aria-hidden="true" className="dotfield pointer-events-none absolute inset-0 opacity-[0.12]" />
                   <img
                     src={other.image}
-                    alt=""
+                    alt={other.fullName}
                     width={200}
                     height={200}
                     loading="lazy"
                     decoding="async"
-                    className={
-                      other.cutout === false
-                        ? 'h-full w-full object-cover transition-transform duration-300 group-hover:scale-110'
-                        : 'relative h-24 w-24 object-contain transition-transform duration-300 group-hover:scale-110'
-                    }
+                    className="relative h-24 w-24 object-contain transition-transform duration-300 group-hover:scale-110"
                   />
-                </div>
-                <p className="mt-3 font-display text-[14px] uppercase text-ink">{other.name}</p>
-                <p className="mt-0.5 font-body text-body-sm text-ink-soft">{formatPrice(other.price)}</p>
-              </Link>
+                </Link>
+
+                <Link
+                  to={`/sacks/${other.id}`}
+                  className="mt-3 font-display text-[14px] uppercase text-ink hover:text-blue"
+                >
+                  {other.name}
+                </Link>
+                <p className="mt-0.5 font-numeric text-body-sm text-ink-soft">{formatPrice(other.price)}</p>
+
+                <button
+                  type="button"
+                  onClick={() => addItem(other.id)}
+                  className="btn mt-3 w-full border-ink bg-paper px-3 py-2.5 text-[11px] hover:bg-ink hover:text-paper"
+                >
+                  Add to cart
+                </button>
+              </article>
             ))}
           </div>
         </section>

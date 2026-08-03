@@ -97,7 +97,7 @@ export const MYSTERY_BAG = {
   price: 10,
   compareAt: 14,
   preorder: false,
-  accent: '#F0A81B',
+  accent: '#D4402E',
 };
 
 /** Tees — size is required before these can be added to the cart. */
@@ -108,7 +108,11 @@ export const SHIRTS = [
     fullName: 'Hacky Nation Tee — White',
     sub: 'WHITE · UNISEX · S–XXL',
     image: '/img/products/shirt-white.webp',
-    desc: 'Heavyweight unisex tee. Hacky Nation logo on the front chest, PLAY WITH YOUR SACK. across the back.',
+    // Back is shown first everywhere — it carries the PLAY WITH YOUR SACK.
+    // print, which is the reason to want the tee. Front is the hover state.
+    imageFront: '/img/products/shirt-white.webp',
+    imageBack: null,
+    desc: 'Unisex tee. Hacky Nation logo on the front chest, PLAY WITH YOUR SACK. across the back.',
     price: 20,
     colorway: 'White',
     swatch: '#F1E8DA',
@@ -119,7 +123,9 @@ export const SHIRTS = [
     fullName: 'Hacky Nation Tee — Black',
     sub: 'BLACK · UNISEX · S–XXL',
     image: '/img/products/shirt-black.webp',
-    desc: 'Heavyweight unisex tee. Hacky Nation logo on the front chest, PLAY WITH YOUR SACK. across the back.',
+    imageFront: '/img/products/shirt-black.webp',
+    imageBack: null,
+    desc: 'Unisex tee. Hacky Nation logo on the front chest, PLAY WITH YOUR SACK. across the back.',
     price: 20,
     colorway: 'Black',
     swatch: '#16130E',

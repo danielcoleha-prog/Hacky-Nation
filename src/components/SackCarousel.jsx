@@ -1,16 +1,24 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { SACKS, formatPrice, SACK_BUNDLE_PRICE } from '../lib/products';
+import { Link, useNavigate } from 'react-router-dom';
+import { SACKS, formatPrice } from '../lib/products';
+import DotGridShader from './ui/DotGridShader';
+import CartoonButton from './ui/CartoonButton';
 
 /**
  * Coverflow lineup: every sack is on screen at once, the active one enlarged
- * over a colour disc, arrows either side. Sits on an ink band with torn top and
- * bottom edges so the black reads as a strip laid onto the paper rather than a
- * hard rectangle.
+ * over a colour disc, arrows either side.
+ *
+ * Clicking a side sack brings it to the centre; clicking the one already
+ * centred opens its product page — so a second click on what you're looking at
+ * always goes to buy it, and no click is ever a dead end.
+ *
+ * The band sits directly on the ink the TrustStrip ends on, with no torn edge
+ * between them: a rip there would put a cream seam between two black sections.
  */
 export default function SackCarousel() {
   const [index, setIndex] = useState(0);
   const touchStartX = useRef(null);
+  const navigate = useNavigate();
   const count = SACKS.length;
   const active = SACKS[index];
 
@@ -45,19 +53,21 @@ export default function SackCarousel() {
   });
 
   return (
-    <section id="shop" aria-labelledby="carousel-heading" className="relative bg-paper" onKeyDown={onKeyDown}>
-      <div aria-hidden="true" className="torn-top h-6 w-full bg-ink" />
-
+    <section id="shop" aria-labelledby="carousel-heading" className="relative bg-ink" onKeyDown={onKeyDown}>
       <div className="relative overflow-hidden bg-ink py-12 md:py-16">
+        {/* Animated dot-grid shader, sat well back so the products stay the
+            brightest thing in the section. */}
+        <DotGridShader className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.30]" />
+        {/* Static fallback for reduced-motion / no-WebGL, under the canvas. */}
         <div
           aria-hidden="true"
-          className="dotfield pointer-events-none absolute inset-0 opacity-[0.10]"
+          className="dotfield pointer-events-none absolute inset-0 -z-10 opacity-[0.10]"
           style={{ '--dot': '#F2E9D8' }}
         />
 
         <div className="relative mx-auto max-w-site px-5 md:px-8">
           <header className="reveal text-center">
-            <p className="eyebrow text-yellow">The lineup</p>
+            <p className="eyebrow text-red">The lineup</p>
             <h2 id="carousel-heading" className="mt-3 font-display text-display-xl text-paper">
               <span
                 className="overprint"
@@ -76,9 +86,7 @@ export default function SackCarousel() {
             onTouchEnd={onTouchEnd}
           >
             {/* the row is inset so the arrows sit outside it, never over a product */}
-            <ul
-              className="mx-auto flex h-[175px] w-[72%] items-center justify-center [--w-active:52%] [--w-near:24%] sm:h-[250px] sm:w-[78%] sm:[--w-active:32%] sm:[--w-near:19%] md:h-[300px] md:w-[80%]"
-            >
+            <ul className="mx-auto flex h-[175px] w-[72%] items-center justify-center [--w-active:52%] [--w-near:24%] sm:h-[250px] sm:w-[78%] sm:[--w-active:32%] sm:[--w-near:19%] md:h-[300px] md:w-[80%]">
               {ordered.map(({ sack, offset }) => {
                 const isActive = offset === 0;
                 const far = Math.abs(offset) >= 2;
@@ -97,17 +105,31 @@ export default function SackCarousel() {
                   >
                     <button
                       type="button"
-                      onClick={() => setIndex(SACKS.indexOf(sack))}
+                      onClick={() =>
+                        isActive ? navigate(`/sacks/${sack.id}`) : setIndex(SACKS.indexOf(sack))
+                      }
                       aria-current={isActive}
-                      aria-label={`${sack.fullName}, ${formatPrice(sack.price)}`}
+                      aria-label={
+                        isActive
+                          ? `Shop ${sack.fullName}, ${formatPrice(sack.price)}`
+                          : `Show ${sack.fullName}`
+                      }
                       className="group relative flex w-full items-center justify-center focus-visible:outline-none"
                     >
                       {isActive && (
-                        <span
-                          aria-hidden="true"
-                          className="absolute aspect-square w-[88%] rounded-full transition-colors duration-500"
-                          style={{ backgroundColor: sack.accent, opacity: 0.9 }}
-                        />
+                        <>
+                          {/* expanding ring, only while hovering the centre sack */}
+                          <span
+                            aria-hidden="true"
+                            className="absolute hidden aspect-square w-[88%] rounded-full border-2 opacity-0 group-hover:block group-hover:animate-ring-pulse motion-reduce:group-hover:animate-none"
+                            style={{ borderColor: sack.accent }}
+                          />
+                          <span
+                            aria-hidden="true"
+                            className="absolute aspect-square w-[88%] rounded-full transition-colors duration-500"
+                            style={{ backgroundColor: sack.accent, opacity: 0.9 }}
+                          />
+                        </>
                       )}
                       <img
                         src={sack.image}
@@ -117,8 +139,10 @@ export default function SackCarousel() {
                         loading="lazy"
                         decoding="async"
                         className={`relative w-full object-contain transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                          isActive ? 'scale-100' : 'scale-[0.86] group-hover:scale-95'
-                        } ${sack.cutout === false ? 'aspect-square rounded-full object-cover' : ''}`}
+                          isActive
+                            ? 'scale-100 group-hover:animate-sack-pulse motion-reduce:group-hover:animate-none'
+                            : 'scale-[0.86] group-hover:scale-95'
+                        }`}
                         style={{ filter: 'drop-shadow(0 18px 22px rgba(0,0,0,0.45))' }}
                       />
                     </button>
@@ -150,25 +174,24 @@ export default function SackCarousel() {
           <div className="mt-9 text-center" aria-live="polite">
             <h3 className="font-display text-display-lg text-paper">
               {active.name}
-              <span className="mx-3 inline-block h-2.5 w-2.5 translate-y-[-4px] rounded-full" style={{ backgroundColor: active.accent }} aria-hidden="true" />
-              <span className="text-paper/55">{formatPrice(active.price)}</span>
+              <span
+                className="mx-3 inline-block h-2.5 w-2.5 translate-y-[-4px] rounded-full"
+                style={{ backgroundColor: active.accent }}
+                aria-hidden="true"
+              />
+              <span className="font-numeric text-paper/55">{formatPrice(active.price)}</span>
             </h3>
             <p className="mx-auto mt-3 max-w-md font-body text-body-md text-paper/65">{active.desc}</p>
 
             <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-              <Link to={`/sacks/${active.id}`} className="btn border-paper bg-paper text-ink hover:-translate-x-[2px] hover:-translate-y-[2px]" style={{ boxShadow: '3px 3px 0 0 var(--press-blue)' }}>
-                Shop {active.name}
-                <span aria-hidden="true">→</span>
-              </Link>
-              <Link to="/shop" className="btn border-paper/40 bg-transparent text-paper hover:border-paper hover:bg-paper hover:text-ink">
-                See all {count}
+              <CartoonButton to={`/sacks/${active.id}`} label={`Shop ${active.name}`} color="bg-blue" />
+              <Link
+                to="/shop"
+                className="btn border-paper/40 bg-transparent text-paper hover:border-paper hover:bg-paper hover:text-ink"
+              >
+                Shop all
               </Link>
             </div>
-
-            <p className="mt-6 font-body text-body-sm text-paper/50">
-              Mix any 2 sacks and every one drops to{' '}
-              <span className="font-bold text-yellow">{formatPrice(SACK_BUNDLE_PRICE)}</span>
-            </p>
           </div>
         </div>
       </div>

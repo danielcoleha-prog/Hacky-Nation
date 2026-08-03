@@ -1,24 +1,34 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Seal from '../components/Seal';
+import FadingGallery from '../components/ui/FadingGallery';
 
-const PATTERNS = [
-  { id: 'flower', label: 'Flower', panels: 32 },
-  { id: 'classic', label: 'Classic', panels: 14 },
-  { id: 'wave', label: 'Wave', panels: 32 },
-  { id: 'pinwheel', label: 'Pinwheel', panels: 14 },
+/* Panel count is the only construction choice — the old "pattern" names were
+   really just panel counts wearing different labels. */
+const PANEL_OPTIONS = [
+  { id: '14', label: '14 panels', panels: 14, hint: 'Tighter, more responsive' },
+  { id: '32', label: '32 panels', panels: 32, hint: 'Rounder, softer feel' },
 ];
 
 const COLORS = [
   { id: 'blue', label: 'Blue', hex: '#1B4FC4' },
   { id: 'red', label: 'Red', hex: '#D23C2B' },
   { id: 'yellow', label: 'Yellow', hex: '#F0A81B' },
+  { id: 'orange', label: 'Orange', hex: '#D2661B' },
+  { id: 'purple', label: 'Purple', hex: '#7A4BC4' },
+  { id: 'teal', label: 'Teal', hex: '#1F8A8A' },
+  { id: 'maroon', label: 'Maroon', hex: '#8C2233' },
+  { id: 'navy', label: 'Navy', hex: '#152452' },
   { id: 'black', label: 'Black', hex: '#16130E' },
   { id: 'green', label: 'Green', hex: '#2E7D4F' },
   { id: 'sky', label: 'Sky', hex: '#6FB7E8' },
   { id: 'pink', label: 'Pink', hex: '#E07BA8' },
   { id: 'cream', label: 'Cream', hex: '#F1E8DA' },
 ];
+
+/* Customs run in batches, so the smallest order we can quote is 10. */
+export const CUSTOM_MIN_QTY = 10;
+const QTY_RANGES = ['10-25', '26-50', '51-100', '100+'];
 
 const PATCHES = [
   { id: 'hacky-nation', label: 'Hacky Nation' },
@@ -27,11 +37,13 @@ const PATCHES = [
 ];
 
 export default function CustomPage() {
-  const [pattern, setPattern] = useState(PATTERNS[0].id);
+  const [panelChoice, setPanelChoice] = useState(PANEL_OPTIONS[1].id);
   const [colors, setColors] = useState(['blue', 'red']);
   const [patch, setPatch] = useState(PATCHES[0].id);
   const [text, setText] = useState('');
-  const [qty, setQty] = useState('1-5');
+  const [qty, setQty] = useState(QTY_RANGES[0]);
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [notes, setNotes] = useState('');
   const [status, setStatus] = useState('idle');
@@ -55,7 +67,7 @@ export default function CustomPage() {
     );
   }
 
-  const activePattern = PATTERNS.find((p) => p.id === pattern);
+  const activePanels = PANEL_OPTIONS.find((p) => p.id === panelChoice);
   const swatches = colors.map((id) => COLORS.find((c) => c.id === id)).filter(Boolean);
 
   async function onSubmit(e) {
@@ -66,9 +78,11 @@ export default function CustomPage() {
     const body = new URLSearchParams({
       'form-name': 'custom-sack',
       'bot-field': '',
+      name,
       email,
-      pattern: activePattern.label,
-      panels: String(activePattern.panels),
+      phone,
+      pattern: activePanels.label,
+      panels: String(activePanels.panels),
       colors: swatches.map((c) => c.label).join(', '),
       patch: PATCHES.find((p) => p.id === patch).label,
       'patch-text': patch === 'custom-text' ? text : '',
@@ -138,7 +152,6 @@ export default function CustomPage() {
                 height={700}
                 decoding="async"
                 className="relative z-10 h-[68%] w-auto max-w-[80%] object-contain"
-                style={{ filter: 'drop-shadow(0 24px 28px rgba(20,17,13,0.3))' }}
               />
               <Seal
                 variant="red"
@@ -157,9 +170,9 @@ export default function CustomPage() {
 
             <dl className="mt-5 card p-5">
               <div className="flex justify-between gap-4 border-b-2 border-ink/10 pb-2">
-                <dt className="label text-ink-soft">Pattern</dt>
+                <dt className="label text-ink-soft">Panels</dt>
                 <dd className="font-display text-label-lg uppercase text-ink">
-                  {activePattern.label} · {activePattern.panels} panels
+                  {activePanels.label}
                 </dd>
               </div>
               <div className="flex items-center justify-between gap-4 border-b-2 border-ink/10 py-2">
@@ -188,12 +201,22 @@ export default function CustomPage() {
                 </dd>
               </div>
             </dl>
+
+            {/* Past builds, cross-fading. Placeholders until the photos land. */}
+            <div className="mt-6">
+              <p className="label text-ink-soft">Customs we have made</p>
+              <FadingGallery
+                className="mt-3 aspect-[4/3] w-full border-2 border-ink shadow-press-sm"
+                placeholderCount={4}
+                label="Custom build"
+              />
+            </div>
           </div>
 
           {/* ---------- configurator ---------- */}
           {status === 'done' ? (
             <div className="border-2 border-ink bg-blue p-8 text-paper">
-              <h2 className="font-display text-display-lg">Request sent.</h2>
+              <h2 className="font-display text-display-lg">Request sent</h2>
               <p className="mt-3 font-body text-body-lg text-paper/85">
                 We'll get back to you at {email} with a quote and a mockup, usually
                 within a couple of days.
@@ -206,25 +229,23 @@ export default function CustomPage() {
             <form onSubmit={onSubmit} name="custom-sack" className="flex flex-col gap-8">
               <fieldset>
                 <legend className="font-display text-display-md text-ink">
-                  1. Choose your pattern
+                  Choose your panels
                 </legend>
                 <div className="mt-3 flex flex-wrap gap-3">
-                  {PATTERNS.map((p) => (
+                  {PANEL_OPTIONS.map((p) => (
                     <button
                       key={p.id}
                       type="button"
-                      onClick={() => setPattern(p.id)}
-                      aria-pressed={pattern === p.id}
-                      className={`border-2 px-4 py-3 text-left transition-colors ${
-                        pattern === p.id
+                      onClick={() => setPanelChoice(p.id)}
+                      aria-pressed={panelChoice === p.id}
+                      className={`border-2 px-5 py-3 text-left transition-colors ${
+                        panelChoice === p.id
                           ? 'border-blue bg-blue text-paper'
                           : 'border-ink/30 text-ink hover:border-ink'
                       }`}
                     >
                       <span className="block font-display text-label-lg uppercase">{p.label}</span>
-                      <span className="block label opacity-70">
-                        {p.panels} panels
-                      </span>
+                      <span className="block label opacity-70">{p.hint}</span>
                     </button>
                   ))}
                 </div>
@@ -232,7 +253,7 @@ export default function CustomPage() {
 
               <fieldset>
                 <legend className="font-display text-display-md text-ink">
-                  2. Choose your colors
+                  Choose your colors
                 </legend>
                 <p className="mt-1 font-body text-body-md text-ink-soft">Pick up to three.</p>
                 <div className="mt-3 flex flex-wrap gap-3">
@@ -260,7 +281,7 @@ export default function CustomPage() {
 
               <fieldset>
                 <legend className="font-display text-display-md text-ink">
-                  3. Center patch
+                  Center patch
                 </legend>
                 <div className="mt-3 flex flex-wrap gap-3">
                   {PATCHES.map((p) => (
@@ -303,10 +324,13 @@ export default function CustomPage() {
 
               <fieldset>
                 <legend className="font-display text-display-md text-ink">
-                  4. How many?
+                  How many
                 </legend>
+                <p className="mt-1 font-body text-body-md text-ink-soft">
+                  Customs are made in batches — {CUSTOM_MIN_QTY} is the minimum order.
+                </p>
                 <div className="mt-3 flex flex-wrap gap-3">
-                  {['1-5', '6-25', '26-100', '100+'].map((range) => (
+                  {QTY_RANGES.map((range) => (
                     <button
                       key={range}
                       type="button"
@@ -326,10 +350,25 @@ export default function CustomPage() {
 
               <fieldset>
                 <legend className="font-display text-display-md text-ink">
-                  5. Your details
+                  Your details
                 </legend>
 
-                <label htmlFor="custom-email" className="mt-3 block label text-ink-soft">
+                <label htmlFor="custom-name" className="mt-3 block label text-ink-soft">
+                  Name
+                </label>
+                <input
+                  id="custom-name"
+                  type="text"
+                  name="name"
+                  required
+                  autoComplete="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Your name"
+                  className="mt-2 w-full max-w-md border-2 border-ink bg-paper px-4 py-3 font-body text-body-md text-ink focus:outline-none"
+                />
+
+                <label htmlFor="custom-email" className="mt-4 block label text-ink-soft">
                   Email
                 </label>
                 <input
@@ -341,6 +380,20 @@ export default function CustomPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@email.com"
+                  className="mt-2 w-full max-w-md border-2 border-ink bg-paper px-4 py-3 font-body text-body-md text-ink focus:outline-none"
+                />
+
+                <label htmlFor="custom-phone" className="mt-4 block label text-ink-soft">
+                  Phone <span className="opacity-60">(optional)</span>
+                </label>
+                <input
+                  id="custom-phone"
+                  type="tel"
+                  name="phone"
+                  autoComplete="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder="856-656-9491"
                   className="mt-2 w-full max-w-md border-2 border-ink bg-paper px-4 py-3 font-body text-body-md text-ink focus:outline-none"
                 />
 
@@ -366,7 +419,7 @@ export default function CustomPage() {
 
               <button
                 type="submit"
-                disabled={status === 'sending' || !colors.length}
+                disabled={status === 'sending' || !colors.length || !email}
                 className="btn-blue w-full disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {status === 'sending' ? 'Sending…' : 'Request A Quote'}

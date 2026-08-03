@@ -1,45 +1,32 @@
-const ITEMS = [
-  { icon: 'public', title: 'Play anywhere', sub: 'Indoors, outdoors, anywhere there is a circle' },
-  { icon: 'bolt', title: 'Built to last', sub: 'Premium suede panels, double-stitched' },
-  { icon: 'groups', title: 'Join the nation', sub: 'Shipped to 48 states and counting' },
-];
-
+/**
+ * Short ink band bridging the hero and the lineup.
+ *
+ * The three claim blurbs are gone — the section is now purely a colour
+ * transition, fading the hero's cream down into the ink the lineup sits on.
+ * It also no longer draws a torn bottom edge: the lineup begins on the same
+ * ink, so any rip here would just reintroduce a cream seam between two black
+ * sections.
+ */
 export default function TrustStrip() {
   return (
-    <section aria-label="Why shop Hacky Nation" className="relative bg-paper">
-      {/* Torn rip where the cream meets the ink band. Hidden at lg and up, where
-          the hero poster already ends in its own black torn edge — two stacked
-          rips read as a mistake. */}
-      <div aria-hidden="true" className="torn-top h-6 w-full bg-ink lg:hidden" />
+    <section aria-hidden="true" className="relative bg-paper">
+      {/* Only below lg — at lg and up the hero poster already ends in its own
+          black torn edge, and two stacked rips read as a mistake. */}
+      <div className="torn-top h-6 w-full lg:hidden" style={{ backgroundColor: '#0B0C0E' }} />
 
-      <div className="relative overflow-hidden bg-ink">
+      {/* The hero poster's torn edge is baked-in neutral black (#0B0C0E), but
+          the site's ink is midnight navy — butting them together shows a hard
+          seam. This band is the transition: it starts on the art's exact black
+          and resolves into navy before the lineup begins. */}
+      <div
+        className="relative h-20 w-full overflow-hidden md:h-24"
+        style={{ backgroundImage: 'linear-gradient(to bottom, #0B0C0E 0%, #0D1119 45%, var(--press-ink) 100%)' }}
+      >
         <div
-          aria-hidden="true"
           className="dotfield pointer-events-none absolute inset-0 opacity-[0.14]"
           style={{ '--dot': '#F2E9D8' }}
         />
-
-        <ul className="relative mx-auto grid max-w-site gap-px bg-paper/15 px-0 sm:grid-cols-3">
-          {ITEMS.map((item) => (
-            <li key={item.title} className="flex items-center gap-4 bg-ink px-5 py-6 md:px-8 md:py-8">
-              <span
-                className="material-symbols-outlined shrink-0 text-[26px] text-yellow"
-                aria-hidden="true"
-              >
-                {item.icon}
-              </span>
-              <span>
-                <span className="block font-display text-display-sm uppercase text-paper">
-                  {item.title}
-                </span>
-                <span className="mt-1 block font-body text-body-sm text-paper/60">{item.sub}</span>
-              </span>
-            </li>
-          ))}
-        </ul>
       </div>
-
-      <div aria-hidden="true" className="torn-bottom h-6 w-full bg-ink" />
     </section>
   );
 }

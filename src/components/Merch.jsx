@@ -1,158 +1,155 @@
-import { useState } from 'react';
-import { useCart } from '../lib/CartContext';
-import { SHIRTS, SIZES, MYSTERY_BAG, formatPrice } from '../lib/products';
+import { Link } from 'react-router-dom';
+import { SHIRTS, MYSTERY_BAG, formatPrice } from '../lib/products';
 import SectionHeading from './SectionHeading';
-import Seal from './Seal';
 
+/**
+ * Tees and the mystery bag.
+ *
+ * Shirts show the BACK first — that's the side with the PLAY WITH YOUR SACK.
+ * print, and the reason to want one — then flip to the front on hover/focus.
+ * Until back photography exists, `imageBack: null` renders a labelled
+ * placeholder in its slot rather than silently showing the front twice, which
+ * would make the flip look broken.
+ *
+ * Size selection moved to each product page, so the card stays a card and the
+ * whole grid links somewhere rather than half of it being a mini form.
+ */
 function ShirtCard({ shirt }) {
-  const { addItem } = useCart();
-  const [size, setSize] = useState(null);
-  const [error, setError] = useState(false);
-
-  function onAdd() {
-    if (!size) {
-      setError(true);
-      return;
-    }
-    setError(false);
-    addItem(shirt.id, { size });
-  }
+  const back = shirt.imageBack;
+  const front = shirt.imageFront || shirt.image;
 
   return (
-    <article className="reveal card card-hover flex flex-col">
-      <div className="relative grid place-content-center overflow-hidden border-b-2 border-ink bg-paper-deep p-6">
-        <div aria-hidden="true" className="dotfield pointer-events-none absolute inset-0 opacity-[0.12]" />
-        <img
-          src={shirt.image}
-          alt={`${shirt.fullName} — front`}
-          width={400}
-          height={400}
-          loading="lazy"
-          decoding="async"
-          className="relative h-52 w-full object-contain"
-        />
-        <span
-          className="absolute left-3 top-3 h-5 w-5 rounded-full border-2 border-ink"
-          style={{ backgroundColor: shirt.swatch }}
-          aria-hidden="true"
-        />
-      </div>
+    <article className="reveal card card-hover group flex flex-col">
+      <Link
+        to={`/sacks/${shirt.id}`}
+        className="relative block aspect-square overflow-hidden border-b-2 border-ink bg-paper-deep"
+        aria-label={`${shirt.fullName}, ${formatPrice(shirt.price)}`}
+      >
+        <span aria-hidden="true" className="dotfield pointer-events-none absolute inset-0 opacity-[0.12]" />
+
+        {/* back — the default view */}
+        <span className="absolute inset-0 flex items-center justify-center transition-opacity duration-300 group-hover:opacity-0 group-focus-within:opacity-0">
+          {back ? (
+            <img
+              src={back}
+              alt={`${shirt.fullName}, back`}
+              width={600}
+              height={600}
+              loading="lazy"
+              decoding="async"
+              className="h-full w-full object-contain p-5"
+            />
+          ) : (
+            <span className="flex h-full w-full flex-col items-center justify-center gap-2 px-6 text-center">
+              <span className="material-symbols-outlined text-[30px] text-ink-faint" aria-hidden="true">
+                add_a_photo
+              </span>
+              <span className="label text-ink-faint">Back photo placeholder</span>
+              <span className="font-body text-[11px] text-ink-faint">PLAY WITH YOUR SACK.</span>
+            </span>
+          )}
+        </span>
+
+        {/* front — hover / keyboard focus */}
+        <span className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100">
+          <img
+            src={front}
+            alt={`${shirt.fullName}, front`}
+            width={600}
+            height={600}
+            loading="lazy"
+            decoding="async"
+            className="h-full w-full object-contain p-5"
+          />
+        </span>
+
+        <span className="absolute bottom-3 left-3 z-10 border-2 border-ink bg-paper px-2 py-1 font-body text-[10px] font-bold uppercase tracking-[0.06em] text-ink">
+          Hover for front
+        </span>
+      </Link>
 
       <div className="flex flex-1 flex-col p-5">
-        <p className="eyebrow">{shirt.colorway} · Unisex</p>
-        <h3 className="mt-2 font-display text-display-md text-ink">{shirt.name}</h3>
-        <p
-          className="mt-1.5 font-display text-[1.35rem] leading-none text-ink"
-          style={{ fontVariationSettings: "'wght' 900, 'wdth' 100" }}
-        >
+        <div className="flex items-center gap-2">
+          <span
+            className="h-4 w-4 shrink-0 rounded-full border-2 border-ink"
+            style={{ backgroundColor: shirt.swatch }}
+            aria-hidden="true"
+          />
+          <span className="label text-ink-faint">{shirt.colorway}</span>
+        </div>
+
+        <h3 className="mt-2 font-display text-display-md text-ink">
+          <Link to={`/sacks/${shirt.id}`} className="hover:text-blue">{shirt.name}</Link>
+        </h3>
+
+        <p className="mt-2 font-numeric text-[1.35rem] leading-none text-ink">
           {formatPrice(shirt.price)}
         </p>
 
-        <fieldset className="mt-5">
-          <legend className="label text-ink-faint">Size</legend>
-          <div className="mt-2 flex flex-wrap gap-1.5">
-            {SIZES.map((s) => (
-              <button
-                key={s}
-                type="button"
-                onClick={() => {
-                  setSize(s);
-                  setError(false);
-                }}
-                aria-pressed={size === s}
-                className={`h-10 min-w-[42px] border-2 px-2 font-display text-label-caps uppercase transition-colors duration-150 ${
-                  size === s
-                    ? 'border-ink bg-ink text-paper'
-                    : 'border-ink/25 text-ink hover:border-ink'
-                }`}
-              >
-                {s}
-              </button>
-            ))}
-          </div>
-        </fieldset>
+        <p className="mt-3 font-body text-body-sm text-ink-soft">{shirt.desc}</p>
 
-        <p
-          role={error ? 'alert' : undefined}
-          className={`mt-2.5 label text-red transition-opacity duration-150 ${
-            error ? 'opacity-100' : 'pointer-events-none opacity-0'
-          }`}
-        >
-          Pick a size first
-        </p>
-
-        <button type="button" onClick={onAdd} className="btn-primary mt-auto w-full">
-          Add to cart
-        </button>
+        <Link to={`/sacks/${shirt.id}`} className="btn-primary mt-5">
+          Pick a size
+        </Link>
       </div>
     </article>
   );
 }
 
 export default function Merch() {
-  const { addItem } = useCart();
-
   return (
-    <section id="merch" className="relative border-t-2 border-ink bg-paper-deep py-16 md:py-24">
-      <div className="relative z-10 mx-auto max-w-site px-5 md:px-8">
-        <SectionHeading
-          index="02"
-          kicker="Wear it"
-          title="Sack merch"
-          mis="red"
-          aside="Heavyweight tees and one-of-one knit bags."
-        />
+    <section id="merch" aria-labelledby="merch-heading" className="paper-grain relative bg-paper">
+      <div className="relative mx-auto max-w-site px-5 py-16 md:px-8 md:py-24">
+        <SectionHeading title="Merch" id="merch-heading" mis="blue" />
 
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3">
+        <div className="mt-10 grid gap-6 md:grid-cols-3">
           {SHIRTS.map((shirt) => (
             <ShirtCard key={shirt.id} shirt={shirt} />
           ))}
 
-          {/* Mystery bag — no size, so it adds straight to the cart. */}
-          <article className="reveal card card-hover flex flex-col">
-            <div className="relative grid place-content-center overflow-hidden border-b-2 border-ink bg-yellow/30 p-6">
-              <div aria-hidden="true" className="dotfield pointer-events-none absolute inset-0 opacity-[0.12]" />
+          <article className="reveal card card-hover group flex flex-col">
+            <Link
+              to={`/sacks/${MYSTERY_BAG.id}`}
+              className="relative block aspect-square overflow-hidden border-b-2 border-ink bg-red/20"
+              aria-label={`${MYSTERY_BAG.fullName}, ${formatPrice(MYSTERY_BAG.price)}`}
+            >
+              <span aria-hidden="true" className="dotfield pointer-events-none absolute inset-0 opacity-[0.12]" />
               <img
                 src={MYSTERY_BAG.image}
                 alt={MYSTERY_BAG.fullName}
-                width={400}
-                height={400}
+                width={600}
+                height={600}
                 loading="lazy"
                 decoding="async"
-                className="relative h-52 w-full object-contain"
+                className="relative h-full w-full object-contain p-6 transition-transform duration-500 group-hover:scale-105"
               />
-              <Seal
-                variant="red"
-                burst
-                size="sm"
-                lines={['1 OF 1']}
-                className="absolute -right-2 -top-2 rotate-[12deg]"
-              />
-            </div>
+            </Link>
 
             <div className="flex flex-1 flex-col p-5">
-              <p className="eyebrow">Hand knit · Random colorway</p>
-              <h3 className="mt-2 font-display text-display-md text-ink">{MYSTERY_BAG.name}</h3>
-              <div className="mt-1.5 flex items-baseline gap-2">
-                <span
-                  className="font-display text-[1.35rem] leading-none text-ink"
-                  style={{ fontVariationSettings: "'wght' 900, 'wdth' 100" }}
-                >
+              <p className="label text-ink-faint">{MYSTERY_BAG.sub}</p>
+
+              <h3 className="mt-2 font-display text-display-md text-ink">
+                <Link to={`/sacks/${MYSTERY_BAG.id}`} className="hover:text-blue">
+                  {MYSTERY_BAG.name}
+                </Link>
+              </h3>
+
+              <div className="mt-2 flex items-baseline gap-2">
+                <span className="font-numeric text-[1.35rem] leading-none text-ink">
                   {formatPrice(MYSTERY_BAG.price)}
                 </span>
-                <span className="font-body text-body-sm text-ink-faint line-through">
-                  {formatPrice(MYSTERY_BAG.compareAt)}
-                </span>
+                {MYSTERY_BAG.compareAt > MYSTERY_BAG.price && (
+                  <span className="font-body text-body-sm text-ink-faint line-through">
+                    {formatPrice(MYSTERY_BAG.compareAt)}
+                  </span>
+                )}
               </div>
-              <p className="mt-4 font-body text-body-md text-ink-soft">{MYSTERY_BAG.desc}</p>
 
-              <button
-                type="button"
-                onClick={() => addItem(MYSTERY_BAG.id)}
-                className="btn-primary mt-auto w-full"
-              >
-                Add to cart
-              </button>
+              <p className="mt-3 font-body text-body-sm text-ink-soft">{MYSTERY_BAG.desc}</p>
+
+              <Link to={`/sacks/${MYSTERY_BAG.id}`} className="btn-primary mt-5">
+                View details
+              </Link>
             </div>
           </article>
         </div>

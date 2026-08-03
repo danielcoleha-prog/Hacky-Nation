@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
 import { useParallax } from '../lib/useParallax';
 import Seal from './Seal';
+import CartoonButton from './ui/CartoonButton';
 
 /**
  * Two posters, swapped by breakpoint — both bake the "Play With Your Sack."
@@ -21,22 +21,7 @@ import Seal from './Seal';
 export default function Hero() {
   const stageRef = useParallax();
 
-  const ctas = (
-    <>
-      <Link to="/shop" className="btn-primary group">
-        Shop the lineup
-        <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1">
-          →
-        </span>
-      </Link>
-      <Link to="/custom" className="btn-secondary group">
-        Build your own
-        <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1">
-          →
-        </span>
-      </Link>
-    </>
-  );
+  const ctas = <CartoonButton to="/shop" label="Shop the lineup" color="bg-blue" />;
 
   {/* Matches the nav's actual rendered height (h-11 logo + py-3 + border) —
       not a round number, and 2px narrower below lg than at lg because the
@@ -106,7 +91,7 @@ export default function Hero() {
               separately-anchored absolute blocks) means they can't overlap no
               matter how the cream band's width shifts with the art. */}
           <div
-            className="parallax-layer absolute bottom-[10%] left-[4%] flex flex-wrap items-center gap-4 animate-rise-in [animation-delay:200ms] xl:left-[5%]"
+            className="parallax-layer absolute bottom-[19%] left-[4%] flex flex-wrap items-center gap-4 animate-rise-in [animation-delay:200ms] xl:left-[5%]"
             style={{ '--depth': '4px' }}
           >
             {ctas}

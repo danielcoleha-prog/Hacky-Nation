@@ -4,10 +4,23 @@
 
 /* ===========================================================================
    Typefaces
-   Archivo (variable, wght + wdth) is the display voice — its width axis is what
-   lets it sit at the poster's heavy, moderately-condensed proportions.
-   Satoshi carries body copy.
+   Newake is the display voice — a heavy condensed poster face matching the
+   hero art. It is a DEMO cut containing letters and digits ONLY: no period,
+   comma, $, %, /, hyphen or dash. So anything with punctuation (prices,
+   "2 for $15", spec values) must NOT use .font-display, or the glyphs fall
+   back mid-word and the lockup breaks apart. Use .font-numeric for those.
+
+   PP Mori carries body copy and all small text.
+   Archivo is retained purely as Newake's fallback for missing glyphs.
    =========================================================================== */
+@font-face {
+  font-family: 'Newake';
+  src: url('/fonts/Newake.woff2') format('woff2');
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 @font-face {
   font-family: 'Archivo';
   src: url('/fonts/Archivo-Variable.woff2') format('woff2-variations');
@@ -18,27 +31,27 @@
 }
 
 @font-face {
-  font-family: 'Satoshi';
-  src: url('/fonts/Satoshi-400.woff2') format('woff2');
+  font-family: 'PP Mori';
+  src: url('/fonts/PPMori-200.woff2') format('woff2');
+  font-weight: 200;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'PP Mori';
+  src: url('/fonts/PPMori-400.woff2') format('woff2');
   font-weight: 400;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Satoshi';
-  src: url('/fonts/Satoshi-500.woff2') format('woff2');
-  font-weight: 500;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Satoshi';
-  src: url('/fonts/Satoshi-700.woff2') format('woff2');
-  font-weight: 700;
+  font-family: 'PP Mori';
+  src: url('/fonts/PPMori-600.woff2') format('woff2');
+  font-weight: 600;
   font-display: swap;
 }
 
 @layer base {
   :root {
-    --press-ink: #14110D;
+    --press-ink: #101A2E;
     --press-blue: #1B4FC4;
     --press-red: #D4402E;
     --press-yellow: #F0A81B;
@@ -55,14 +68,24 @@
     font-variant-ligatures: none;
   }
 
-  /* Display type is always the condensed heavy cut. The negative tracking that
-     makes the headline read as a poster also closes the word gaps to almost
-     nothing, so word-spacing is opened back up to compensate. */
+  /* Newake is a single weight, so there is no variation axis to set — the
+     poster weight is inherent to the face. Word-spacing is opened up because
+     the negative tracking that makes it read as a poster also closes the word
+     gaps to almost nothing. */
   .font-display {
-    font-variation-settings: 'wght' 900, 'wdth' 92;
     font-synthesis: none;
     text-transform: uppercase;
-    word-spacing: 0.1em;
+    word-spacing: 0.12em;
+  }
+
+  /* Numbers, prices and anything containing punctuation. Newake has no . , $ %
+     / or - at all, so this deliberately uses the body face rather than letting
+     half a price fall back to a different typeface mid-string. */
+  .font-numeric {
+    font-family: 'PP Mori', system-ui, sans-serif;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
   }
 
   ::selection {

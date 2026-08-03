@@ -4,7 +4,6 @@ import { SACKS, SHIRTS, MYSTERY_BAG, formatPrice, SACK_PRICE, SACK_BUNDLE_PRICE,
 import { useCart } from '../lib/CartContext';
 import { useReveal } from '../lib/useReveal';
 import SectionHeading from '../components/SectionHeading';
-import BundleBar from '../components/BundleBar';
 import Seal from '../components/Seal';
 
 function SackCard({ sack }) {
@@ -42,7 +41,7 @@ function SackCard({ sack }) {
 
         <span
           className={`absolute left-3 top-3 border-2 border-ink px-2 py-1 font-body text-[10px] font-bold uppercase tracking-[0.06em] ${
-            sack.preorder ? 'bg-yellow text-ink' : 'bg-blue text-paper'
+            sack.preorder ? 'bg-red text-paper' : 'bg-blue text-paper'
           }`}
         >
           {sack.preorder ? 'Pre-order' : 'In stock'}
@@ -62,8 +61,7 @@ function SackCard({ sack }) {
 
         <div className="mt-2 flex items-baseline gap-2">
           <span
-            className="font-display text-[1.35rem] leading-none text-ink"
-            style={{ fontVariationSettings: "'wght' 900, 'wdth' 100" }}
+            className="font-numeric text-[1.35rem] leading-none text-ink"
           >
             {formatPrice(sack.price)}
           </span>
@@ -133,9 +131,6 @@ export default function ShopPage() {
           ))}
         </div>
 
-        {/* ---------- bundle builder ---------- */}
-        <BundleBar className="mt-14" />
-
         {/* ---------- everything else ---------- */}
         <section aria-labelledby="more-heading" className="mt-16 border-t-2 border-ink pt-6 md:mt-24">
           <h2 id="more-heading" className="font-display text-display-lg text-ink">
@@ -160,9 +155,9 @@ export default function ShopPage() {
                   <p className="eyebrow">{p.sub}</p>
                   <h3 className="mt-1.5 font-display text-display-sm text-ink">{p.name}</h3>
                   <p className="mt-1 font-body text-body-md text-ink-soft">{formatPrice(p.price)}</p>
-                  <a href="/#merch" className="mt-2 inline-block label text-blue underline underline-offset-4">
-                    {p.id.startsWith('shirt') ? 'Pick a size' : 'Add to cart'}
-                  </a>
+                  <Link to={`/sacks/${p.id}`} className="mt-2 inline-block label text-blue underline underline-offset-4">
+                    {p.id.startsWith('shirt') ? 'Pick a size' : 'View details'}
+                  </Link>
                 </div>
               </article>
             ))}

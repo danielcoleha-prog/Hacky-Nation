@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Seal from './Seal';
 
 /**
  * Netlify Forms under an SPA: Netlify only detects forms in static HTML at
@@ -44,31 +43,21 @@ export default function Newsletter() {
         className="pointer-events-none absolute -right-20 -top-20 aspect-square w-72 rounded-full border-2 border-paper/25"
       />
 
-      {/* Anchored to the section, not the narrow centred column — inside the
-          column it floated into the middle of the blue. */}
-      <Seal
-        variant="yellow"
-        burst
-        size="md"
-        lines={['NO', 'SPAM']}
-        className="absolute bottom-8 right-6 rotate-[-14deg] md:bottom-12 md:right-16"
-      />
-
       <div className="relative z-10 mx-auto max-w-2xl px-5 text-center md:px-8">
-        <p className="eyebrow text-yellow">Newsletter</p>
+        <p className="eyebrow text-red">Newsletter</p>
 
         <h2 className="mt-4 font-display text-display-xl text-paper">
           <span
             className="overprint"
-            data-text="Join the circle."
+            data-text="Join the circle"
             style={{ '--mis-color': 'var(--press-ink)', '--mis-x': '4px', '--mis-y': '4px' }}
           >
-            Join the circle.
+            Join the circle
           </span>
         </h2>
 
         <p className="mx-auto mt-5 max-w-md font-body text-body-lg text-paper/75">
-          Drop alerts, restocks and the occasional discount code. No spam, ever.
+          Drop alerts, restocks and the occasional discount code.
         </p>
 
         {status === 'done' ? (
@@ -112,7 +101,7 @@ export default function Newsletter() {
         )}
 
         {status === 'error' && (
-          <p role="alert" className="mt-4 label text-yellow">
+          <p role="alert" className="mt-4 label text-red">
             Something went wrong — try again, or email buyhackynation@gmail.com
           </p>
         )}

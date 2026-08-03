@@ -50,7 +50,6 @@ export default function Seal({
             style={{
               fontSize: size === 'lg' ? '11px' : '9px',
               letterSpacing: '0.1em',
-              fontVariationSettings: "'wght' 800, 'wdth' 100",
             }}
           >
             {line}

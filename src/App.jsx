@@ -8,6 +8,7 @@ import StripeReturn from './components/StripeReturn';
 import ScrollToHash from './components/ScrollToHash';
 import Landing from './pages/Landing';
 import ShopPage from './pages/ShopPage';
+import AboutPage from './pages/AboutPage';
 import ProductPage from './pages/ProductPage';
 import CustomPage from './pages/CustomPage';
 import NotFound from './pages/NotFound';
@@ -29,6 +30,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/shop" element={<ShopPage />} />
+        <Route path="/about" element={<AboutPage />} />
         <Route path="/sacks/:id" element={<ProductPage />} />
         <Route path="/custom" element={<CustomPage />} />
         <Route path="*" element={<NotFound />} />

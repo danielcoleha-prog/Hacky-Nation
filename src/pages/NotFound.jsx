@@ -6,13 +6,13 @@ export default function NotFound() {
       <div className="relative z-10">
         <p
           className="font-display text-blue"
-          style={{ fontSize: 'clamp(5rem,18vw,11rem)', lineHeight: '0.8', fontVariationSettings: "'wght' 900, 'wdth' 88" }}
+          style={{ fontSize: 'clamp(5rem,18vw,11rem)', lineHeight: '0.8', }}
         >
           <span className="overprint" data-text="404" style={{ '--mis-color': 'var(--press-red)' }}>
             404
           </span>
         </p>
-        <h1 className="mt-5 font-display text-display-lg text-ink">Dropped it.</h1>
+        <h1 className="mt-5 font-display text-display-lg text-ink">Dropped it</h1>
         <p className="mx-auto mt-3 max-w-sm font-body text-body-lg text-ink-soft">
           That page isn't in the circle. Let's get you back.
         </p>

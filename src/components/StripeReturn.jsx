@@ -39,7 +39,7 @@ export default function StripeReturn() {
     <div
       role="status"
       className={`relative z-30 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 border-b-2 border-ink px-6 py-3 text-center font-display text-label-lg uppercase ${
-        isSuccess ? 'bg-blue text-paper' : 'bg-yellow text-ink'
+        isSuccess ? 'bg-blue text-paper' : 'bg-red text-paper'
       }`}
     >
       <span className="material-symbols-outlined text-[18px]" aria-hidden="true">

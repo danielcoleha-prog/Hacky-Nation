@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import Seal from './Seal';
+import FadingGallery from './ui/FadingGallery';
 
 const STEPS = [
   { n: '01', label: 'Pick a pattern' },
@@ -21,12 +22,12 @@ export default function CustomBanner() {
           a thin outlined ring keeps the geometry without muddying the ink. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -bottom-28 -left-16 aspect-square w-72 rounded-full border-2 border-yellow/30"
+        className="pointer-events-none absolute -bottom-28 -left-16 aspect-square w-72 rounded-full border-2 border-red/30"
       />
 
       <div className="relative z-10 mx-auto grid max-w-site items-center gap-12 px-5 md:px-8 lg:grid-cols-[1fr_0.85fr]">
         <div className="reveal">
-          <p className="eyebrow text-yellow">Custom orders</p>
+          <p className="eyebrow text-red">Custom orders</p>
 
           <h2 className="mt-4 font-display text-display-xl text-paper">
             <span
@@ -37,11 +38,11 @@ export default function CustomBanner() {
               Build your
             </span>
             <span
-              className="overprint block text-yellow"
-              data-text="own sack."
+              className="overprint block text-red"
+              data-text="own sack"
               style={{ '--mis-color': 'var(--press-red)' }}
             >
-              own sack.
+              own sack
             </span>
           </h2>
 
@@ -55,7 +56,6 @@ export default function CustomBanner() {
               <li key={step.n} className="flex items-baseline gap-2.5">
                 <span
                   className="font-display text-display-sm text-blue-light"
-                  style={{ fontVariationSettings: "'wght' 800, 'wdth' 100" }}
                 >
                   {step.n}
                 </span>

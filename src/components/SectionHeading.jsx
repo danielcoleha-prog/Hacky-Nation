@@ -29,7 +29,6 @@ export default function SectionHeading({
             <span
               aria-hidden="true"
               className="font-display text-display-sm text-blue"
-              style={{ fontVariationSettings: "'wght' 800, 'wdth' 100" }}
             >
               {index}
             </span>

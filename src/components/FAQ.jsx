@@ -29,7 +29,6 @@ export default function FAQ() {
     <section id="faq" className="relative border-t-2 border-ink bg-paper-deep py-16 md:py-24">
       <div className="mx-auto max-w-site px-5 md:px-8">
         <SectionHeading
-          index="06"
           kicker="Questions"
           title="Frequently asked"
           mis="blue"
@@ -45,7 +44,6 @@ export default function FAQ() {
               <summary className="flex cursor-pointer list-none items-center gap-5 py-5">
                 <span
                   className="font-display text-label-caps text-blue"
-                  style={{ fontVariationSettings: "'wght' 700, 'wdth' 100" }}
                   aria-hidden="true"
                 >
                   {String(i + 1).padStart(2, '0')}

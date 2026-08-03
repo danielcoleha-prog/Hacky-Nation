@@ -110,7 +110,7 @@ export default function CartDrawer() {
                     <p className="mt-1.5 flex items-center gap-2 font-body text-body-sm text-ink-soft">
                       {formatPrice(line.unitPrice)}
                       {line.discounted && (
-                        <span className="border border-ink bg-yellow px-1.5 py-0.5 font-display text-[9px] uppercase tracking-widest text-ink">
+                        <span className="border border-ink bg-red px-1.5 py-0.5 font-display text-[9px] uppercase tracking-widest text-paper">
                           Bundle
                         </span>
                       )}
@@ -126,7 +126,7 @@ export default function CartDrawer() {
                         >
                           −
                         </button>
-                        <span className="w-8 text-center font-display text-[13px] tabular-nums">
+                        <span className="w-8 text-center font-numeric text-[13px]">
                           {line.qty}
                         </span>
                         <button
@@ -150,8 +150,7 @@ export default function CartDrawer() {
                   </div>
 
                   <p
-                    className="font-display text-[15px] tabular-nums text-ink"
-                    style={{ fontVariationSettings: "'wght' 900, 'wdth' 100" }}
+                    className="font-numeric text-[15px] text-ink"
                   >
                     {formatPrice(line.lineTotal)}
                   </p>
@@ -180,8 +179,7 @@ export default function CartDrawer() {
             <div className="flex items-baseline justify-between">
               <span className="label text-ink-soft">Subtotal</span>
               <span
-                className="font-display text-[1.6rem] leading-none tabular-nums text-ink"
-                style={{ fontVariationSettings: "'wght' 900, 'wdth' 95" }}
+                className="font-numeric text-[1.6rem] leading-none text-ink"
               >
                 {formatPrice(subtotal)}
               </span>

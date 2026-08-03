@@ -5,7 +5,7 @@ import { useCart } from '../lib/CartContext';
 const LINKS = [
   { label: 'Shop', to: '/shop' },
   { label: 'Custom', to: '/custom' },
-  { label: 'Story', to: '/#why' },
+  { label: 'Story', to: '/about' },
   { label: 'Community', to: '/#community' },
 ];
 
@@ -48,7 +48,7 @@ export default function Nav({ overlay = false }) {
           </span>
           <span
             className="font-display text-[15px] uppercase leading-none text-ink"
-            style={{ fontVariationSettings: "'wght' 900, 'wdth' 92", letterSpacing: '-0.01em' }}
+            style={{ letterSpacing: '-0.01em' }}
           >
             Hacky
             <br />

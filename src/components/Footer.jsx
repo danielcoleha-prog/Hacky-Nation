@@ -29,21 +29,40 @@ export default function Footer() {
             </Link>
 
             <p className="mt-6 max-w-sm font-body text-body-md text-paper/60">
-              Handmade suede footbags built for good times. Cut, stitched and packed
-              one at a time in Haddonfield, New Jersey.
+              Handmade suede footbags built for good times.
             </p>
+
+            <ul className="mt-6 flex flex-col gap-2">
+              <li>
+                <a
+                  href="mailto:buyhackynation@gmail.com"
+                  className="inline-flex items-center gap-2.5 font-body text-body-md text-paper/75 transition-colors hover:text-paper"
+                >
+                  <span className="material-symbols-outlined text-[18px] text-red" aria-hidden="true">mail</span>
+                  buyhackynation@gmail.com
+                </a>
+              </li>
+              <li>
+                <a
+                  href="tel:+18566569491"
+                  className="inline-flex items-center gap-2.5 font-body text-body-md text-paper/75 transition-colors hover:text-paper"
+                >
+                  <span className="material-symbols-outlined text-[18px] text-red" aria-hidden="true">call</span>
+                  856-656-9491
+                </a>
+              </li>
+            </ul>
 
             <div className="mt-7 flex gap-3">
               {[
                 { label: 'Instagram', href: 'https://www.instagram.com/hacky_nation' },
-                { label: 'Pinterest', href: 'https://www.pinterest.com/hackynation' },
               ].map((s) => (
                 <a
                   key={s.label}
                   href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="border-2 border-paper/30 px-4 py-2.5 font-display text-label-caps uppercase transition-colors duration-150 hover:border-yellow hover:text-yellow"
+                  className="border-2 border-paper/30 px-4 py-2.5 font-display text-label-caps uppercase transition-colors duration-150 hover:border-red hover:text-red"
                 >
                   {s.label}
                 </a>
@@ -52,7 +71,7 @@ export default function Footer() {
           </div>
 
           <nav aria-label="Shop">
-            <h2 className="eyebrow text-yellow">Shop</h2>
+            <h2 className="eyebrow text-red">Shop</h2>
             <ul className="mt-5 flex flex-col gap-3">
               {SACKS.map((sack) => (
                 <li key={sack.id}>
@@ -82,7 +101,7 @@ export default function Footer() {
           </nav>
 
           <nav aria-label="Help">
-            <h2 className="eyebrow text-yellow">Help</h2>
+            <h2 className="eyebrow text-red">Help</h2>
             <ul className="mt-5 flex flex-col gap-3">
               {HELP.map((item) => (
                 <li key={item.label}>
@@ -98,19 +117,25 @@ export default function Footer() {
           </nav>
         </div>
 
-        {/* oversized wordmark, cropped by the footer edge */}
-        <div aria-hidden="true" className="pointer-events-none mt-16 overflow-hidden">
+        {/* Oversized wordmark. Sized in cqw against the footer's own width so
+            the whole sentence always fits — at a viewport-based clamp the line
+            ran past the right edge and "your sack." was cut off. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none mt-16 w-full"
+          style={{ containerType: 'inline-size' }}
+        >
           <p
-            className="whitespace-nowrap font-display leading-[0.78] text-paper/[0.07]"
-            style={{ fontSize: 'clamp(4rem, 16vw, 13rem)', fontVariationSettings: "'wght' 900, 'wdth' 88" }}
+            className="whitespace-nowrap font-display leading-[0.82] text-paper/[0.07]"
+            style={{ fontSize: 'min(9.6cqw, 13rem)' }}
           >
-            Play with your sack.
+            Play with your sack
           </p>
         </div>
 
         <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t-2 border-paper/15 pt-6">
           <p className="label text-paper/45">© {new Date().getFullYear()} Hacky Nation</p>
-          <p className="label text-paper/45">Handmade in the USA · Secure checkout by Stripe</p>
+          <p className="label text-paper/45">Secure checkout by Stripe</p>
         </div>
       </div>
     </footer>
