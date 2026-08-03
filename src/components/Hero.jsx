@@ -38,7 +38,12 @@ export default function Hero() {
     </>
   );
 
-  const heroClear = <div aria-hidden="true" className="h-20 w-full bg-paper md:h-24" />;
+  {/* Matches the nav's actual rendered height (h-11 logo + py-3 + border) —
+      not a round number, and 2px narrower below lg than at lg because the
+      nav's own box is 2px taller there. Anything taller leaves a visible
+      cream sliver between the nav and the art; anything shorter and the nav
+      clips into the headline. */}
+  const heroClear = <div aria-hidden="true" className="h-[72px] w-full bg-paper lg:h-[70px]" />;
 
   return (
     <section ref={stageRef} className="relative isolate bg-paper" aria-labelledby="hero-heading">

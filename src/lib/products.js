@@ -80,12 +80,9 @@ export const SACKS = [
     compareAt: 28,
     preorder: true,
     panels: 32,
-    colors: ['#1B4FC4', '#16130E', '#F1E8DA'],
-    accent: '#1B4FC4',
+    colors: ['#F1E8DA', '#152452', '#C8202F'],
+    accent: '#152452',
     badge: 'COLLAB',
-    // Not a transparent cutout — this one is a photograph on a light surface,
-    // so it's framed full-bleed instead of floated like the others.
-    cutout: false,
   },
 ];
 
