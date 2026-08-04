@@ -79,7 +79,15 @@ export default function CustomBanner() {
             aria-hidden="true"
             className="absolute left-1/2 top-1/2 aspect-square w-[78%] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-dashed border-paper/25"
           />
-          <FadingSack className="relative mx-auto w-full max-w-[340px] animate-bobble" />
+          {/* The sack itself is the obvious thing to click here, so it is a
+              real link to the builder rather than decoration. */}
+          <Link
+            to="/custom"
+            aria-label="Build your own custom sack"
+            className="group relative mx-auto block w-full max-w-[340px]"
+          >
+            <FadingSack className="animate-bobble transition-transform duration-300 group-hover:scale-[1.04]" />
+          </Link>
           <Seal
             variant="red"
             burst

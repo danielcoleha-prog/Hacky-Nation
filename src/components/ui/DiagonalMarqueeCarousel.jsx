@@ -25,7 +25,7 @@ function Card({ card, cardClassName = '' }) {
   const isPlaceholder = !card.url;
   /* Product shots are transparent cutouts, so they get contained on a tinted
      panel; `cover` would crop the sack out of its own card. */
-  const isCutout = card.cutout !== false && !isPlaceholder;
+  const isCutout = card.cutout === true && !isPlaceholder;
 
   return (
     <div
@@ -54,7 +54,7 @@ function Card({ card, cardClassName = '' }) {
             decoding="async"
             className={`h-full w-full ${isCutout ? 'object-contain p-5' : 'object-cover'}`}
           />
-          {!isCutout && <div className="absolute inset-0 bg-ink/25" />}
+          {!isCutout && <div className="absolute inset-0 bg-ink/12" />}
         </>
       )}
     </div>

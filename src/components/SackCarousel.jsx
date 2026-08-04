@@ -140,7 +140,7 @@ export default function SackCarousel() {
                         decoding="async"
                         className={`relative w-full object-contain transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                           isActive
-                            ? 'scale-100 group-hover:animate-sack-pulse motion-reduce:group-hover:animate-none'
+                            ? 'scale-100 group-hover:animate-sack-float motion-reduce:group-hover:animate-none'
                             : 'scale-[0.86] group-hover:scale-95'
                         }`}
                         style={{ filter: 'drop-shadow(0 18px 22px rgba(0,0,0,0.45))' }}

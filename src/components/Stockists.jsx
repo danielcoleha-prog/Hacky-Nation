@@ -1,11 +1,11 @@
 import SectionHeading from './SectionHeading';
 
 /**
- * Where you can buy the sacks in person. Replaces the old review wall.
+ * Where you can buy the sacks in person.
  *
- * Entries with a `logo` render the image in a solid frame; any without one
- * fall back to a dashed placeholder slot. Add `href` to make a card clickable.
- * The trailing "And more!" tile keeps the list from reading as exhaustive.
+ * Logos sit directly on the paper at a good size — no frames. They are flat
+ * black marks on transparent backgrounds, so boxing each one just added a
+ * competing rectangle and shrank the artwork inside it.
  */
 const STOCKISTS = [
   { id: 's1', name: "Shriver's", logo: '/img/stockists/logo-1.webp' },
@@ -24,59 +24,46 @@ export default function Stockists() {
           kicker="Stocked at"
           title="Find us in store"
           id="stockists-heading"
-          mis="blue"
           aside="Carrying Hacky Nation? Get in touch and we'll add you here."
         />
 
-        <ul className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7">
+        <ul className="mt-12 grid grid-cols-2 items-center gap-x-10 gap-y-12 sm:grid-cols-3 lg:grid-cols-4">
           {STOCKISTS.map((store) => {
-            const inner = store.logo ? (
+            const logo = (
               <img
                 src={store.logo}
                 alt={store.name}
                 loading="lazy"
                 decoding="async"
-                className="max-h-16 w-auto max-w-full object-contain"
+                /* Bounded on both axes: after trimming, these run from square
+                   badges to 3:1 wordmarks, so a fixed height alone would make
+                   the wide ones tower over the round ones. */
+                className="max-h-full max-w-full object-contain"
               />
-            ) : (
-              <div className="text-center">
-                <span className="material-symbols-outlined text-[26px] text-ink-faint" aria-hidden="true">
-                  storefront
-                </span>
-                <span className="mt-1.5 block label text-ink-faint">{store.name}</span>
-              </div>
             );
 
             return (
-              <li key={store.id} className="reveal">
+              <li key={store.id} className="reveal flex h-20 items-center justify-center md:h-24">
                 {store.href ? (
                   <a
                     href={store.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex aspect-[4/3] items-center justify-center border-2 border-ink bg-paper p-4 transition-all duration-150 hover:-translate-y-1 hover:shadow-press-sm"
+                    className="flex h-full w-full items-center justify-center transition-transform duration-200 hover:-translate-y-1"
                   >
-                    {inner}
+                    {logo}
                   </a>
                 ) : (
-                  <div
-                    className={`flex aspect-[4/3] items-center justify-center bg-paper-deep p-4 ${
-                      store.logo ? 'border-2 border-ink' : 'border-2 border-dashed border-ink/35'
-                    }`}
-                  >
-                    {inner}
-                  </div>
+                  logo
                 )}
               </li>
             );
           })}
 
-          {/* We sell through other shops too — this closes the grid rather than
-              implying the list is exhaustive. */}
-          <li className="reveal">
-            <div className="flex aspect-[4/3] items-center justify-center border-2 border-dashed border-ink/35 bg-paper-deep p-4">
-              <span className="font-display text-display-sm text-ink-soft">And more!</span>
-            </div>
+          {/* We sell through other shops too — this closes the list rather than
+              implying it is exhaustive. */}
+          <li className="reveal flex h-20 items-center justify-center md:h-24">
+            <span className="font-body text-[1.6rem] font-semibold text-ink-soft md:text-[1.9rem]">And more!</span>
           </li>
         </ul>
       </div>

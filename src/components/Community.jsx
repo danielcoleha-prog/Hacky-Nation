@@ -30,8 +30,10 @@ export default function Community() {
         <div className="mt-12 grid gap-6 lg:mt-16 lg:grid-cols-[1.35fr_0.65fr]">
           {/* Looping clip. Muted + playsInline are what make autoplay legal on
               iOS and Chrome; the poster covers the gap before the first frame
-              decodes, and preload="none" keeps it off the critical path. */}
-          <figure className="reveal relative border-2 border-ink bg-ink shadow-press">
+              decodes, and preload="none" keeps it off the critical path.
+              No frame or caption bar — the footage carries its own border, and
+              a second one around it just doubled the outline. */}
+          <figure className="reveal relative">
             <video
               src="/video/in-the-wild.mp4"
               poster="/video/in-the-wild-poster.webp"
@@ -41,13 +43,8 @@ export default function Community() {
               playsInline
               preload="none"
               aria-label="Hacky Nation sacks being played in the wild"
-              className="aspect-video w-full object-cover"
+              className="block aspect-video w-full object-cover"
             />
-            <figcaption className="flex items-center justify-between gap-4 border-t-2 border-ink bg-paper px-5 py-3.5">
-              <span className="label text-ink">The lineup, in the wild</span>
-              
-            </figcaption>
-
             <Seal
               variant="red"
               burst
@@ -68,7 +65,7 @@ export default function Community() {
               <div className="relative">
                 <p className="eyebrow text-red">Get featured</p>
                 <p className="mt-4 font-display text-display-md text-paper">
-                  Post your circle. Tag us.
+                  Post your circle and tag us
                 </p>
                 <p className="mt-3 font-body text-body-md text-paper/65">
                   We repost the best ones every week — sessions, stalls, festival
