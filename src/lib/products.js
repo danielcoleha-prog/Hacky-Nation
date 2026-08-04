@@ -50,7 +50,7 @@ export const SACKS = [
     desc: 'The Bulldawgs is a 14-panel suede foot bag in black and red. Tight panels for a consistent, responsive kick.',
     price: 17,
     compareAt: 20,
-    preorder: false,
+    preorder: true,
     panels: 14,
     colors: ['#16130E', '#D23C2B', '#F1E8DA'],
     accent: '#16130E',
@@ -78,7 +78,7 @@ export const SACKS = [
     desc: 'The official USASackLeague × Hacky Nation Pro Sack. Co-designed with USL for the circle — premium suede, tournament-grade panel construction, limited edition numbered run.',
     price: 20,
     compareAt: 28,
-    preorder: true,
+    preorder: false,
     panels: 32,
     colors: ['#F1E8DA', '#152452', '#C8202F'],
     accent: '#152452',
@@ -106,7 +106,7 @@ export const SHIRTS = [
     id: 'shirt-white',
     name: 'Hacky Nation Tee',
     fullName: 'Hacky Nation Tee — White',
-    sub: 'WHITE · UNISEX · S–XXL',
+    sub: 'WHITE · UNISEX · XL ONLY',
     image: '/img/products/shirt-white.webp',
     // Back is shown first everywhere — it carries the PLAY WITH YOUR SACK.
     // print, which is the reason to want the tee. Front is the hover state.
@@ -114,6 +114,7 @@ export const SHIRTS = [
     imageBack: '/img/products/shirt-white-back.webp',
     desc: 'Unisex tee. Hacky Nation logo on the front chest, PLAY WITH YOUR SACK. across the back.',
     price: 20,
+    sizes: ['XL'],
     colorway: 'White',
     swatch: '#F1E8DA',
   },
@@ -121,17 +122,20 @@ export const SHIRTS = [
     id: 'shirt-black',
     name: 'Hacky Nation Tee',
     fullName: 'Hacky Nation Tee — Black',
-    sub: 'BLACK · UNISEX · S–XXL',
+    sub: 'BLACK · UNISEX · XL ONLY',
     image: '/img/products/shirt-black.webp',
     imageFront: '/img/products/shirt-black.webp',
     imageBack: '/img/products/shirt-black-back.webp',
     desc: 'Unisex tee. Hacky Nation logo on the front chest, PLAY WITH YOUR SACK. across the back.',
     price: 20,
+    sizes: ['XL'],
     colorway: 'Black',
     swatch: '#16130E',
   },
 ];
 
+/* Full size run. Individual products can narrow it with their own `sizes`
+   array — the tees are XL-only at the moment. */
 export const SIZES = ['S', 'M', 'L', 'XL', 'XXL'];
 
 /** Past custom builds, cycled wherever we show "what yours could look like". */

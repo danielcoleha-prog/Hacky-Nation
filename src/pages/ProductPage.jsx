@@ -29,10 +29,10 @@ export default function ProductPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
     setQty(1);
-    setSize(null);
+    setSize(Array.isArray(sack?.sizes) && sack.sizes.length === 1 ? sack.sizes[0] : null);
     setSizeError(false);
     setShowFront(false);
-  }, [id]);
+  }, [id, sack]);
 
   useEffect(() => {
     if (!sack) return;
@@ -47,6 +47,9 @@ export default function ProductPage() {
 
   const others = SACKS.filter((s) => s.id !== sack.id).slice(0, 4);
   const needsSize = Array.isArray(sack.sizes) || sack.id.startsWith('shirt');
+  /* A product can narrow the run — the tees are XL-only right now, so offering
+     the full S–XXL would let people order sizes that don't exist. */
+  const sizeOptions = Array.isArray(sack.sizes) ? sack.sizes : SIZES;
   const isASack = isSack(sack.id);
 
   function handleAdd() {
@@ -200,7 +203,7 @@ export default function ProductPage() {
               <div className="mt-6">
                 <p className="label text-ink-faint">Size</p>
                 <div className="mt-2.5 flex flex-wrap gap-2">
-                  {SIZES.map((s2) => (
+                  {sizeOptions.map((s2) => (
                     <button
                       key={s2}
                       type="button"

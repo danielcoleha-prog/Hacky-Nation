@@ -152,6 +152,13 @@ export default function ShopPage() {
                   />
                 </div>
                 <div className="min-w-0">
+                  <span
+                    className={`mb-2 inline-block border-2 border-ink px-2 py-0.5 font-body text-[10px] font-bold uppercase tracking-[0.06em] ${
+                      p.preorder ? 'bg-red text-paper' : 'bg-blue text-paper'
+                    }`}
+                  >
+                    {p.preorder ? 'Pre-order' : 'In stock'}
+                  </span>
                   <p className="eyebrow">{p.sub}</p>
                   <h3 className="mt-1.5 font-display text-display-sm text-ink">{p.name}</h3>
                   <p className="mt-1 font-body text-body-md text-ink-soft">{formatPrice(p.price)}</p>
