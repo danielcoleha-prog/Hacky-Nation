@@ -6,6 +6,13 @@
 [functions]
   node_bundler = "esbuild"
 
+# Clean URL for the Brandon Dwyer pitch. Must precede the SPA catch-all, since
+# redirects are evaluated in order.
+[[redirects]]
+  from   = "/brandon"
+  to     = "/brandon.html"
+  status = 200
+
 # SPA fallback. Real files emitted into dist/ (returns.html, _headers, assets/…)
 # are served before this rule is evaluated, so static pages keep working.
 [[redirects]]

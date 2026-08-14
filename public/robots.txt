@@ -3,6 +3,9 @@
 
 User-agent: *
 Allow: /
+# Private partnership pitch — shared by link only.
+Disallow: /brandon
+Disallow: /brandon.html
 
 # --- AI / LLM crawlers (explicitly welcomed) ---
 User-agent: GPTBot

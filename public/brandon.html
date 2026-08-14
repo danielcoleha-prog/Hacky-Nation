@@ -1,0 +1,951 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>Hacky Nation &times; Brandon Dwyer &mdash; Partnership Idea</title>
+<meta name="description" content="A partnership idea for Brandon Dwyer from Hacky Nation: the Road to One Stall series, the Sack to School tournament, and a commission based offer." />
+
+<!-- Private pitch. Not for search results. -->
+<meta name="robots" content="noindex, nofollow, noarchive" />
+<link rel="canonical" href="https://hackynation.com/brandon" />
+
+<link rel="icon" type="image/png" href="/img/favicon.png" />
+<link rel="preload" as="font" type="font/woff2" href="/fonts/Newake.woff2" crossorigin />
+<link rel="preload" as="font" type="font/woff2" href="/fonts/PPMori-400.woff2" crossorigin />
+
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://hackynation.com/brandon" />
+<meta property="og:title" content="Hacky Nation &times; Brandon Dwyer" />
+<meta property="og:description" content="Road to One Stall, the Sack to School tournament, and 32 things we could make together." />
+<meta property="og:image" content="https://hackynation.com/img/og-brandon.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Play with your sack — a hand holding a Hacky Nation suede footbag" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Hacky Nation &times; Brandon Dwyer" />
+<meta name="twitter:description" content="Road to One Stall, the Sack to School tournament, and 32 things we could make together." />
+<meta name="twitter:image" content="https://hackynation.com/img/og-brandon.jpg" />
+</head>
+<body>
+<style>
+@font-face{font-family:'Newake';font-style:normal;font-weight:400;font-display:swap;
+  src:url('/fonts/Newake.woff2') format('woff2');}
+@font-face{font-family:'PP Mori';font-style:normal;font-weight:200;font-display:swap;
+  src:url('/fonts/PPMori-200.woff2') format('woff2');}
+@font-face{font-family:'PP Mori';font-style:normal;font-weight:400;font-display:swap;
+  src:url('/fonts/PPMori-400.woff2') format('woff2');}
+@font-face{font-family:'PP Mori';font-style:normal;font-weight:600;font-display:swap;
+  src:url('/fonts/PPMori-600.woff2') format('woff2');}
+
+
+
+
+
+
+/* ============================================================
+   TOKENS — lifted from the live hackynation.com design system
+   ============================================================ */
+:root{
+  --paper:#F2E9D8;
+  --paper-deep:#E8DBC3;
+  --ink:#101A2E;
+  --ink-soft:#4A5468;
+  --ink-faint:#7C879B;
+  --blue:#1B4FC4;
+  --red:#D4402E;
+
+  --ground:var(--paper);
+  --ground-alt:var(--paper-deep);
+  --text:var(--ink);
+  --text-soft:var(--ink-soft);
+  --text-faint:var(--ink-faint);
+  --rule:var(--ink);
+  --dot:rgba(27,79,196,.30);
+
+  --band-ink-bg:var(--ink);
+  --band-ink-text:var(--paper);
+  --band-ink-soft:rgba(242,233,216,.70);
+
+  --measure:64ch;
+  --gutter:clamp(1.25rem,5vw,4rem);
+}
+
+@media (prefers-color-scheme:dark){
+  :root{
+    --ground:#0B1220; --ground-alt:#101A2E;
+    --text:#F2E9D8; --text-soft:#B9C2D2; --text-faint:#7C879B;
+    --rule:#33405A; --dot:rgba(90,140,255,.26);
+    --blue:#5B8CFF; --red:#FF6A55;
+    --band-ink-bg:#060B14; --band-ink-text:#F2E9D8;
+    --band-ink-soft:rgba(242,233,216,.66);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0B1220; --ground-alt:#101A2E;
+  --text:#F2E9D8; --text-soft:#B9C2D2; --text-faint:#7C879B;
+  --rule:#33405A; --dot:rgba(90,140,255,.26);
+  --blue:#5B8CFF; --red:#FF6A55;
+  --band-ink-bg:#060B14; --band-ink-text:#F2E9D8;
+  --band-ink-soft:rgba(242,233,216,.66);
+}
+:root[data-theme="light"]{
+  --ground:#F2E9D8; --ground-alt:#E8DBC3;
+  --text:#101A2E; --text-soft:#4A5468; --text-faint:#7C879B;
+  --rule:#101A2E; --dot:rgba(27,79,196,.30);
+  --blue:#1B4FC4; --red:#D4402E;
+  --band-ink-bg:#101A2E; --band-ink-text:#F2E9D8;
+  --band-ink-soft:rgba(242,233,216,.70);
+}
+
+*{box-sizing:border-box;}
+
+body{
+  margin:0;
+  background:var(--ground);
+  color:var(--text);
+  font-family:'PP Mori',system-ui,sans-serif;
+  font-weight:400;
+  font-size:clamp(1rem,.96rem + .2vw,1.09rem);
+  line-height:1.68;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* Newake carries letters and digits only. Any headline with punctuation would
+   fall back mid-word, so display copy stays letters/digits and every symbol,
+   figure and aside is deliberately set in PP Mori instead. */
+.display{
+  font-family:'Newake',Impact,sans-serif;
+  overflow-wrap:break-word;
+  font-weight:400;
+  text-transform:uppercase;
+  line-height:.88;
+  letter-spacing:.005em;
+  word-spacing:.12em;
+  font-synthesis:none;
+  text-wrap:balance;
+  margin:0;
+}
+.num{font-variant-numeric:tabular-nums;font-weight:600;}
+
+h1.display{font-size:clamp(1.95rem,8.1vw,8rem);}
+h2.display{font-size:clamp(1.6rem,5.4vw,4.1rem);}
+h3.display{font-size:clamp(1.25rem,2.5vw,1.8rem);line-height:.98;}
+
+p{margin:0;max-width:var(--measure);}
+
+.eyebrow{
+  font-size:.72rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:.15em;color:var(--blue);margin:0;
+}
+.lead{
+  font-weight:200;
+  font-size:clamp(1.14rem,1rem + .55vw,1.5rem);
+  line-height:1.52;
+  color:var(--text-soft);
+}
+
+a{color:inherit;}
+a:focus-visible,button:focus-visible{outline:3px solid var(--blue);outline-offset:3px;}
+
+.wrap{max-width:78rem;margin-inline:auto;padding-inline:var(--gutter);}
+section{padding-block:clamp(3.25rem,7.5vw,6.5rem);}
+.stack{display:flex;flex-direction:column;gap:1.35rem;}
+.stack-sm{display:flex;flex-direction:column;gap:.6rem;}
+
+.band-alt{background:var(--ground-alt);}
+.band-ink{background:var(--band-ink-bg);color:var(--band-ink-text);}
+.band-ink .lead,.band-ink p{color:var(--band-ink-soft);}
+.band-ink .eyebrow{color:var(--red);}
+
+/* torn edge between bands — the paper rip from the live site */
+.rip{height:18px;width:100%;background:var(--band-ink-bg);
+  -webkit-mask:var(--rip-mask);mask:var(--rip-mask);}
+.rip-top{
+  --rip-mask:polygon(0 100%,100% 100%,100% 0,96% 62%,92% 12%,88% 70%,84% 22%,80% 66%,
+    76% 8%,72% 58%,68% 26%,64% 72%,60% 14%,56% 60%,52% 30%,48% 74%,44% 10%,40% 56%,
+    36% 24%,32% 68%,28% 16%,24% 64%,20% 28%,16% 70%,12% 12%,8% 58%,4% 20%,0 66%);
+}
+.rip-bottom{
+  --rip-mask:polygon(0 0,100% 0,100% 34%,96% 88%,92% 30%,88% 78%,84% 36%,80% 92%,
+    76% 28%,72% 84%,68% 40%,64% 76%,60% 32%,56% 90%,52% 26%,48% 82%,44% 38%,40% 74%,
+    36% 30%,32% 86%,28% 34%,24% 80%,20% 42%,16% 76%,12% 28%,8% 88%,4% 36%,0 78%);
+}
+
+.dots{
+  position:absolute;inset:0;
+  background-image:radial-gradient(var(--dot) 1.5px,transparent 1.6px);
+  background-size:11px 11px;pointer-events:none;
+}
+
+/* ---------------- cover ---------------- */
+.cover{position:relative;overflow:hidden;
+  padding-block:clamp(2.5rem,8vw,5.5rem) clamp(3rem,8vw,5.5rem);}
+.cover .dots{
+  -webkit-mask-image:linear-gradient(to left,#000,transparent 62%);
+  mask-image:linear-gradient(to left,#000,transparent 62%);opacity:.85;}
+.cover-inner{position:relative;}
+
+.masthead{
+  display:flex;flex-wrap:wrap;gap:.75rem 1.6rem;
+  align-items:baseline;justify-content:space-between;
+  border-bottom:2px solid var(--rule);
+  padding-bottom:.8rem;margin-bottom:clamp(1.75rem,4.5vw,3rem);
+}
+.masthead .brand{font-family:'Newake',Impact,sans-serif;text-transform:uppercase;
+  font-size:1.05rem;letter-spacing:.02em;}
+.masthead .meta{font-size:.72rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:.13em;color:var(--text-faint);overflow-wrap:anywhere;}
+
+h1.display .kicker{
+  display:block;font-size:clamp(.95rem,2.3vw,1.5rem);
+  color:var(--blue);margin-bottom:.4em;letter-spacing:.01em;
+}
+.punchline{
+  font-family:'PP Mori',system-ui,sans-serif;font-weight:200;
+  font-size:clamp(1.45rem,1.05rem + 2.5vw,3rem);
+  line-height:1.16;color:var(--red);margin:.55em 0 0;max-width:none;
+}
+.punchline .em{font-weight:600;}
+
+@media (prefers-reduced-motion:no-preference){
+  .reveal-beat{opacity:0;transform:translateY(14px);
+    animation:beat .62s cubic-bezier(.22,1,.36,1) .85s forwards;}
+  @keyframes beat{to{opacity:1;transform:none;}}
+}
+
+.disclaimer{
+  margin-top:2.2rem;font-size:.92rem;color:var(--text-faint);
+  border-left:3px solid var(--red);padding-left:.95rem;max-width:52ch;
+}
+
+.seal{
+  --sz:clamp(7.4rem,13vw,10rem);
+  width:var(--sz);height:var(--sz);
+  display:grid;place-items:center;text-align:center;
+  background:var(--red);color:#F2E9D8;
+  clip-path:polygon(50% 0,60% 8%,71% 3%,77% 14%,89% 13%,90% 25%,100% 32%,95% 43%,
+    100% 54%,90% 62%,92% 74%,80% 77%,76% 89%,64% 87%,55% 97%,45% 89%,34% 95%,
+    27% 84%,15% 84%,13% 72%,3% 65%,8% 54%,2% 43%,11% 36%,9% 24%,21% 20%,
+    24% 8%,36% 11%,44% 2%);
+  transform:rotate(-9deg);flex-shrink:0;
+}
+/* the burst's usable area is only ~56% of its box */
+.seal span{display:block;max-width:58%;
+  font-size:clamp(.5rem,.95vw,.62rem);font-weight:600;
+  text-transform:uppercase;letter-spacing:.07em;line-height:1.5;}
+
+.cover-foot{margin-top:clamp(2.2rem,5.5vw,3.5rem);
+  display:flex;flex-wrap:wrap;gap:1.75rem;align-items:center;justify-content:space-between;}
+
+/* ---------------- shared ---------------- */
+.section-head{display:flex;flex-direction:column;gap:.8rem;
+  margin-bottom:clamp(1.75rem,4vw,2.9rem);}
+
+.grid{display:grid;gap:1.25rem;}
+@media(min-width:640px){.g2{grid-template-columns:repeat(2,1fr);}}
+@media(min-width:900px){.g3{grid-template-columns:repeat(3,1fr);}}
+
+.card{border:2px solid var(--rule);background:var(--ground);
+  padding:1.3rem 1.35rem;display:flex;flex-direction:column;gap:.45rem;}
+.band-ink .card{border-color:rgba(242,233,216,.28);background:transparent;}
+.card .k{font-size:.7rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:.13em;color:var(--text-faint);}
+.band-ink .card .k{color:var(--band-ink-soft);}
+.card .v{font-size:clamp(1.5rem,3.2vw,2.15rem);font-weight:600;line-height:1.05;
+  font-variant-numeric:tabular-nums;}
+.card .note{font-size:.9rem;line-height:1.5;color:var(--text-soft);}
+.band-ink .card .note{color:var(--band-ink-soft);}
+
+.quote{border-left:4px solid var(--blue);padding-left:clamp(1rem,2.5vw,1.5rem);
+  font-weight:200;font-size:clamp(1.15rem,1rem + .75vw,1.65rem);
+  line-height:1.45;color:var(--text);max-width:56ch;}
+.band-ink .quote{color:var(--band-ink-text);border-color:var(--red);}
+.quote cite{display:block;margin-top:.7rem;font-size:.76rem;font-weight:600;
+  font-style:normal;text-transform:uppercase;letter-spacing:.13em;color:var(--text-faint);}
+.band-ink .quote cite{color:var(--band-ink-soft);}
+
+/* ---- the short version summary ---- */
+.summary{display:grid;gap:0;border-top:2px solid var(--rule);}
+.srow{display:grid;grid-template-columns:1fr;gap:.2rem;
+  padding:1.1rem 0;border-bottom:1px solid var(--rule);}
+@media(min-width:720px){
+  .srow{grid-template-columns:minmax(9rem,14rem) 1fr;gap:.25rem 2.5rem;align-items:baseline;}
+}
+.srow dt{font-size:.72rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:.13em;color:var(--blue);}
+.srow dd{margin:0;font-size:1rem;line-height:1.6;max-width:58ch;}
+
+/* ---- how it works steps ---- */
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:0;}
+.step{display:grid;grid-template-columns:2.2rem 1fr;gap:.15rem 1rem;
+  padding:1rem 0;border-top:1px solid var(--rule);align-items:start;}
+.band-alt .step{border-color:var(--rule);}
+.step-n{font-variant-numeric:tabular-nums;font-weight:600;
+  font-size:1.05rem;color:var(--blue);line-height:1.5;}
+.step-b{font-size:1rem;line-height:1.6;max-width:56ch;}
+
+/* ---- content bank roster ---- */
+.phase{margin-top:clamp(2rem,4.5vw,3.1rem);}
+.phase-head{display:flex;flex-wrap:wrap;gap:.4rem 1rem;align-items:baseline;
+  border-bottom:2px solid var(--rule);padding-bottom:.55rem;margin-bottom:1.2rem;}
+.band-ink .phase-head{border-color:rgba(242,233,216,.3);}
+.phase-when{font-size:.72rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:.13em;color:var(--blue);font-variant-numeric:tabular-nums;}
+
+.ideas{list-style:none;margin:0;padding:0;display:grid;gap:.1rem;}
+@media(min-width:820px){.ideas{grid-template-columns:1fr 1fr;gap:.1rem 2.5rem;}}
+.idea{display:grid;grid-template-columns:2.4rem 1fr;gap:.1rem .85rem;
+  padding:.8rem 0;border-top:1px solid var(--rule);align-items:start;}
+.band-ink .idea{border-color:rgba(242,233,216,.2);}
+.idea-n{font-variant-numeric:tabular-nums;font-weight:600;font-size:1.1rem;
+  line-height:1.35;color:var(--blue);}
+.idea-fmt{grid-column:2;font-size:.65rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:.14em;color:var(--text-faint);margin-bottom:.15rem;}
+.band-ink .idea-fmt{color:var(--band-ink-soft);}
+.idea-body{grid-column:2;font-size:.94rem;line-height:1.56;max-width:46ch;}
+.idea-body b{font-weight:600;}
+
+/* ---- timeline ---- */
+.timeline{list-style:none;margin:0;padding:0;}
+.tl{display:grid;grid-template-columns:minmax(6rem,auto) 1fr;gap:.2rem 1.35rem;
+  padding:.95rem 0;border-top:1px solid var(--rule);align-items:baseline;}
+.tl-when{font-variant-numeric:tabular-nums;font-weight:600;font-size:.8rem;
+  text-transform:uppercase;letter-spacing:.09em;color:var(--blue);}
+.tl-what{font-size:.97rem;max-width:56ch;}
+
+/* ---- deal ---- */
+.deal-hero{display:flex;flex-wrap:wrap;gap:1.4rem 3.25rem;align-items:flex-end;
+  border-bottom:2px solid rgba(242,233,216,.3);padding-bottom:1.7rem;margin-bottom:1.7rem;}
+.deal-fig{display:flex;flex-direction:column;gap:.3rem;}
+.deal-fig .n{font-size:clamp(2.9rem,8vw,5.4rem);font-weight:600;line-height:.85;
+  font-variant-numeric:tabular-nums;color:var(--band-ink-text);}
+.deal-fig .n .pct{font-size:.42em;vertical-align:.55em;margin-left:.06em;}
+.deal-fig .l{font-size:.72rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:.13em;color:var(--red);}
+
+.checks{list-style:none;margin:0;padding:0;display:grid;gap:.8rem;}
+.check{display:grid;grid-template-columns:1.3rem 1fr;gap:.8rem;align-items:start;}
+.check-m{color:var(--red);font-weight:600;line-height:1.55;}
+
+/* ---- contact ---- */
+.contact-grid{display:grid;gap:1.1rem;}
+@media(min-width:700px){.contact-grid{grid-template-columns:repeat(3,1fr);}}
+.contact-grid .k{font-size:.7rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:.13em;color:var(--text-faint);}
+.contact a{font-weight:600;text-decoration:none;border-bottom:2px solid var(--blue);
+  padding-bottom:1px;overflow-wrap:anywhere;}
+.contact a:hover{color:var(--blue);}
+
+footer{border-top:2px solid var(--rule);padding-block:1.9rem 3rem;
+  font-size:.79rem;color:var(--text-faint);}
+</style>
+
+<!-- ============================== COVER ============================== -->
+<header class="cover">
+  <div class="dots" aria-hidden="true"></div>
+  <div class="wrap cover-inner">
+
+    <div class="masthead">
+      <span class="brand">Hacky Nation</span>
+      <span class="meta">Partnership idea <span class="num">&middot; August 2026</span></span>
+    </div>
+
+    <h1 class="display">
+      <span class="kicker">One idea for how this could start</span>
+      Brandon Dwyer is retiring from basketball
+    </h1>
+
+    <p class="punchline reveal-beat">&hellip;for <span class="em">hacky sack.</span></p>
+
+    <p class="disclaimer">
+      To be clear, this is a pitch and not a press release. Nothing here is
+      decided, and none of it is real unless you want it to be. Think of it as
+      a starting point we would love your thoughts on.
+    </p>
+
+    <div class="cover-foot">
+      <p class="lead" style="max-width:40ch;">
+        A partnership idea for Brandon and his team, from a small suede footbag
+        brand that started this year.
+      </p>
+      <div class="seal" role="img" aria-label="Stamp reading: a pitch, not a press release">
+        <span>A pitch<br>not a<br>press release</span>
+      </div>
+    </div>
+
+  </div>
+</header>
+
+<!-- ============================== SHORT VERSION ============================== -->
+<section class="band-alt">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">If you only read one part</p>
+      <h2 class="display">The short version</h2>
+    </div>
+
+    <dl class="summary">
+      <div class="srow">
+        <dt>Who we are</dt>
+        <dd>Hacky Nation. Harrison and Pete, making suede footbags since April
+        2026, now stocked in shops across the US and Canada.</dd>
+      </div>
+      <div class="srow">
+        <dt>What we would love</dt>
+        <dd>An ongoing partnership rather than a single post, built around a
+        running series and a back to school tournament in the fall.</dd>
+      </div>
+      <div class="srow">
+        <dt>What you would earn</dt>
+        <dd>Twenty percent of every sale on your own code, with no cap, paid
+        monthly. Your followers get fifteen percent off.</dd>
+      </div>
+      <div class="srow">
+        <dt>Time from you</dt>
+        <dd>Short videos you could film on a phone. We handle the design,
+        production, shipping and admin.</dd>
+      </div>
+      <div class="srow">
+        <dt>What is flexible</dt>
+        <dd>Honestly, all of it. The creative, the timing and the terms are all
+        open to your input.</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<div class="rip rip-top" aria-hidden="true"></div>
+
+<!-- ============================== WHO WE ARE ============================== -->
+<section class="band-ink">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">First, the honest part</p>
+      <h2 class="display">We are new and we are moving quickly</h2>
+    </div>
+
+    <div class="stack" style="max-width:var(--measure);">
+      <p class="lead">
+        Harrison and Pete started Hacky Nation in April 2026, right as circles
+        started forming again in high schools and colleges around the country.
+        We design the sacks, have them manufactured, and in a few months we have
+        gone from a first run to shops across the US and Canada.
+      </p>
+      <p>
+        You have worked with SunnyD, Ritz and G FUEL, so we want to be upfront:
+        we cannot match that kind of budget. What we can offer instead
+        is a share of whatever you help build, and real say over how the whole
+        thing looks and sounds.
+      </p>
+      <p>
+        If that is not the right fit, there are genuinely no hard feelings. We
+        would still love to hear what you think either way.
+      </p>
+    </div>
+
+    <div class="grid g3" style="margin-top:2.4rem;">
+      <div class="card">
+        <span class="k">Founded</span>
+        <span class="v">April 2026</span>
+        <span class="note">By Harrison and Pete</span>
+      </div>
+      <div class="card">
+        <span class="k">Stocked in</span>
+        <span class="v">10+ shops</span>
+        <span class="note">Across the US and Canada, and still growing</span>
+      </div>
+      <div class="card">
+        <span class="k">A sack costs</span>
+        <span class="v">$17</span>
+        <span class="note">Or $15 each when you buy two or more</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="rip rip-bottom" aria-hidden="true"></div>
+
+<!-- ============================== WHY YOU ============================== -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Why we thought of you</p>
+      <h2 class="display">It started with road to one point</h2>
+    </div>
+
+    <div class="stack" style="max-width:var(--measure);">
+      <p class="lead">
+        It meant a lot that you liked the idea on the call. Here is what made us
+        think of you in the first place.
+      </p>
+      <p>
+        You built Mister Triple Zero out of a stat line that read zero, zero,
+        zero, and got nominated for Innovator of the Year at the NIL Summit for
+        it. Making people care about something that small is genuinely difficult,
+        and it is most of the job here.
+      </p>
+      <p>
+        You went four full seasons and eight appearances without a point, and
+        turned that into the thing a lot of people know you for. Road to One Point
+        worked because it was a long, honest, self deprecating grind toward a
+        target that sounds small until you are the one chasing it. Then you hit
+        two threes against New College of Florida in the opener, and the
+        announcement did about 2.8 million views.
+      </p>
+      <p>
+        That reads to us like a format rather than a one off. And it happens to be
+        almost exactly the shape of learning to play hacky sack.
+      </p>
+    </div>
+
+    <div class="quote" style="margin-top:2.2rem;">
+      Your audience already cares about someone being publicly bad at something
+      small and slowly getting better on camera, because you taught them to.
+      That happens to be exactly what learning hacky sack looks like.
+      <cite>The whole thought, in two sentences</cite>
+    </div>
+
+    <div class="grid g3" style="margin-top:2.4rem;">
+      <div class="card">
+        <span class="k">Timing</span>
+        <span class="v">March 2026</span>
+        <span class="note">Your college career wrapped up, so the next chapter is
+        open if you want one.</span>
+      </div>
+      <div class="card">
+        <span class="k">Reach, roughly</span>
+        <span class="v">2M</span>
+        <span class="note">Across TikTok, Instagram, YouTube and Snap, from public
+        figures</span>
+      </div>
+      <div class="card">
+        <span class="k">Audience</span>
+        <span class="v">Young athletes</span>
+        <span class="note">Much the same people already standing in these circles</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="rip rip-top" aria-hidden="true"></div>
+
+<!-- ============================== BIG IDEA ============================== -->
+<section class="band-ink">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">The main idea</p>
+      <h2 class="display">Road to one stall</h2>
+    </div>
+
+    <div class="stack" style="max-width:var(--measure);">
+      <p class="lead">
+        A follow up in the same spirit as the series that made you. Same format,
+        new sport, and this time it would be yours from the start.
+      </p>
+      <p>
+        A stall is when you catch the sack and hold it still on your foot. It
+        looks simple and it really is not. It is the trick most people chase
+        first, and it usually takes a while to land, which is what makes it
+        worth filming.
+      </p>
+      <p>
+        Each episode could be fifteen to twenty five seconds. One attempt, one
+        joke, ending on a running tally. Cheap to shoot, works anywhere, and
+        every episode gives people a reason to look for the next one.
+      </p>
+      <p>
+        You mentioned wanting something ongoing rather than a single post. A
+        running series felt like the most honest way to actually build that,
+        rather than just promising it.
+      </p>
+    </div>
+
+    <div class="grid g3" style="margin-top:2.4rem;">
+      <div class="card"><span class="k">Episode length</span><span class="v">15&ndash;25s</span></div>
+      <div class="card"><span class="k">Kit needed</span><span class="v">A phone</span></div>
+      <div class="card"><span class="k">Ends on</span><span class="v">The counter</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="rip rip-bottom" aria-hidden="true"></div>
+
+<!-- ============================== SACK TO SCHOOL ============================== -->
+<section class="band-alt">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">The fall campaign</p>
+      <h2 class="display">Sack to school</h2>
+    </div>
+
+    <p class="lead" style="max-width:var(--measure);">
+      A back to school clip tournament on Instagram. Schools send in their best
+      hacky sack clips, your followers vote in story polls, and the school that
+      wins gets custom sacks in their own school colors, with their logo on the
+      center patch.
+    </p>
+
+    <h3 class="display" style="margin-top:2.4rem;">How it would work</h3>
+    <ol class="steps" style="margin-top:1rem;">
+      <li class="step"><span class="step-n">1</span>
+        <span class="step-b">You post an announcement explaining the tournament
+        and what schools are playing for.</span></li>
+      <li class="step"><span class="step-n">2</span>
+        <span class="step-b">Schools send in clips by tagging you and us. We sort
+        and moderate everything that comes in.</span></li>
+      <li class="step"><span class="step-n">3</span>
+        <span class="step-b">We build a bracket from the best entries. You reveal
+        it however you like.</span></li>
+      <li class="step"><span class="step-n">4</span>
+        <span class="step-b">Your followers vote round by round in story polls,
+        which is the part Instagram does best.</span></li>
+      <li class="step"><span class="step-n">5</span>
+        <span class="step-b">The winning school gets custom sacks in their own
+        school colors, with their logo on the center patch.</span></li>
+    </ol>
+
+    <h3 class="display" style="margin-top:2.6rem;">Rough timing</h3>
+    <ol class="timeline" style="margin-top:1rem;">
+      <li class="tl"><span class="tl-when">Sept 1</span>
+        <span class="tl-what">Announcement, so schools know what they are playing for.</span></li>
+      <li class="tl"><span class="tl-when">September</span>
+        <span class="tl-what">Submissions open and start coming in.</span></li>
+      <li class="tl"><span class="tl-when">October</span>
+        <span class="tl-what">Bracket reveal, then story polls begin round by round.</span></li>
+      <li class="tl"><span class="tl-when">Late Oct</span>
+        <span class="tl-what">Semis and final, when schools tend to campaign hardest.</span></li>
+      <li class="tl"><span class="tl-when">November</span>
+        <span class="tl-what">Winner announced, sacks made and delivered.</span></li>
+    </ol>
+
+    <p style="margin-top:1.5rem;color:var(--text-soft);font-size:.95rem;">
+      These dates are a suggestion, not a schedule. We can move any of it to fit
+      what you already have planned.
+    </p>
+
+    <div class="grid g2" style="margin-top:2.4rem;">
+      <div class="card">
+        <span class="k">What we would ask of you</span>
+        <span style="font-weight:600;">Showing up on camera.</span>
+        <span class="note">The announcement, the bracket reveal, reactions, the
+        winner and the delivery.</span>
+      </div>
+      <div class="card">
+        <span class="k">What we would handle</span>
+        <span style="font-weight:600;">Everything behind it.</span>
+        <span class="note">Bracket graphics, poll copy, school outreach,
+        moderation, design, production, shipping, your code and monthly
+        reporting.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== CONTENT BANK ============================== -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Options to pick from</p>
+      <h2 class="display">32 things we could make</h2>
+    </div>
+
+    <p class="lead" style="max-width:var(--measure);">
+      These are options rather than expectations. They are numbered simply so it
+      is easy to point at the ones you like, and we would be just as happy if you
+      wanted to set the whole list aside and start somewhere else. Everything
+      here is built to sit inside what you already post.
+    </p>
+
+    <!-- PHASE 1 -->
+    <div class="phase">
+      <div class="phase-head">
+        <h3 class="display">The retirement</h3>
+        <span class="phase-when">Early September</span>
+      </div>
+      <ol class="ideas">
+        <li class="idea"><span class="idea-n">1</span><span class="idea-fmt">Reel</span>
+          <span class="idea-body"><b>The presser.</b> Table, mic, water bottle, jersey.
+          Full retirement announcement energy. After five years, you are hanging it up.
+          Beat. You pull out a sack. You are going pro in something else.</span></li>
+        <li class="idea"><span class="idea-n">2</span><span class="idea-fmt">Static</span>
+          <span class="idea-body"><b>The notes app statement.</b> The classic athlete
+          screenshot, straight faced the whole way, until the third paragraph turns out
+          to be about footbags.</span></li>
+        <li class="idea"><span class="idea-n">3</span><span class="idea-fmt">Story</span>
+          <span class="idea-body"><b>Should I retire.</b> A poll with two options, yes
+          and absolutely. Sets the bit up a day before the Reel lands.</span></li>
+        <li class="idea"><span class="idea-n">4</span><span class="idea-fmt">Reel</span>
+          <span class="idea-body"><b>I called my agent.</b> You recreate telling your
+          agent about the hacky sack idea, which we are told actually happened.</span></li>
+        <li class="idea"><span class="idea-n">5</span><span class="idea-fmt">Static</span>
+          <span class="idea-body"><b>The signing.</b> A contract signing photographed on
+          a folding table. We are happy to lean into being small.</span></li>
+        <li class="idea"><span class="idea-n">6</span><span class="idea-fmt">Reel</span>
+          <span class="idea-body"><b>Career stats.</b> A broadcast lower third, played
+          completely straight. Points 6. Rebounds 0. Assists 0. Stalls 0. Mister
+          Triple Zero has a fourth column to worry about now.</span></li>
+      </ol>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="phase">
+      <div class="phase-head">
+        <h3 class="display">Road to one stall</h3>
+        <span class="phase-when">Ongoing through the fall</span>
+      </div>
+      <ol class="ideas">
+        <li class="idea"><span class="idea-n">7</span><span class="idea-fmt">Reel</span>
+          <span class="idea-body"><b>Episode one.</b> Day one, going about as well as
+          day one usually does. Ends on the tally card.</span></li>
+        <li class="idea"><span class="idea-n">8</span><span class="idea-fmt">Reel</span>
+          <span class="idea-body"><b>The recurring episode.</b> One attempt, one joke,
+          always ending on the counter. This is the engine of the whole thing.</span></li>
+        <li class="idea"><span class="idea-n">9</span><span class="idea-fmt">Story</span>
+          <span class="idea-body"><b>Daily counter.</b> One frame, one big number. Free
+          to make, and keeps the run alive between episodes.</span></li>
+        <li class="idea"><span class="idea-n">10</span><span class="idea-fmt">Reel</span>
+          <span class="idea-body"><b>Teammates react.</b> Former FGCU guys watch you
+          attempt it and give you nothing but grief.</span></li>
+        <li class="idea"><span class="idea-n">11</span><span class="idea-fmt">Reel</span>
+          <span class="idea-body"><b>The combine.</b> A parody scouting combine. Vertical,
+          wingspan, official stall time, all measured very seriously.</span></li>
+        <li class="idea"><span class="idea-n">12</span><span class="idea-fmt">Reel</span>
+          <span class="idea-body"><b>Free throws versus stalls.</b> Sixty seconds each.
+          We have a guess about which one goes better.</span></li>
+        <li class="idea"><span class="idea-n">13</span><span class="idea-fmt">Reel</span>
+          <span class="idea-body"><b>Defensive stance.</b> You apply textbook basketball
+          defense to a hacky circle, entirely straight faced.</span></li>
+        <li class="idea"><span class="idea-n">14</span><span class="idea-fmt">Reel</span>
+          <span class="idea-body"><b>Campus ambush.</b> You ask strangers if they can do
+          it. Some of them can, which is the fun part.</span></li>
+        <li class="idea"><span class="idea-n">15</span><span class="idea-fmt">Story</span>
+          <span class="idea-body"><b>Rate my stall.</b> A slider sticker, which tends to
+          pull a lot of replies.</span></li>
+        <li class="idea"><span class="idea-n">16</span><span class="idea-fmt">Reel</span>
+          <span class="idea-body"><b>The payoff.</b> Whenever it happens. Your audience
+          already knows how to feel about a shot like that.</span></li>
+      </ol>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="phase">
+      <div class="phase-head">
+        <h3 class="display">Sack to school</h3>
+        <span class="phase-when">September to November</span>
+      </div>
+      <ol class="ideas">
+        <li class="idea"><span class="idea-n">17</span><span class="idea-fmt">Reel</span>
+          <span class="idea-body"><b>The announcement.</b> You explain the tournament.
+          Schools submit, followers vote, and the winner gets custom sacks in their
+          colors with their logo.</span></li>
+        <li class="idea"><span class="idea-n">18</span><span class="idea-fmt">Carousel</span>
+          <span class="idea-body"><b>How to enter.</b> Rules, dates and the hashtag. The
+          thing schools screenshot and send to each other.</span></li>
+        <li class="idea"><span class="idea-n">19</span><span class="idea-fmt">Story</span>
+          <span class="idea-body"><b>The poll brackets.</b> The core mechanic. Head to
+          head school matchups, running weekly.</span></li>
+        <li class="idea"><span class="idea-n">20</span><span class="idea-fmt">Reel</span>
+          <span class="idea-body"><b>Selection Sunday.</b> You read out the bracket like
+          a broadcast.</span></li>
+        <li class="idea"><span class="idea-n">21</span><span class="idea-fmt">Reel</span>
+          <span class="idea-body"><b>Submission reactions.</b> You react to the school
+          clips, which means the schools make most of the content.</span></li>
+        <li class="idea"><span class="idea-n">22</span><span class="idea-fmt">Story</span>
+          <span class="idea-body"><b>Countdown stickers</b> ahead of each bracket reveal.</span></li>
+        <li class="idea"><span class="idea-n">23</span><span class="idea-fmt">Carousel</span>
+          <span class="idea-body"><b>The bracket.</b> Updated each round, so there is a
+          reason to keep checking back.</span></li>
+        <li class="idea"><span class="idea-n">24</span><span class="idea-fmt">Reel</span>
+          <span class="idea-body"><b>The winner.</b> You announce the school.</span></li>
+        <li class="idea"><span class="idea-n">25</span><span class="idea-fmt">Reel</span>
+          <span class="idea-body"><b>The delivery.</b> You surprise the winning school
+          with their sacks. We think this would be the highlight of the whole
+          thing.</span></li>
+        <li class="idea"><span class="idea-n">26</span><span class="idea-fmt">Static</span>
+          <span class="idea-body"><b>Co branded winner post.</b> Their school colors,
+          their logo, your caption.</span></li>
+      </ol>
+    </div>
+
+    <!-- PHASE 4 -->
+    <div class="phase">
+      <div class="phase-head">
+        <h3 class="display">Whenever it suits</h3>
+        <span class="phase-when">No fixed timing</span>
+      </div>
+      <ol class="ideas">
+        <li class="idea"><span class="idea-n">27</span><span class="idea-fmt">Reel</span>
+          <span class="idea-body"><b>Unboxing your colorway.</b> A real reveal of the
+          sack you designed.</span></li>
+        <li class="idea"><span class="idea-n">28</span><span class="idea-fmt">Reel</span>
+          <span class="idea-body"><b>Tier list.</b> You rank every colorway we make,
+          including your own.</span></li>
+        <li class="idea"><span class="idea-n">29</span><span class="idea-fmt">Reel</span>
+          <span class="idea-body"><b>Hacky HORSE.</b> The game, but trick for trick with
+          sacks.</span></li>
+        <li class="idea"><span class="idea-n">30</span><span class="idea-fmt">Story</span>
+          <span class="idea-body"><b>Question box.</b> Ask me about my new career.</span></li>
+        <li class="idea"><span class="idea-n">31</span><span class="idea-fmt">Story</span>
+          <span class="idea-body"><b>Link sticker</b> to your code, whenever something
+          new goes up.</span></li>
+        <li class="idea"><span class="idea-n">32</span><span class="idea-fmt">Long form</span>
+          <span class="idea-body"><b>I quit basketball for hacky sack.</b> A YouTube mini
+          doc pulling the whole run together, if it gets that far.</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<div class="rip rip-top" aria-hidden="true"></div>
+
+<!-- ============================== THE DEAL ============================== -->
+<section class="band-ink">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">What we can offer</p>
+      <h2 class="display">You earn when we earn</h2>
+    </div>
+
+    <div class="deal-hero">
+      <div class="deal-fig">
+        <span class="n">20<span class="pct">%</span></span>
+        <span class="l">Your commission</span>
+      </div>
+      <div class="deal-fig">
+        <span class="n">15<span class="pct">%</span></span>
+        <span class="l">Your followers save</span>
+      </div>
+      <div class="deal-fig">
+        <span class="n">0</span>
+        <span class="l">Cap on what you make</span>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <ul class="checks">
+        <li class="check"><span class="check-m">&#9679;</span>
+          <span><b>Twenty percent of every sale</b> made with your own code, for as
+          long as the partnership runs. No cap and no expiry, paid monthly with a
+          full breakdown so you can check our maths.</span></li>
+        <li class="check"><span class="check-m">&#9679;</span>
+          <span><b>Fifteen percent off for your followers</b> on everything we
+          sell, so the code is worth using rather than just worth posting.</span></li>
+        <li class="check"><span class="check-m">&#9679;</span>
+          <span><b>Your own colorway.</b> You design it with us, it goes on the site
+          under your name, and you earn on every one sold.</span></li>
+      </ul>
+      <ul class="checks">
+        <li class="check"><span class="check-m">&#9679;</span>
+          <span><b>Product whenever you want it.</b> For you, for teammates, for
+          giveaways, or for anyone who ends up in a video.</span></li>
+        <li class="check"><span class="check-m">&#9679;</span>
+          <span><b>Say over the creative.</b> You know your audience better than we
+          do. If something is not funny to you, we would rather not run it.</span></li>
+        <li class="check"><span class="check-m">&#9679;</span>
+          <span><b>Built to last.</b> We would rather grow this slowly over a season
+          and keep going than do one post and move on.</span></li>
+      </ul>
+    </div>
+
+    <p style="margin-top:2rem;max-width:var(--measure);">
+      If a fixed fee alongside the commission works better for you and your team,
+      we are very open to talking it through. We will always be straight with you
+      about what we can and cannot reach.
+    </p>
+  </div>
+</section>
+
+<div class="rip rip-bottom" aria-hidden="true"></div>
+
+<!-- ============================== ALTERNATES ============================== -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">If the retirement bit is not for you</p>
+      <h2 class="display">Then we try something else</h2>
+    </div>
+
+    <p class="lead" style="max-width:var(--measure);">
+      The retirement angle is just one idea, and it is not the partnership. If it
+      does not sit right, or you are still chasing basketball and it would send
+      the wrong signal, we will happily drop it. Here are three other directions
+      we would be just as glad to build.
+    </p>
+
+    <div class="grid g3" style="margin-top:2.2rem;">
+      <div class="card">
+        <span class="k">Option A</span>
+        <h3 class="display" style="font-size:1.3rem;">The commissioner</h3>
+        <p class="note">No retiring at all. You are simply the commissioner of
+        Sack to School, running the tournament with total authority and no
+        explanation of where it came from.</p>
+      </div>
+      <div class="card">
+        <span class="k">Option B</span>
+        <h3 class="display" style="font-size:1.3rem;">Offseason training</h3>
+        <p class="note">Hacky sack as genuine footwork and coordination work,
+        played completely straight. Keeps basketball fully in the picture.</p>
+      </div>
+      <div class="card">
+        <span class="k">Option C</span>
+        <h3 class="display" style="font-size:1.3rem;">Just the tournament</h3>
+        <p class="note">No series and no bit. You host Sack to School and nothing
+        else. The smallest version, and we would still be glad to do it.</p>
+      </div>
+    </div>
+
+    <div class="quote" style="margin-top:2.4rem;">
+      Or bring us something of your own. You know your audience far better than we
+      ever will, and we would much rather build around your instincts than talk
+      you into ours.
+      <cite>The invitation is open</cite>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== CONTACT ============================== -->
+<section class="band-alt contact">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Whenever you are ready</p>
+      <h2 class="display">Tell us what you think</h2>
+    </div>
+
+    <p class="lead" style="max-width:var(--measure);margin-bottom:2rem;">
+      There is no rush and no pressure on our end. A yes, a no, or a completely
+      different idea are all genuinely useful to us, and we are happy to jump
+      back on a call whenever suits you.
+    </p>
+
+    <div class="contact-grid">
+      <div class="stack-sm">
+        <span class="k">Email</span>
+        <a href="mailto:buyhackynation@gmail.com">buyhackynation@gmail.com</a>
+      </div>
+      <div class="stack-sm">
+        <span class="k">Phone</span>
+        <a class="num" href="tel:+18566569491">856 656 9491</a>
+      </div>
+      <div class="stack-sm">
+        <span class="k">Site</span>
+        <a href="https://hackynation.com">hackynation.com</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p style="max-width:var(--measure);">
+      Hacky Nation &middot; Harrison and Pete &middot; Put together in August 2026
+      for Brandon Dwyer and his team. This is a proposal only. Nothing here has
+      been agreed and no association is implied. Audience figures are approximate
+      and taken from public sources.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
