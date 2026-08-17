@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useCart } from '../lib/CartContext';
+import { readCheckoutSnapshot, trackPurchase } from '../lib/pixel';
 
 /**
  * Handles the Stripe redirect back to the site: shows a flash banner, clears
- * the cart on success, and kicks off the Google Customer Reviews opt-in.
+ * the cart on success, reports the sale to Meta, and kicks off the Google
+ * Customer Reviews opt-in.
  */
 export default function StripeReturn() {
   const { clearCart } = useCart();
@@ -20,7 +22,7 @@ export default function StripeReturn() {
     if (success) {
       setFlash('success');
       clearCart();
-      if (sessionId) renderGCR(sessionId);
+      completeOrder(sessionId);
     } else {
       setFlash('cancel');
     }
@@ -60,15 +62,36 @@ export default function StripeReturn() {
   );
 }
 
-/* Google Customer Reviews opt-in. Non-critical — fails silently. */
-async function renderGCR(sessionId) {
-  try {
-    const res = await fetch(
-      `/.netlify/functions/get-session?session_id=${encodeURIComponent(sessionId)}`
-    );
-    if (!res.ok) return;
-    const data = await res.json();
+/**
+ * One round trip to Stripe covers both post-purchase jobs: telling Meta what
+ * the order was actually worth, and the Google review opt-in.
+ */
+async function completeOrder(sessionId) {
+  const snapshot = readCheckoutSnapshot();
+  let data = null;
 
+  if (sessionId) {
+    try {
+      const res = await fetch(
+        `/.netlify/functions/get-session?session_id=${encodeURIComponent(sessionId)}`
+      );
+      if (res.ok) data = await res.json();
+    } catch {
+      /* fall through — the cart snapshot still carries a usable value */
+    }
+  }
+
+  /* Report the sale even if Stripe was unreachable. An approximate conversion
+     beats a missing one: Meta optimizes against the events it receives, and a
+     dropped Purchase teaches it that the ad didn't work. */
+  trackPurchase({ sessionId, amount: data?.amount_total ?? undefined, snapshot });
+
+  if (data) renderGCR(data);
+}
+
+/* Google Customer Reviews opt-in. Non-critical — fails silently. */
+function renderGCR(data) {
+  try {
     window._gcrData = data;
     window.renderOptIn = function renderOptIn() {
       if (!window._gcrData || !window.gapi) return;

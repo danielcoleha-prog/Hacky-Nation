@@ -1,12 +1,21 @@
+import { trackInitiateCheckout } from './pixel';
+
 const ENDPOINT = '/.netlify/functions/create-checkout-session';
 
 /**
  * Hands the cart to Stripe. Sends only { id, qty, size } — the server holds the
  * price whitelist and recomputes every amount, so nothing here is trusted.
  * Resolves by navigating away; rejects with a displayable message.
+ *
+ * `subtotal` is for the pixel only and never reaches the server.
  */
-export async function startCheckout(items) {
+export async function startCheckout(items, subtotal) {
   if (!items.length) throw new Error('Your cart is empty.');
+
+  /* Reported on intent rather than just before the redirect: once we navigate
+     to Stripe the page is gone, and a beacon fired in that last instant is not
+     reliably delivered. */
+  trackInitiateCheckout(items, subtotal);
 
   const payload = {
     items: items.map((i) => ({ id: i.id, qty: i.qty, size: i.size || undefined })),

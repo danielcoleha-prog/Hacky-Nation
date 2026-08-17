@@ -41,6 +41,11 @@ exports.handler = async (event) => {
         email: session.customer_details?.email || '',
         country: session.customer_details?.address?.country || 'US',
         estimated_delivery_date: estimatedDelivery,
+        // What Stripe actually charged, in dollars — shipping and discounts
+        // included. The Meta Purchase event reports this rather than a cart
+        // subtotal, so ad spend is measured against real revenue.
+        amount_total: typeof session.amount_total === 'number' ? session.amount_total / 100 : null,
+        currency: (session.currency || 'usd').toUpperCase(),
       }),
     };
   } catch (err) {

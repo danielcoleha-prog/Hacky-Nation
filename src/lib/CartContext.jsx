@@ -6,6 +6,7 @@ import {
   BUNDLE_MIN_QTY,
   getProduct,
 } from './products';
+import { trackAddToCart } from './pixel';
 
 const STORAGE_KEY = 'hackyCart';
 
@@ -124,8 +125,13 @@ export function CartProvider({ children }) {
       openCart: () => setIsOpen(true),
       closeCart: () => setIsOpen(false),
       addItem: (id, opts = {}) => {
-        dispatch({ type: 'add', id, size: opts.size, qty: opts.qty || 1 });
+        const qty = opts.qty || 1;
+        dispatch({ type: 'add', id, size: opts.size, qty });
         setIsOpen(true);
+        /* List price, not the bundle price — the discount depends on cart state
+           that this dispatch hasn't applied yet, and Purchase reports the real
+           figure from Stripe anyway. */
+        trackAddToCart(getProduct(id), qty);
       },
       setQty: (key, qty) => dispatch({ type: 'setQty', key, qty }),
       removeItem: (key) => dispatch({ type: 'remove', key }),

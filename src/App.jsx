@@ -1,6 +1,8 @@
+import { useEffect, useRef } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { CartProvider } from './lib/CartContext';
 import { useReveal } from './lib/useReveal';
+import { trackPageView } from './lib/pixel';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
 import CartDrawer from './components/CartDrawer';
@@ -18,6 +20,19 @@ export default function App() {
   const isLanding = pathname === '/';
   /* Re-scan for `.reveal` elements whenever the route swaps in new sections. */
   useReveal([pathname]);
+
+  /* Meta only sees the first load from the script tag in index.html. Every
+     route change after that is a page view it would otherwise miss, which is
+     why the pixel reports one sack page for a whole session of browsing.
+     Skipping the first run keeps the landing page from counting twice. */
+  const isFirstRoute = useRef(true);
+  useEffect(() => {
+    if (isFirstRoute.current) {
+      isFirstRoute.current = false;
+      return;
+    }
+    trackPageView();
+  }, [pathname]);
 
   return (
     <CartProvider>

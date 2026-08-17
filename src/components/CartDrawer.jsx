@@ -28,7 +28,7 @@ export default function CartDrawer() {
     setBusy(true);
     setError('');
     try {
-      await startCheckout(items);
+      await startCheckout(items, subtotal);
     } catch (err) {
       setError(err.message);
       setBusy(false);

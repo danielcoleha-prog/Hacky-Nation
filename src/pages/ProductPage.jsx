@@ -3,6 +3,7 @@ import { Link, Navigate, useParams } from 'react-router-dom';
 import { getProduct, isSack, SACKS, SIZES, formatPrice, SACK_BUNDLE_PRICE } from '../lib/products';
 import { useCart } from '../lib/CartContext';
 import { useReveal } from '../lib/useReveal';
+import { trackViewContent } from '../lib/pixel';
 import Seal from '../components/Seal';
 
 const SPECS = (sack) => [
@@ -33,6 +34,12 @@ export default function ProductPage() {
     setSizeError(false);
     setShowFront(false);
   }, [id, sack]);
+
+  /* Feeds Meta's product-level retargeting — the audience of people who looked
+     at a specific sack and didn't buy it. */
+  useEffect(() => {
+    trackViewContent(sack);
+  }, [sack]);
 
   useEffect(() => {
     if (!sack) return;
