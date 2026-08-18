@@ -6,10 +6,10 @@
 //     recomputes them and ignores anything the client sends.
 
 export const SACK_IDS = [
-  'wizard-glow-sack',
+  'magical-sack',
   'pink-lemonade-sack',
   'candy-corn-sack',
-  'lemon-lime-sack',
+  'star-burst-sack',
   'patriot-sack',
   'sunset-sack',
   'bulldawgs-sack',
@@ -24,12 +24,12 @@ export const BUNDLE_MIN_QTY = 2;
 /** Sacks — these get their own product pages at /sacks/:id */
 export const SACKS = [
   {
-    id: 'wizard-glow-sack',
-    name: 'Wizard Glow',
-    fullName: 'Wizard Glow Foot Bag',
+    id: 'magical-sack',
+    name: 'The Magical Sack',
+    fullName: 'The Magical Sack',
     sub: 'GLOW IN THE DARK · UV REACTIVE · 32 PANELS',
-    image: '/img/products/wizard-glow-sack.webp',
-    desc: 'The Wizard Glow is a 32-panel suede foot bag in deep purple with green star points. It glows in the dark and lights up under UV, so the circle does not have to break when the sun goes down.',
+    image: '/img/products/magical-sack.webp',
+    desc: 'The Magical Sack is a 32-panel suede foot bag in deep purple with green star points. It glows in the dark and lights up under UV, so the circle does not have to break when the sun goes down.',
     price: 15,
     compareAt: 22,
     preorder: false,
@@ -69,12 +69,12 @@ export const SACKS = [
     badge: 'NEW',
   },
   {
-    id: 'lemon-lime-sack',
-    name: 'Lemon Lime',
-    fullName: 'Lemon Lime Foot Bag',
+    id: 'star-burst-sack',
+    name: 'Star Burst',
+    fullName: 'Star Burst Foot Bag',
     sub: 'YELLOW & GREEN · METAL STUDS · 32 PANELS',
-    image: '/img/products/lemon-lime-sack.webp',
-    desc: 'The Lemon Lime is a 32-panel suede foot bag in bright yellow with green bursts and set metal studs that catch the light on every kick. Nothing else in the lineup looks like it.',
+    image: '/img/products/star-burst-sack.webp',
+    desc: 'The Star Burst is a 32-panel suede foot bag in bright yellow, covered in green starbursts and set metal studs that catch the light on every kick. Nothing else in the lineup looks like it.',
     price: 15,
     compareAt: 22,
     preorder: false,

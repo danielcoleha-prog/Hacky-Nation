@@ -2,10 +2,10 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 // Server-side product whitelist — clients cannot manipulate prices
 const PRODUCTS = {
-  'wizard-glow-sack':   { name: 'Wizard Glow Foot Bag',    price: 1500, bundlePrice: 1300 },
+  'magical-sack':       { name: 'The Magical Sack',        price: 1500, bundlePrice: 1300 },
   'pink-lemonade-sack': { name: 'Pink Lemonade Foot Bag',  price: 1500, bundlePrice: 1300 },
   'candy-corn-sack':    { name: 'Candy Corn Foot Bag',     price: 1500, bundlePrice: 1300 },
-  'lemon-lime-sack':    { name: 'Lemon Lime Foot Bag',     price: 1500, bundlePrice: 1300 },
+  'star-burst-sack':    { name: 'Star Burst Foot Bag',     price: 1500, bundlePrice: 1300 },
   'mystery-bag':    { name: 'Hand Knit Mystery Bag',  price: 1000 },
   'shirt-white':    { name: 'Hacky Nation Tee — White', price: 2000 },
   'shirt-black':    { name: 'Hacky Nation Tee — Black', price: 2000 },
@@ -18,7 +18,7 @@ const PRODUCTS = {
 
 const SACK_IDS = new Set([
   'sunset-sack', 'bulldawgs-sack', 'sky-sack', 'patriot-sack', 'usl-pro-sack',
-  'wizard-glow-sack', 'pink-lemonade-sack', 'candy-corn-sack', 'lemon-lime-sack',
+  'magical-sack', 'pink-lemonade-sack', 'candy-corn-sack', 'star-burst-sack',
 ]);
 
 const ALLOWED_ORIGINS = [
