@@ -53,14 +53,14 @@ function SackCard({ sack }) {
         )}
       </Link>
 
-      <div className="flex flex-1 flex-col p-5">
+      <div className="flex flex-1 flex-col p-3.5 sm:p-5">
         <p className="eyebrow">{sack.sub}</p>
 
-        <h3 className="mt-2 font-display text-display-md text-ink">
+        <h3 className="mt-2 font-display text-display-sm text-ink sm:text-display-md">
           <Link to={`/sacks/${sack.id}`} className="hover:text-blue">{sack.name}</Link>
         </h3>
 
-        <div className="mt-2 flex items-baseline gap-2">
+        <div className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1.5">
           <span
             className="font-numeric text-[1.35rem] leading-none text-ink"
           >
@@ -71,23 +71,25 @@ function SackCard({ sack }) {
               {formatPrice(sack.compareAt)}
             </span>
           )}
-          <span className="ml-auto flex gap-1" aria-hidden="true">
+          <span className="flex gap-1 sm:ml-auto" aria-hidden="true">
             {sack.colors.map((c) => (
               <span key={c} className="h-4 w-4 rounded-full border border-ink" style={{ backgroundColor: c }} />
             ))}
           </span>
         </div>
 
-        <p className="mt-3 font-body text-body-sm text-ink-soft">{sack.desc}</p>
+        {/* The blurb needs a line length it cannot get in a half-width card. */}
+        <p className="mt-3 hidden font-body text-body-sm text-ink-soft sm:block">{sack.desc}</p>
 
-        <div className="mt-auto flex gap-2 pt-5">
+        <div className="mt-auto flex gap-2 pt-4 sm:pt-5">
           <button type="button" onClick={() => addItem(sack.id)} className="btn-primary flex-1">
             Add to cart
           </button>
           <Link
             to={`/sacks/${sack.id}`}
             aria-label={`View ${sack.fullName}`}
-            className="grid h-[50px] w-[50px] shrink-0 place-content-center border-2 border-ink bg-paper transition-all hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-press-sm"
+            /* Redundant on a phone — the image and the title both open it. */
+            className="hidden h-[50px] w-[50px] shrink-0 place-content-center border-2 border-ink bg-paper transition-all hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-press-sm sm:grid"
           >
             <span className="material-symbols-outlined text-[20px]" aria-hidden="true">arrow_outward</span>
           </Link>
@@ -126,7 +128,9 @@ export default function ShopPage() {
           aside={`Any 2 sacks — ${formatPrice(SACK_BUNDLE_PRICE)} each. Mix any colorways.`}
         />
 
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Two per row on phones: the point of this page is comparing the
+            lineup, and one enormous card per screen makes that a scroll. */}
+        <div className="mt-10 grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-3">
           {SACKS.map((sack) => (
             <SackCard key={sack.id} sack={sack} />
           ))}
@@ -154,7 +158,7 @@ export default function ShopPage() {
             Also in the shop
           </h2>
 
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-3">
             {[MYSTERY_BAG, ...SHIRTS].map((p) => (
               <article key={p.id} className="reveal card card-hover flex items-center gap-4 p-4">
                 <div className="grid h-24 w-24 shrink-0 place-content-center border-2 border-ink bg-paper-deep">

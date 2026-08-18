@@ -15,12 +15,24 @@ import CartoonButton from './ui/CartoonButton';
  * The band sits directly on the ink the TrustStrip ends on, with no torn edge
  * between them: a rip there would put a cream seam between two black sections.
  */
+/* The carousel opens on Star Burst with the Magical Sack to its left and
+   Patriot to its right; the rest follow in catalogue order. Kept separate from
+   SACKS so the shop grid's own merchandising order is not dragged along with
+   it. `ordered` places offset -1 left and +1 right, so this array literally
+   reads left-to-right at first paint. */
+const LEAD = ['magical-sack', 'star-burst-sack', 'patriot-sack'];
+const LINEUP = [
+  ...LEAD.map((id) => SACKS.find((sack) => sack.id === id)).filter(Boolean),
+  ...SACKS.filter((sack) => !LEAD.includes(sack.id)),
+];
+const START = LINEUP.findIndex((sack) => sack.id === 'star-burst-sack');
+
 export default function SackCarousel() {
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(START === -1 ? 0 : START);
   const touchStartX = useRef(null);
   const navigate = useNavigate();
-  const count = SACKS.length;
-  const active = SACKS[index];
+  const count = LINEUP.length;
+  const active = LINEUP[index];
 
   const step = useCallback((d) => setIndex((i) => (i + d + count) % count), [count]);
 
@@ -40,7 +52,7 @@ export default function SackCarousel() {
   useEffect(() => {
     [(index + 1) % count, (index - 1 + count) % count].forEach((i) => {
       const img = new Image();
-      img.src = SACKS[i].image;
+      img.src = LINEUP[i].image;
     });
   }, [index, count]);
 
@@ -49,7 +61,7 @@ export default function SackCarousel() {
   const half = Math.floor(count / 2);
   const ordered = Array.from({ length: count }, (_, k) => {
     const offset = k - half;
-    return { sack: SACKS[(index + offset + count * 2) % count], offset };
+    return { sack: LINEUP[(index + offset + count * 2) % count], offset };
   });
 
   return (
@@ -71,10 +83,10 @@ export default function SackCarousel() {
             <h2 id="carousel-heading" className="mt-3 font-display text-display-xl text-paper">
               <span
                 className="overprint"
-                data-text="Not your average sack"
+                data-text="Enter the circle"
                 style={{ '--mis-color': 'var(--press-blue)', '--mis-x': '-4px', '--mis-y': '4px' }}
               >
-                Not your average sack
+                Enter the circle
               </span>
             </h2>
           </header>
@@ -86,7 +98,10 @@ export default function SackCarousel() {
             onTouchEnd={onTouchEnd}
           >
             {/* the row is inset so the arrows sit outside it, never over a product */}
-            <ul className="mx-auto flex h-[175px] w-[72%] items-center justify-center [--w-active:52%] [--w-near:24%] sm:h-[250px] sm:w-[78%] sm:[--w-active:32%] sm:[--w-near:19%] md:h-[300px] md:w-[80%]">
+            {/* On a phone the arrows move below the stage, so the row gets the
+                full column and the active sack roughly doubles. From sm up the
+                arrows flank it again and the row insets to make room. */}
+            <ul className="mx-auto flex h-[290px] w-full items-center justify-center [--w-active:70%] [--w-near:14%] sm:h-[340px] sm:w-[78%] sm:[--w-active:38%] sm:[--w-near:17%] sm:[--w-far:14%] md:h-[480px] md:w-[76%] md:[--w-active:50%] md:[--w-near:14%] md:[--w-far:11%]">
               {ordered.map(({ sack, offset }) => {
                 const isActive = offset === 0;
                 const far = Math.abs(offset) >= 2;
@@ -99,14 +114,14 @@ export default function SackCarousel() {
                       far ? 'hidden sm:flex' : ''
                     }`}
                     style={{
-                      width: isActive ? 'var(--w-active)' : far ? '15%' : 'var(--w-near)',
+                      width: isActive ? 'var(--w-active)' : far ? 'var(--w-far, 15%)' : 'var(--w-near)',
                       opacity: isActive ? 1 : far ? 0.45 : 0.7,
                     }}
                   >
                     <button
                       type="button"
                       onClick={() =>
-                        isActive ? navigate(`/sacks/${sack.id}`) : setIndex(SACKS.indexOf(sack))
+                        isActive ? navigate(`/sacks/${sack.id}`) : setIndex(LINEUP.indexOf(sack))
                       }
                       aria-current={isActive}
                       aria-label={
@@ -151,23 +166,26 @@ export default function SackCarousel() {
               })}
             </ul>
 
-            {/* arrows flank the row, clear of the artwork */}
-            <button
-              type="button"
-              onClick={() => step(-1)}
-              aria-label="Previous sack"
-              className="absolute left-0 top-1/2 grid h-12 w-12 -translate-y-1/2 place-content-center border-2 border-paper/35 text-paper transition-colors hover:border-paper hover:bg-paper hover:text-ink"
-            >
-              <span className="material-symbols-outlined text-[20px]" aria-hidden="true">arrow_back</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => step(1)}
-              aria-label="Next sack"
-              className="absolute right-0 top-1/2 grid h-12 w-12 -translate-y-1/2 place-content-center border-2 border-paper/35 text-paper transition-colors hover:border-paper hover:bg-paper hover:text-ink"
-            >
-              <span className="material-symbols-outlined text-[20px]" aria-hidden="true">arrow_forward</span>
-            </button>
+            {/* `sm:contents` dissolves this wrapper from sm up so the two
+                buttons position absolutely against the stage again. */}
+            <div className="mt-7 flex items-center justify-center gap-4 sm:mt-0 sm:contents">
+              <button
+                type="button"
+                onClick={() => step(-1)}
+                aria-label="Previous sack"
+                className="grid h-12 w-12 place-content-center border-2 border-paper/35 text-paper transition-colors hover:border-paper hover:bg-paper hover:text-ink sm:absolute sm:left-0 sm:top-1/2 sm:-translate-y-1/2"
+              >
+                <span className="material-symbols-outlined text-[20px]" aria-hidden="true">arrow_back</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => step(1)}
+                aria-label="Next sack"
+                className="grid h-12 w-12 place-content-center border-2 border-paper/35 text-paper transition-colors hover:border-paper hover:bg-paper hover:text-ink sm:absolute sm:right-0 sm:top-1/2 sm:-translate-y-1/2"
+              >
+                <span className="material-symbols-outlined text-[20px]" aria-hidden="true">arrow_forward</span>
+              </button>
+            </div>
           </div>
 
           {/* ---------- active detail ---------- */}

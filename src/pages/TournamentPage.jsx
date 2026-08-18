@@ -1,5 +1,9 @@
 import { useEffect } from 'react';
 
+/* The running pot, in whole dollars. Update this every Tuesday when the
+   standings go out — it is the one number on this page that goes stale. */
+const POT = 57;
+
 const FORM_URL =
   'https://docs.google.com/forms/d/e/1FAIpQLSc-nlL0BXIZhPf6f8DVCSsfgmlVU_Zpq5AQUgF3YnPmVAMoJw/viewform';
 import { Link } from 'react-router-dom';
@@ -71,8 +75,9 @@ export default function TournamentPage() {
         </nav>
 
         {/* ---------- the pitch ---------- */}
-        <header className="reveal relative">
-          <p className="eyebrow">Entries open · closes Aug 31</p>
+        <header className="reveal relative grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start lg:gap-14">
+          <div>
+            <p className="eyebrow">Entries open · closes Aug 31</p>
           <h1 className="mt-3 max-w-4xl font-display text-display-hero text-ink">
             Sack to School
           </h1>
@@ -87,16 +92,40 @@ export default function TournamentPage() {
             beginners beat one pro. Every time.
           </p>
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <CartoonButton href={FORM_URL} target="_blank" label="Enter your school" color="bg-blue" />
-            <CartoonButton
-              href="https://www.instagram.com/hacky_nation"
-              target="_blank"
-              label="Follow @hacky_nation"
-              color="bg-paper"
-              textClass="text-ink"
-            />
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <CartoonButton href={FORM_URL} target="_blank" label="Enter your school" color="bg-blue" />
+              <CartoonButton
+                href="https://www.instagram.com/hacky_nation"
+                target="_blank"
+                label="Follow @hacky_nation"
+                color="bg-paper"
+                textClass="text-ink"
+              />
+            </div>
           </div>
+
+          {/* The pot sits up here on purpose — it is the number that turns
+              "buy a sack" into "help my school win". */}
+          <aside className="card relative bg-ink p-7 text-paper shadow-press md:p-8">
+            <p className="eyebrow text-yellow">Current pot</p>
+            <p className="mt-3 font-numeric text-[clamp(3.6rem,9vw,5.4rem)] leading-none text-yellow">
+              ${POT}
+            </p>
+            <p className="mt-4 font-body text-body-md text-paper/80">
+              Ten percent of every order goes straight in. Whichever school is top of the board on
+              Oct 6 takes the whole thing.
+            </p>
+            <p className="mt-5 border-t-2 border-paper/25 pt-4 label text-paper/60">
+              Updated every Tuesday with the standings
+            </p>
+            <Seal
+              variant="red"
+              burst
+              size="sm"
+              lines={['AND', 'RISING']}
+              className="absolute -right-3 -top-3 rotate-[12deg]"
+            />
+          </aside>
         </header>
 
         {/* ---------- how it works ---------- */}

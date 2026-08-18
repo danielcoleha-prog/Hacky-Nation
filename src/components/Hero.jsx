@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useParallax } from '../lib/useParallax';
 import Seal from './Seal';
 import CartoonButton from './ui/CartoonButton';
@@ -56,6 +57,15 @@ export default function Hero() {
             decoding="async"
             className="h-full w-full object-cover"
           />
+
+          {/* The whole poster is a link to the shop. It sits above the art but
+              before the CTA row in DOM order, so the buttons still paint over
+              it and keep their own destinations. */}
+          <Link
+            to="/shop"
+            aria-label="Shop all sacks"
+            className="absolute inset-0 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue"
+          />
         </div>
 
         <div className="paper-grain relative bg-paper px-5 pb-10 pt-7 md:px-8">
@@ -85,6 +95,15 @@ export default function Hero() {
             fetchPriority="high"
             decoding="async"
             className="h-full w-full object-cover"
+          />
+
+          {/* The whole poster is a link to the shop. It sits above the art but
+              before the CTA row in DOM order, so the buttons still paint over
+              it and keep their own destinations. */}
+          <Link
+            to="/shop"
+            aria-label="Shop all sacks"
+            className="absolute inset-0 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue"
           />
 
           {/* Anchored in percentages against the art's own box, so the pair
