@@ -341,7 +341,9 @@ export default function ProductPage() {
                   onClick={() => addItem(pack.id)}
                   className="btn-secondary min-w-[220px] flex-1 py-4"
                 >
-                  Upgrade to {pack.fullName} — {formatPrice(pack.price)}
+                  {/* The delta, not the pack price — "$39.00" next to a $15
+                      sack reads as what it costs on top, which it is not. */}
+                  Upgrade to {pack.fullName} +{formatPrice(pack.price - sack.price)}
                 </button>
               )}
             </div>

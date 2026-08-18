@@ -1,4 +1,7 @@
 import { useEffect } from 'react';
+
+const FORM_URL =
+  'https://docs.google.com/forms/d/e/1FAIpQLSc-nlL0BXIZhPf6f8DVCSsfgmlVU_Zpq5AQUgF3YnPmVAMoJw/viewform';
 import { Link } from 'react-router-dom';
 import { useReveal } from '../lib/useReveal';
 import SectionHeading from '../components/SectionHeading';
@@ -9,7 +12,7 @@ const STEPS = [
   {
     n: '01',
     title: 'Claim your school',
-    body: 'Follow @hacky_nation and send us a DM with your school name. First account to claim a school gets it. No sack account for your school yet? Start one — that counts.',
+    body: 'Fill in the entry form with your school and the account that will be posting, then follow @hacky_nation. First account to claim a school gets it. No sack account for your school yet? Start one — that counts.',
   },
   {
     n: '02',
@@ -85,13 +88,14 @@ export default function TournamentPage() {
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <CartoonButton href={FORM_URL} target="_blank" label="Enter your school" color="bg-blue" />
             <CartoonButton
               href="https://www.instagram.com/hacky_nation"
               target="_blank"
-              label="DM us your school"
-              color="bg-blue"
+              label="Follow @hacky_nation"
+              color="bg-paper"
+              textClass="text-ink"
             />
-            <CartoonButton to="/shop" label="Grow the pot" color="bg-paper" textClass="text-ink" />
           </div>
         </header>
 
@@ -254,17 +258,10 @@ export default function TournamentPage() {
         <section className="reveal mt-16 border-2 border-ink bg-blue px-6 py-10 text-center shadow-press md:mt-24 md:px-10 md:py-14">
           <h2 className="font-display text-display-xl text-paper">Is your school in</h2>
           <p className="mx-auto mt-4 max-w-xl font-body text-body-lg text-paper/85">
-            Follow us, send one DM with your school name, and you are on the board. We will send you
-            everything else.
+            One form, two minutes, and your school is on the board. We will send you everything else.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <CartoonButton
-              href="https://www.instagram.com/hacky_nation"
-              target="_blank"
-              label="DM us your school"
-              color="bg-paper"
-              textClass="text-ink"
-            />
+            <CartoonButton href={FORM_URL} target="_blank" label="Enter your school" color="bg-paper" textClass="text-ink" />
             <CartoonButton to="/shop" label="Grow the pot" color="bg-ink" />
           </div>
         </section>
