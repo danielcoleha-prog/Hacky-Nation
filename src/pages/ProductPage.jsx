@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
-import { getProduct, isSack, SACKS, SIZES, formatPrice, SACK_BUNDLE_PRICE } from '../lib/products';
+import { getProduct, isSack, isBundle, SACKS, SIZES, formatPrice, SACK_BUNDLE_PRICE } from '../lib/products';
 import { useCart } from '../lib/CartContext';
 import { useReveal } from '../lib/useReveal';
 import { trackViewContent } from '../lib/pixel';
@@ -68,7 +68,8 @@ export default function ProductPage() {
     };
   }, [sack]);
 
-  if (!sack) return <Navigate to="/" replace />;
+  /* Packs are sold from the shop grid, not a product page of their own. */
+  if (!sack || isBundle(id)) return <Navigate to={isBundle(id) ? '/shop' : '/'} replace />;
 
   const others = SACKS.filter((s) => s.id !== sack.id).slice(0, 4);
   const needsSize = Array.isArray(sack.sizes) || sack.id.startsWith('shirt');

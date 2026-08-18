@@ -5,11 +5,12 @@
 //     Stripe actually charges. Prices below are for display only; the server
 //     recomputes them and ignores anything the client sends.
 
+/* Bundle-eligible sacks only. The Magical Sack and Star Burst sit at $18 and
+   are deliberately outside this tier — their pack is the Specialty Duo, and
+   letting them fall to $13 here would price two loose ones below it. */
 export const SACK_IDS = [
-  'magical-sack',
   'pink-lemonade-sack',
   'candy-corn-sack',
-  'star-burst-sack',
   'patriot-sack',
   'sunset-sack',
   'bulldawgs-sack',
@@ -30,7 +31,7 @@ export const SACKS = [
     sub: 'GLOW IN THE DARK · UV REACTIVE · 32 PANELS',
     image: '/img/products/magical-sack.webp',
     desc: 'The Magical Sack is a 32-panel suede foot bag in deep purple with green star points. It glows in the dark and lights up under UV, so the circle does not have to break when the sun goes down.',
-    price: 15,
+    price: 18,
     compareAt: 22,
     preorder: false,
     panels: 32,
@@ -75,7 +76,7 @@ export const SACKS = [
     sub: 'YELLOW & GREEN · METAL STUDS · 32 PANELS',
     image: '/img/products/star-burst-sack.webp',
     desc: 'The Star Burst is a 32-panel suede foot bag in bright yellow, covered in green starbursts and set metal studs that catch the light on every kick. Nothing else in the lineup looks like it.',
-    price: 15,
+    price: 18,
     compareAt: 22,
     preorder: false,
     panels: 32,
@@ -258,6 +259,56 @@ export const MYSTERY_BAG = {
   accent: '#D4402E',
 };
 
+
+/** Fixed packs. Each is one SKU at one price, so the 2+ sack discount never
+ *  stacks on top of it. `compareAt` is the honest sum of the list prices. */
+export const BUNDLES = [
+  {
+    id: 'specialty-duo',
+    name: 'Specialty Duo',
+    fullName: 'The Specialty Duo',
+    sub: 'THE MAGICAL SACK + STAR BURST',
+    image: '/img/bundles/specialty-duo.webp',
+    desc: 'Both specialty sacks together — the glow-in-the-dark Magical Sack and the studded Star Burst.',
+    price: 29,
+    compareAt: 36,
+    contents: ['magical-sack', 'star-burst-sack'],
+  },
+  {
+    id: 'og-pack',
+    name: 'OG Pack',
+    fullName: 'The OG Pack',
+    sub: 'PATRIOT · SUNSET · BULLDAWGS · SKY',
+    image: '/img/bundles/og-pack.webp',
+    desc: 'The four we started with, in one box. Every original colorway.',
+    price: 49,
+    compareAt: 60,
+    contents: ['patriot-sack', 'sunset-sack', 'bulldawgs-sack', 'sky-sack'],
+  },
+  {
+    id: '14-panel-pack',
+    name: '14 Panel Pack',
+    fullName: 'The 14 Panel Pack',
+    sub: 'BULLDAWGS · SKY · PINK LEMONADE',
+    image: '/img/bundles/14-panel-pack.webp',
+    desc: 'Every 14-panel sack we make. Bigger panels, softer stalls, easier to learn on.',
+    price: 39,
+    compareAt: 45,
+    contents: ['bulldawgs-sack', 'sky-sack', 'pink-lemonade-sack'],
+  },
+  {
+    id: '32-panel-pack',
+    name: '32 Panel Pack',
+    fullName: 'The 32 Panel Pack',
+    sub: 'PATRIOT · SUNSET · CANDY CORN',
+    image: '/img/bundles/32-panel-pack.webp',
+    desc: 'Tight 32-panel construction in three colorways — the most responsive kick in the lineup.',
+    price: 39,
+    compareAt: 45,
+    contents: ['patriot-sack', 'sunset-sack', 'candy-corn-sack'],
+  },
+];
+
 /** Tees — size is required before these can be added to the cart. */
 export const SHIRTS = [
   {
@@ -305,7 +356,7 @@ export const CUSTOM_MOCKUPS = [
 ];
 
 /** Flat lookup across everything sellable. */
-export const ALL_PRODUCTS = [...SACKS, MYSTERY_BAG, ...SHIRTS];
+export const ALL_PRODUCTS = [...SACKS, MYSTERY_BAG, ...SHIRTS, ...BUNDLES];
 
 export function getProduct(id) {
   return ALL_PRODUCTS.find((p) => p.id === id) || null;
@@ -313,6 +364,10 @@ export function getProduct(id) {
 
 export function getSack(id) {
   return SACKS.find((s) => s.id === id) || null;
+}
+
+export function isBundle(id) {
+  return BUNDLES.some((b) => b.id === id);
 }
 
 export function isSack(id) {

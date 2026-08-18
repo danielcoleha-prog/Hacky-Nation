@@ -1,10 +1,59 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { SACKS, SHIRTS, MYSTERY_BAG, formatPrice, SACK_PRICE, SACK_BUNDLE_PRICE, BUNDLE_MIN_QTY } from '../lib/products';
+import { SACKS, SHIRTS, MYSTERY_BAG, BUNDLES, formatPrice, SACK_PRICE, SACK_BUNDLE_PRICE, BUNDLE_MIN_QTY } from '../lib/products';
 import { useCart } from '../lib/CartContext';
 import { useReveal } from '../lib/useReveal';
 import SectionHeading from '../components/SectionHeading';
 import Seal from '../components/Seal';
+
+function BundleCard({ bundle }) {
+  const { addItem } = useCart();
+  const saving = bundle.compareAt - bundle.price;
+
+  return (
+    <article className="reveal card card-hover flex flex-col">
+      <div className="relative border-b-2 border-ink bg-paper-deep">
+        <img
+          src={bundle.image}
+          alt={bundle.fullName}
+          width={1100}
+          height={1100}
+          loading="lazy"
+          decoding="async"
+          className="block aspect-square w-full object-cover"
+        />
+        {saving > 0 && (
+          <Seal
+            variant="red"
+            burst
+            size="sm"
+            lines={['SAVE', `$${saving}`]}
+            className="absolute -right-2 -top-2 rotate-[12deg]"
+          />
+        )}
+      </div>
+
+      <div className="flex flex-1 flex-col gap-3 p-5">
+        <p className="eyebrow">{bundle.sub}</p>
+        <h3 className="font-display text-display-md text-ink">{bundle.fullName}</h3>
+        <p className="font-body text-body-sm text-ink-soft">{bundle.desc}</p>
+
+        <div className="mt-auto flex items-baseline gap-3 pt-2">
+          <span className="font-numeric text-[1.8rem] leading-none text-ink">
+            {formatPrice(bundle.price)}
+          </span>
+          <span className="font-body text-body-sm text-ink-faint line-through">
+            {formatPrice(bundle.compareAt)}
+          </span>
+        </div>
+
+        <button type="button" onClick={() => addItem(bundle.id)} className="btn-primary w-full">
+          Add to cart
+        </button>
+      </div>
+    </article>
+  );
+}
 
 function SackCard({ sack }) {
   const { addItem } = useCart();
@@ -131,6 +180,22 @@ export default function ShopPage() {
           ))}
         </div>
 
+        {/* ---------- packs ---------- */}
+        <section aria-labelledby="packs-heading" className="mt-16 border-t-2 border-ink pt-6 md:mt-24">
+          <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-3">
+            <h2 id="packs-heading" className="font-display text-display-lg text-ink">
+              Packs
+            </h2>
+            <p className="label text-ink-soft">Fixed sets · one price · shipped together</p>
+          </div>
+
+          <div className="mt-8 grid gap-6 sm:grid-cols-2">
+            {BUNDLES.map((bundle) => (
+              <BundleCard key={bundle.id} bundle={bundle} />
+            ))}
+          </div>
+        </section>
+
         {/* ---------- everything else ---------- */}
         <section aria-labelledby="more-heading" className="mt-16 border-t-2 border-ink pt-6 md:mt-24">
           <h2 id="more-heading" className="font-display text-display-lg text-ink">
@@ -172,9 +237,10 @@ export default function ShopPage() {
         </section>
 
         <p className="mt-12 border-2 border-ink bg-paper-deep px-5 py-4 font-body text-body-sm text-ink-soft">
-          Sacks are {formatPrice(SACK_PRICE)} each, or {formatPrice(SACK_BUNDLE_PRICE)} each once you
-          have {BUNDLE_MIN_QTY} or more in the cart — the discount applies automatically at checkout,
-          no code needed.
+          Most sacks are {formatPrice(SACK_PRICE)} each, or {formatPrice(SACK_BUNDLE_PRICE)} each once
+          you have {BUNDLE_MIN_QTY} or more in the cart — that discount applies automatically at
+          checkout, no code needed. The Magical Sack and Star Burst are specialty builds at $18 and
+          sit outside it; their deal is the Specialty Duo above.
         </p>
       </div>
     </main>
