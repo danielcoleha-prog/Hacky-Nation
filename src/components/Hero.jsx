@@ -3,7 +3,7 @@ import Seal from './Seal';
 import CartoonButton from './ui/CartoonButton';
 
 /**
- * Two posters, swapped by breakpoint — both bake the "Play With Your Sack."
+ * Two posters, swapped by breakpoint — both bake the "Sack to School."
  * headline into the art, so the <h1> stays in the document for SEO and screen
  * readers but is visually sr-only at every size; it never renders twice.
  *
@@ -12,8 +12,9 @@ import CartoonButton from './ui/CartoonButton';
  * letters. `heroClear` below is a flat-cream strip, sized to the nav, that
  * runs before the art at every breakpoint to give the nav somewhere to float.
  *
- * The desktop poster (3072×1643) has an open cream band under "SACK." for the
- * CTAs to sit in, same as before. The mobile poster (2000×3134) doesn't — the
+ * The desktop poster's clear cream runs along the very bottom, under the blue
+ * underline stroke, which is where the CTA row is anchored — the Sack to School
+ * art fills the band the old poster left open. The mobile poster doesn't — the
  * hand-and-sack cluster runs close to full width near the bottom — so on
  * mobile the CTAs sit below the image instead, on the section's own cream,
  * which matches the art's cream exactly and reads as one continuous surface.
@@ -21,13 +22,17 @@ import CartoonButton from './ui/CartoonButton';
 export default function Hero() {
   const stageRef = useParallax();
 
-  const ctas = <CartoonButton to="/shop" label="Shop the lineup" color="bg-blue" />;
+  const ctas = (
+    <>
+      <CartoonButton to="/tournament" label="Enter the tournament" color="bg-blue" />
+      <CartoonButton to="/shop" label="Shop the lineup" color="bg-paper" textClass="text-ink" />
+    </>
+  );
 
-  {/* Matches the nav's actual rendered height (h-11 logo + py-3 + border) —
-      not a round number, and 2px narrower below lg than at lg because the
-      nav's own box is 2px taller there. Anything taller leaves a visible
-      cream sliver between the nav and the art; anything shorter and the nav
-      clips into the headline. */}
+  {/* Mobile only now. Matches the nav's rendered height (h-11 logo + py-3 +
+      border) — not a round number. Anything taller leaves a cream sliver
+      between the nav and the art; anything shorter and the nav clips into the
+      headline. */}
   const heroClear = <div aria-hidden="true" className="h-[72px] w-full bg-paper lg:h-[70px]" />;
 
   return (
@@ -39,14 +44,14 @@ export default function Hero() {
       {/* ---------- below lg: mobile poster, full bleed ---------- */}
       <div className="lg:hidden">
         {heroClear}
-        <div className="relative aspect-[2000/3134] w-full">
+        <div className="relative aspect-[1002/1570] w-full">
           <img
-            src="/img/hero-mobile-1400.webp"
-            srcSet="/img/hero-mobile-900.webp 900w, /img/hero-mobile-1400.webp 1400w, /img/hero-mobile-2000.webp 2000w"
+            src="/img/hero-sts-mobile-1002.webp"
+            srcSet="/img/hero-sts-mobile-750.webp 750w, /img/hero-sts-mobile-1002.webp 1002w"
             sizes="100vw"
-            alt="Play with your sack — a hand reaching through torn paper holding a handmade Hacky Nation suede footbag"
-            width={2000}
-            height={3134}
+            alt="Sack to School — a hand punching through notebook paper holding a Hacky Nation Star Burst footbag"
+            width={1002}
+            height={1570}
             fetchPriority="high"
             decoding="async"
             className="h-full w-full object-cover"
@@ -63,17 +68,20 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* ---------- lg and up: desktop poster, full bleed ---------- */}
+      {/* ---------- lg and up: desktop poster, full bleed ----------
+          No cream strip here: the art runs to the very top of the window and
+          the fixed nav floats over its notebook-paper margin. Mobile keeps the
+          strip, where the headline sits too close to the top to survive a bar
+          on top of it. */}
       <div className="hidden lg:block">
-        {heroClear}
-        <div className="relative aspect-[3072/1643] w-full">
+        <div className="relative aspect-[1716/917] w-full">
           <img
-            src="/img/hero-poster-2000.webp"
-            srcSet="/img/hero-poster-1400.webp 1400w, /img/hero-poster-2000.webp 2000w, /img/hero-poster-3072.webp 3072w"
+            src="/img/hero-sts-desktop-1716.webp"
+            srcSet="/img/hero-sts-desktop-1200.webp 1200w, /img/hero-sts-desktop-1716.webp 1716w"
             sizes="100vw"
-            alt="Play with your sack — a hand reaching through torn paper holding a handmade Hacky Nation suede footbag"
-            width={3072}
-            height={1643}
+            alt="Sack to School — a hand punching through notebook paper holding a Hacky Nation Star Burst footbag"
+            width={1716}
+            height={917}
             fetchPriority="high"
             decoding="async"
             className="h-full w-full object-cover"
@@ -86,7 +94,7 @@ export default function Hero() {
               separately-anchored absolute blocks) means they can't overlap no
               matter how the cream band's width shifts with the art. */}
           <div
-            className="parallax-layer absolute bottom-[19%] left-[4%] flex flex-wrap items-center gap-4 animate-rise-in [animation-delay:200ms] xl:left-[5%]"
+            className="parallax-layer absolute bottom-[7%] left-[4%] flex flex-wrap items-center gap-4 animate-rise-in [animation-delay:200ms] xl:left-[5%]"
             style={{ '--depth': '4px' }}
           >
             {ctas}

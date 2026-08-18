@@ -13,6 +13,7 @@ import ShopPage from './pages/ShopPage';
 import AboutPage from './pages/AboutPage';
 import ProductPage from './pages/ProductPage';
 import CustomPage from './pages/CustomPage';
+import TournamentPage from './pages/TournamentPage';
 import NotFound from './pages/NotFound';
 
 export default function App() {
@@ -48,6 +49,7 @@ export default function App() {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/sacks/:id" element={<ProductPage />} />
         <Route path="/custom" element={<CustomPage />} />
+        <Route path="/tournament" element={<TournamentPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
 

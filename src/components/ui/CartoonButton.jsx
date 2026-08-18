@@ -13,6 +13,7 @@ export default function CartoonButton({
   label,
   to,
   href,
+  target,
   color = 'bg-blue',
   textClass = 'text-paper',
   hasHighlight = true,
@@ -53,7 +54,15 @@ export default function CartoonButton({
 
   if (href && !disabled) {
     return (
-      <a href={href} className={base} onClick={onClick}>
+      <a
+        href={href}
+        target={target}
+        /* An external target without this hands the new tab a window.opener
+           back into this page. */
+        rel={target === '_blank' ? 'noopener noreferrer' : undefined}
+        className={base}
+        onClick={onClick}
+      >
         {inner}
       </a>
     );

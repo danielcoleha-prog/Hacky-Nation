@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useCart } from '../lib/CartContext';
 
 const LINKS = [
+  { label: 'Tournament', to: '/tournament' },
   { label: 'Shop', to: '/shop' },
   { label: 'Custom', to: '/custom' },
   { label: 'Story', to: '/about' },

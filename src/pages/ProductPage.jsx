@@ -9,12 +9,14 @@ import { useReveal } from '../lib/useReveal';
 import { trackViewContent } from '../lib/pixel';
 import Seal from '../components/Seal';
 
+/* Filtered, because the specialty builds carry no panel count and an empty
+   cell in a four-up spec table reads as missing data rather than N/A. */
 const SPECS = (sack) => [
   { k: 'Panels', v: sack.panels },
   { k: 'Material', v: 'Premium suede' },
   { k: 'Fill', v: 'Weighted pellet' },
   { k: 'Made', v: 'By hand' },
-];
+].filter((spec) => spec.v);
 
 export default function ProductPage() {
   const { id } = useParams();
