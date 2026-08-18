@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { getProduct, isSack, SACKS, SIZES, formatPrice, SACK_BUNDLE_PRICE } from '../lib/products';
 import { useCart } from '../lib/CartContext';
@@ -25,7 +25,24 @@ export default function ProductPage() {
   /* Tees lead with the back (the PLAY WITH YOUR SACK. print); everything else
      has a single view. */
   const [showFront, setShowFront] = useState(false);
+  const [active, setActive] = useState(0);
   useReveal([id]);
+
+  /* The cut-out hero first, then the lifestyle shots. Tees never build a
+     rail — they have their own front/back toggle. Declared above the
+     not-found guard so the hook order stays stable between renders. */
+  const views = useMemo(() => {
+    if (!sack) return [];
+    const hero = {
+      src: sack.image,
+      thumb: sack.image,
+      alt: `${sack.fullName} — ${sack.sub.toLowerCase()}`,
+      cutout: sack.cutout !== false,
+    };
+    const isTee = Array.isArray(sack.sizes) || sack.id.startsWith('shirt');
+    if (isTee) return [hero];
+    return [hero, ...(sack.gallery || []).map((g) => ({ ...g, cutout: false }))];
+  }, [sack]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -33,6 +50,7 @@ export default function ProductPage() {
     setSize(Array.isArray(sack?.sizes) && sack.sizes.length === 1 ? sack.sizes[0] : null);
     setSizeError(false);
     setShowFront(false);
+    setActive(0);
   }, [id, sack]);
 
   /* Feeds Meta's product-level retargeting — the audience of people who looked
@@ -58,6 +76,8 @@ export default function ProductPage() {
      the full S–XXL would let people order sizes that don't exist. */
   const sizeOptions = Array.isArray(sack.sizes) ? sack.sizes : SIZES;
   const isASack = isSack(sack.id);
+  /* Clamped: a stale index from the previous product would read undefined. */
+  const current = views[Math.min(active, views.length - 1)];
 
   function handleAdd() {
     if (needsSize && !size) {
@@ -85,38 +105,92 @@ export default function ProductPage() {
           {/* ---------- gallery ----------
               self-start so the column hugs the image; stretched to the detail
               column's height, the seal's bottom anchor lands far below it. */}
-          <div className="relative self-start">
-            <div className="relative flex aspect-square items-center justify-center overflow-hidden border-2 border-ink bg-paper-deep shadow-press">
-              {sack.cutout !== false && (
-                <>
-                  <div aria-hidden="true" className="dotfield pointer-events-none absolute inset-0 opacity-[0.13]" />
-                  <div
-                    aria-hidden="true"
-                    className="absolute left-1/2 top-1/2 aspect-square w-[58%] -translate-x-1/2 -translate-y-1/2 rounded-full"
-                    style={{ backgroundColor: sack.accent, opacity: 0.26 }}
-                  />
-                </>
-              )}
-              {needsSize && !showFront && !sack.imageBack ? (
-                <div className="relative z-10 flex flex-col items-center gap-3 px-8 text-center">
-                  <span className="material-symbols-outlined text-[38px] text-ink-faint" aria-hidden="true">
-                    add_a_photo
-                  </span>
-                  <span className="label text-ink-faint">Back photo placeholder</span>
-                  <span className="font-body text-body-sm text-ink-faint">PLAY WITH YOUR SACK.</span>
+          <div className="self-start">
+            <div className="flex flex-col-reverse gap-3 sm:flex-row sm:gap-4">
+              {/* Thumbnail rail — a vertical strip beside the image on desktop,
+                  a horizontal scroller under it on phones, where a left column
+                  would eat a third of the width. */}
+              {views.length > 1 && (
+                <div
+                  role="group"
+                  aria-label="Product images"
+                  className="no-scrollbar flex gap-3 overflow-x-auto sm:w-[74px] sm:shrink-0 sm:flex-col sm:overflow-visible"
+                >
+                  {views.map((view, i) => (
+                    <button
+                      key={view.src}
+                      type="button"
+                      onClick={() => setActive(i)}
+                      aria-pressed={i === active}
+                      aria-label={view.alt}
+                      className={`relative aspect-square w-[66px] shrink-0 overflow-hidden border-2 bg-paper-deep transition-colors sm:w-full ${
+                        i === active ? 'border-blue' : 'border-ink/30 hover:border-ink'
+                      }`}
+                    >
+                      <img
+                        src={view.thumb}
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                        className={
+                          view.cutout ? 'h-full w-full object-contain p-1' : 'h-full w-full object-cover'
+                        }
+                      />
+                    </button>
+                  ))}
                 </div>
-              ) : (
-                <img
-                  src={needsSize ? (showFront ? sack.imageFront || sack.image : sack.imageBack || sack.image) : sack.image}
-                  alt={`${sack.fullName} — ${needsSize ? (showFront ? 'front' : 'back') : sack.sub.toLowerCase()}`}
-                  width={900}
-                  height={900}
-                  fetchPriority="high"
-                  decoding="async"
-                  className="relative z-10 h-[72%] w-auto max-w-[82%] object-contain"
-                  style={{ filter: 'drop-shadow(0 26px 30px rgba(16,26,46,0.3))' }}
-                />
               )}
+
+              <div className="relative flex-1">
+                <div className="relative flex aspect-square items-center justify-center overflow-hidden border-2 border-ink bg-paper-deep shadow-press">
+                  {/* The disc and dot field sit behind the cut-out hero only —
+                      under a full-bleed photo they would never be seen. */}
+                  {current.cutout && (
+                    <>
+                      <div aria-hidden="true" className="dotfield pointer-events-none absolute inset-0 opacity-[0.13]" />
+                      <div
+                        aria-hidden="true"
+                        className="absolute left-1/2 top-1/2 aspect-square w-[58%] -translate-x-1/2 -translate-y-1/2 rounded-full"
+                        style={{ backgroundColor: sack.accent, opacity: 0.26 }}
+                      />
+                    </>
+                  )}
+                  {needsSize && !showFront && !sack.imageBack ? (
+                    <div className="relative z-10 flex flex-col items-center gap-3 px-8 text-center">
+                      <span className="material-symbols-outlined text-[38px] text-ink-faint" aria-hidden="true">
+                        add_a_photo
+                      </span>
+                      <span className="label text-ink-faint">Back photo placeholder</span>
+                      <span className="font-body text-body-sm text-ink-faint">PLAY WITH YOUR SACK.</span>
+                    </div>
+                  ) : (
+                    <img
+                      src={needsSize ? (showFront ? sack.imageFront || sack.image : sack.imageBack || sack.image) : current.src}
+                      alt={needsSize ? `${sack.fullName} — ${showFront ? 'front' : 'back'}` : current.alt}
+                      width={900}
+                      height={900}
+                      fetchPriority={active === 0 ? 'high' : 'auto'}
+                      decoding="async"
+                      className={
+                        current.cutout
+                          ? 'relative z-10 h-[72%] w-auto max-w-[82%] object-contain'
+                          : 'relative z-10 h-full w-full object-cover'
+                      }
+                      style={current.cutout ? { filter: 'drop-shadow(0 26px 30px rgba(16,26,46,0.3))' } : undefined}
+                    />
+                  )}
+                </div>
+
+                <Seal
+                  variant={sack.preorder ? 'red' : 'blue'}
+                  burst
+                  size="lg"
+                  lines={sack.preorder ? ['PRE', 'ORDER'] : ['IN', 'STOCK']}
+                  /* Tees add a Back/Front toggle under the image, which the
+                     bottom-left anchor would collide with — sit above it there. */
+                  className={`absolute rotate-[-9deg] ${needsSize ? '-left-4 -top-5' : '-bottom-5 -left-4'}`}
+                />
+              </div>
             </div>
 
             {/* Tees only — a real toggle rather than hover, since this is the
@@ -141,16 +215,6 @@ export default function ProductPage() {
                 ))}
               </div>
             )}
-
-            <Seal
-              variant={sack.preorder ? 'red' : 'blue'}
-              burst
-              size="lg"
-              lines={sack.preorder ? ['PRE', 'ORDER'] : ['IN', 'STOCK']}
-              /* Tees add a Back/Front toggle under the image, which the
-                 bottom-left anchor would collide with — sit above it there. */
-              className={`absolute rotate-[-9deg] ${needsSize ? '-left-4 -top-5' : '-bottom-5 -left-4'}`}
-            />
           </div>
 
           {/* ---------- detail ---------- */}

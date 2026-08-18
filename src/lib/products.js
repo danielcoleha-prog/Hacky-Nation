@@ -96,6 +96,28 @@ export const SACKS = [
     panels: 32,
     colors: ['#D23C2B', '#F1E8DA', '#1B4FC4'],
     accent: '#D23C2B',
+    gallery: [
+      {
+        src: '/img/products/gallery/patriot-1.webp',
+        thumb: '/img/products/gallery/patriot-1-t.webp',
+        alt: 'Patriot foot bag on a warm studio backdrop',
+      },
+      {
+        src: '/img/products/gallery/patriot-2.webp',
+        thumb: '/img/products/gallery/patriot-2-t.webp',
+        alt: 'Close-up of the Patriot\'s red, white and blue suede panels',
+      },
+      {
+        src: '/img/products/gallery/patriot-3.webp',
+        thumb: '/img/products/gallery/patriot-3-t.webp',
+        alt: 'Player holding the Patriot foot bag in a park',
+      },
+      {
+        src: '/img/products/gallery/patriot-4.webp',
+        thumb: '/img/products/gallery/patriot-4-t.webp',
+        alt: 'Unpacking the Patriot foot bag on a desk',
+      },
+    ],
   },
   {
     id: 'sunset-sack',
@@ -110,6 +132,28 @@ export const SACKS = [
     panels: 32,
     colors: ['#F0A81B', '#D2661B', '#D23C2B'],
     accent: '#F0A81B',
+    gallery: [
+      {
+        src: '/img/products/gallery/sunset-1.webp',
+        thumb: '/img/products/gallery/sunset-1-t.webp',
+        alt: 'Sunset foot bag held in an open hand',
+      },
+      {
+        src: '/img/products/gallery/sunset-2.webp',
+        thumb: '/img/products/gallery/sunset-2-t.webp',
+        alt: 'Sunset foot bag resting in the grass mid-circle',
+      },
+      {
+        src: '/img/products/gallery/sunset-3.webp',
+        thumb: '/img/products/gallery/sunset-3-t.webp',
+        alt: 'Sunset foot bag in a flat lay with everyday carry',
+      },
+      {
+        src: '/img/products/gallery/sunset-4.webp',
+        thumb: '/img/products/gallery/sunset-4-t.webp',
+        alt: 'Tossing the Sunset foot bag indoors',
+      },
+    ],
   },
   {
     id: 'bulldawgs-sack',
@@ -124,6 +168,28 @@ export const SACKS = [
     panels: 14,
     colors: ['#16130E', '#D23C2B', '#F1E8DA'],
     accent: '#16130E',
+    gallery: [
+      {
+        src: '/img/products/gallery/bulldawgs-1.webp',
+        thumb: '/img/products/gallery/bulldawgs-1-t.webp',
+        alt: 'Bulldawgs foot bag on sunlit concrete',
+      },
+      {
+        src: '/img/products/gallery/bulldawgs-2.webp',
+        thumb: '/img/products/gallery/bulldawgs-2-t.webp',
+        alt: 'Player holding the Bulldawgs foot bag at a skatepark',
+      },
+      {
+        src: '/img/products/gallery/bulldawgs-3.webp',
+        thumb: '/img/products/gallery/bulldawgs-3-t.webp',
+        alt: 'A circle forming in a schoolyard',
+      },
+      {
+        src: '/img/products/gallery/bulldawgs-4.webp',
+        thumb: '/img/products/gallery/bulldawgs-4-t.webp',
+        alt: 'The full Hacky Nation lineup in a row',
+      },
+    ],
   },
   {
     id: 'sky-sack',
@@ -138,6 +204,28 @@ export const SACKS = [
     panels: 14,
     colors: ['#1B4FC4', '#F1E8DA', '#4A7BE0'],
     accent: '#1B4FC4',
+    gallery: [
+      {
+        src: '/img/products/gallery/sky-1.webp',
+        thumb: '/img/products/gallery/sky-1-t.webp',
+        alt: 'Sky foot bag balanced on a sneaker',
+      },
+      {
+        src: '/img/products/gallery/sky-2.webp',
+        thumb: '/img/products/gallery/sky-2-t.webp',
+        alt: 'Sky foot bag passed between two hands',
+      },
+      {
+        src: '/img/products/gallery/sky-3.webp',
+        thumb: '/img/products/gallery/sky-3-t.webp',
+        alt: 'Sky foot bag pulled from a jeans pocket',
+      },
+      {
+        src: '/img/products/gallery/sky-4.webp',
+        thumb: '/img/products/gallery/sky-4-t.webp',
+        alt: 'Sky, Sunset and Patriot foot bags stacked',
+      },
+    ],
   },
   {
     id: 'usl-pro-sack',
