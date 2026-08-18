@@ -5,10 +5,16 @@
 //     Stripe actually charges. Prices below are for display only; the server
 //     recomputes them and ignores anything the client sends.
 
-export const SACK_IDS = ['patriot-sack', 'sunset-sack', 'bulldawgs-sack', 'sky-sack'];
+export const SACK_IDS = [
+  'patriot-sack',
+  'sunset-sack',
+  'bulldawgs-sack',
+  'sky-sack',
+  'usl-pro-sack',
+];
 
-export const SACK_PRICE = 17;
-export const SACK_BUNDLE_PRICE = 15;
+export const SACK_PRICE = 15;
+export const SACK_BUNDLE_PRICE = 13;
 export const BUNDLE_MIN_QTY = 2;
 
 /** Sacks — these get their own product pages at /sacks/:id */
@@ -20,7 +26,7 @@ export const SACKS = [
     sub: 'RED · WHITE · BLUE · 32 PANELS',
     image: '/img/products/patriot-sack.webp',
     desc: 'The Patriot is a bold 32-panel suede foot bag in red, white, and blue. Handcrafted and built to play — perfect for the circle.',
-    price: 17,
+    price: 15,
     compareAt: 20,
     preorder: false,
     panels: 32,
@@ -34,7 +40,7 @@ export const SACKS = [
     sub: 'YELLOW & ORANGE · 32 PANELS',
     image: '/img/products/sunset-sack.webp',
     desc: 'The Sunset is a 32-panel suede foot bag in warm yellow and orange tones. Eye-catching in the circle, built to last.',
-    price: 17,
+    price: 15,
     compareAt: 20,
     preorder: false,
     panels: 32,
@@ -48,7 +54,7 @@ export const SACKS = [
     sub: 'BLACK & RED · 14 PANELS',
     image: '/img/products/bulldawgs-sack.webp',
     desc: 'The Bulldawgs is a 14-panel suede foot bag in black and red. Tight panels for a consistent, responsive kick.',
-    price: 17,
+    price: 15,
     compareAt: 20,
     preorder: true,
     panels: 14,
@@ -62,7 +68,7 @@ export const SACKS = [
     sub: 'BLUE & WHITE · 14 PANELS',
     image: '/img/products/sky-sack.webp',
     desc: 'The Sky is a 14-panel suede foot bag in blue and white. Clean colorway, great feel, made for players who keep it up.',
-    price: 17,
+    price: 15,
     compareAt: 20,
     preorder: true,
     panels: 14,
@@ -76,7 +82,7 @@ export const SACKS = [
     sub: 'OFFICIAL USL COLLAB · LIMITED EDITION',
     image: '/img/products/usl-pro-sack.webp',
     desc: 'The official USASackLeague × Hacky Nation Pro Sack. Co-designed with USL for the circle — premium suede, tournament-grade panel construction, limited edition numbered run.',
-    price: 20,
+    price: 15,
     compareAt: 28,
     preorder: false,
     panels: 32,

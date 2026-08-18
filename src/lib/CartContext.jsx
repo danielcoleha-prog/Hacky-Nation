@@ -88,7 +88,7 @@ export function CartProvider({ children }) {
 
   const value = useMemo(() => {
     /* Bundle rule, mirrored from the Netlify function: once the cart holds
-       2+ suede sacks, every sack drops from $17 to $15. The server recomputes
+       2+ suede sacks, every sack drops from $15 to $13. The server recomputes
        this independently — this is presentation only. */
     const totalSackQty = items
       .filter((i) => SACK_IDS.includes(i.id))

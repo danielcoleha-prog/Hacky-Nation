@@ -5,14 +5,14 @@ const PRODUCTS = {
   'mystery-bag':    { name: 'Hand Knit Mystery Bag',  price: 1000 },
   'shirt-white':    { name: 'Hacky Nation Tee — White', price: 2000 },
   'shirt-black':    { name: 'Hacky Nation Tee — Black', price: 2000 },
-  'sunset-sack':    { name: 'Sunset Foot Bag',          price: 1700, bundlePrice: 1500 },
-  'bulldawgs-sack': { name: 'Bulldawgs Foot Bag',       price: 1700, bundlePrice: 1500 },
-  'sky-sack':       { name: 'Sky Foot Bag',             price: 1700, bundlePrice: 1500 },
-  'patriot-sack':   { name: 'Patriot Foot Bag',         price: 1700, bundlePrice: 1500 },
-  'usl-pro-sack':   { name: 'USASackLeague X Hacky Nation Pro Sack', price: 2000 },
+  'sunset-sack':    { name: 'Sunset Foot Bag',          price: 1500, bundlePrice: 1300 },
+  'bulldawgs-sack': { name: 'Bulldawgs Foot Bag',       price: 1500, bundlePrice: 1300 },
+  'sky-sack':       { name: 'Sky Foot Bag',             price: 1500, bundlePrice: 1300 },
+  'patriot-sack':   { name: 'Patriot Foot Bag',         price: 1500, bundlePrice: 1300 },
+  'usl-pro-sack':   { name: 'USASackLeague X Hacky Nation Pro Sack', price: 1500, bundlePrice: 1300 },
 };
 
-const SACK_IDS = new Set(['sunset-sack', 'bulldawgs-sack', 'sky-sack', 'patriot-sack']);
+const SACK_IDS = new Set(['sunset-sack', 'bulldawgs-sack', 'sky-sack', 'patriot-sack', 'usl-pro-sack']);
 
 const ALLOWED_ORIGINS = [
   process.env.URL,
