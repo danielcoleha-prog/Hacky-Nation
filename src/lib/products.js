@@ -1,3 +1,5 @@
+import PRICING from './pricing.cjs';
+
 // Single source of truth for the storefront.
 //
 // ⚠️  Every `id` here MUST exist in PRODUCTS in
@@ -5,22 +7,23 @@
 //     Stripe actually charges. Prices below are for display only; the server
 //     recomputes them and ignores anything the client sends.
 
-/* Bundle-eligible sacks only. The Magical Sack and Star Burst sit at $18 and
-   are deliberately outside this tier — their pack is the Specialty Duo, and
-   letting them fall to $13 here would price two loose ones below it. */
-export const SACK_IDS = [
-  'pink-lemonade-sack',
-  'candy-corn-sack',
-  'patriot-sack',
-  'sunset-sack',
-  'bulldawgs-sack',
-  'sky-sack',
-  'usl-pro-sack',
-];
+/* Every price rule lives in pricing.cjs, which the Netlify checkout function
+   requires too — one copy, so the cart and Stripe can never disagree. These
+   re-exports are just the dollar-denominated view for the UI. */
+export const SACK_IDS = PRICING.SACK_IDS;
+export const SPECIALTY_IDS = PRICING.SPECIALTY_IDS;
 
-export const SACK_PRICE = 15;
-export const SACK_BUNDLE_PRICE = 13;
-export const BUNDLE_MIN_QTY = 2;
+export const SACK_PRICE = PRICING.LIST_REGULAR / 100;
+export const SACK_BUNDLE_PRICE = PRICING.MULTI_REGULAR / 100;
+export const SPECIALTY_PRICE = PRICING.LIST_SPECIALTY / 100;
+export const SPECIALTY_BUNDLE_PRICE = PRICING.MULTI_SPECIALTY / 100;
+export const BUNDLE_MIN_QTY = PRICING.MULTI_MIN_QTY;
+
+/** The cheapest pack a given sack belongs to, or null. */
+export function bundleFor(id) {
+  const set = PRICING.bundleFor(id);
+  return set ? BUNDLES.find((b) => b.id === set.id) || null : null;
+}
 
 /** Sacks — these get their own product pages at /sacks/:id */
 export const SACKS = [

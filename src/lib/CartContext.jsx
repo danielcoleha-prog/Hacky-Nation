@@ -1,11 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useReducer, useState } from 'react';
-import {
-  SACK_IDS,
-  SACK_PRICE,
-  SACK_BUNDLE_PRICE,
-  BUNDLE_MIN_QTY,
-  getProduct,
-} from './products';
+import { getProduct } from './products';
+import PRICING from './pricing.cjs';
 import { trackAddToCart } from './pixel';
 
 const STORAGE_KEY = 'hackyCart';
@@ -87,40 +82,49 @@ export function CartProvider({ children }) {
   }, [isOpen]);
 
   const value = useMemo(() => {
-    /* Bundle rule, mirrored from the Netlify function: once the cart holds
-       2+ suede sacks, every sack drops from $15 to $13. The server recomputes
-       this independently — this is presentation only. */
-    const totalSackQty = items
-      .filter((i) => SACK_IDS.includes(i.id))
-      .reduce((sum, i) => sum + i.qty, 0);
-    const bundleActive = totalSackQty >= BUNDLE_MIN_QTY;
+    /* Every sack rule — the multi rate and the packs that form automatically —
+       comes from the shared engine the checkout function also requires, so the
+       drawer can never quote a total Stripe disagrees with. */
+    const pricing = PRICING.priceSacks(
+      items.filter((i) => PRICING.isSackId(i.id)).map((i) => ({ id: i.id, qty: i.qty }))
+    );
 
     const lines = items.map((item) => {
       const product = getProduct(item.id);
-      const unitPrice =
-        SACK_IDS.includes(item.id) && bundleActive ? SACK_BUNDLE_PRICE : product.price;
+      const isSackLine = PRICING.isSackId(item.id);
+      const unitPrice = isSackLine ? pricing.unitPrice(item.id) / 100 : product.price;
       return {
         ...item,
         key: lineKey(item.id, item.size),
         product,
         unitPrice,
         lineTotal: unitPrice * item.qty,
-        discounted: SACK_IDS.includes(item.id) && bundleActive,
+        discounted: isSackLine && unitPrice < product.price,
       };
     });
 
-    const subtotal = lines.reduce((sum, l) => sum + l.lineTotal, 0);
+    /* A formed pack shows as its own saving row rather than being smeared back
+       across the sack lines — two identical sacks quoting different prices
+       reads as a bug, however correct the total is. */
+    const packs = pricing.applied.map((a) => ({
+      id: a.id,
+      name: a.name,
+      saving: a.saving / 100,
+    }));
+
+    const packSavings = packs.reduce((sum, b) => sum + b.saving, 0);
+    const subtotal = lines.reduce((sum, l) => sum + l.lineTotal, 0) - packSavings;
     const count = lines.reduce((sum, l) => sum + l.qty, 0);
-    const savings = bundleActive ? totalSackQty * (SACK_PRICE - SACK_BUNDLE_PRICE) : 0;
 
     return {
       items,
       lines,
+      packs,
       subtotal,
       count,
-      bundleActive,
-      totalSackQty,
-      savings,
+      bundleActive: pricing.multi,
+      totalSackQty: pricing.totalQty,
+      savings: pricing.savings / 100,
       isOpen,
       openCart: () => setIsOpen(true),
       closeCart: () => setIsOpen(false),

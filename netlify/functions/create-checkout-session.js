@@ -1,11 +1,14 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+// Same rules file the cart imports. Sack prices, the multi rate and the
+// automatic packs all come from here so the two can never drift apart.
+const PRICING = require('../../src/lib/pricing.cjs');
 
 // Server-side product whitelist — clients cannot manipulate prices
 const PRODUCTS = {
-  'magical-sack':       { name: 'The Magical Sack',        price: 1800 },
-  'pink-lemonade-sack': { name: 'Pink Lemonade Foot Bag',  price: 1500, bundlePrice: 1300 },
-  'candy-corn-sack':    { name: 'Candy Corn Foot Bag',     price: 1500, bundlePrice: 1300 },
-  'star-burst-sack':    { name: 'Star Burst Foot Bag',     price: 1800 },
+  'magical-sack':       { name: 'The Magical Sack', },
+  'pink-lemonade-sack': { name: 'Pink Lemonade Foot Bag', },
+  'candy-corn-sack':    { name: 'Candy Corn Foot Bag', },
+  'star-burst-sack':    { name: 'Star Burst Foot Bag', },
   'specialty-duo':      { name: 'The Specialty Duo',       price: 2900 },
   'og-pack':            { name: 'The OG Pack',             price: 4900 },
   '14-panel-pack':      { name: 'The 14 Panel Pack',       price: 3900 },
@@ -13,17 +16,12 @@ const PRODUCTS = {
   'mystery-bag':    { name: 'Hand Knit Mystery Bag',  price: 1000 },
   'shirt-white':    { name: 'Hacky Nation Tee — White', price: 2000 },
   'shirt-black':    { name: 'Hacky Nation Tee — Black', price: 2000 },
-  'sunset-sack':    { name: 'Sunset Foot Bag',          price: 1500, bundlePrice: 1300 },
-  'bulldawgs-sack': { name: 'Bulldawgs Foot Bag',       price: 1500, bundlePrice: 1300 },
-  'sky-sack':       { name: 'Sky Foot Bag',             price: 1500, bundlePrice: 1300 },
-  'patriot-sack':   { name: 'Patriot Foot Bag',         price: 1500, bundlePrice: 1300 },
-  'usl-pro-sack':   { name: 'USASackLeague X Hacky Nation Pro Sack', price: 1500, bundlePrice: 1300 },
+  'sunset-sack':    { name: 'Sunset Foot Bag', },
+  'bulldawgs-sack': { name: 'Bulldawgs Foot Bag', },
+  'sky-sack':       { name: 'Sky Foot Bag', },
+  'patriot-sack':   { name: 'Patriot Foot Bag', },
+  'usl-pro-sack':   { name: 'USASackLeague X Hacky Nation Pro Sack', },
 };
-
-const SACK_IDS = new Set([
-  'sunset-sack', 'bulldawgs-sack', 'sky-sack', 'patriot-sack', 'usl-pro-sack',
-  'pink-lemonade-sack', 'candy-corn-sack',
-]);
 
 const ALLOWED_ORIGINS = [
   process.env.URL,
@@ -74,27 +72,44 @@ exports.handler = async (event) => {
     validatedItems.push({ product, qty, size, id: item.id });
   }
 
-  const totalSackQty = validatedItems.filter(i => SACK_IDS.has(i.id)).reduce((s, i) => s + i.qty, 0);
-  const isBundleOrder = totalSackQty >= 2;
+  const pricing = PRICING.priceSacks(
+    validatedItems.filter(i => PRICING.isSackId(i.id)).map(i => ({ id: i.id, qty: i.qty }))
+  );
 
   const lineItems = [];
   const orderSummaryParts = [];
-  for (const { product, qty, size, id } of validatedItems) {
-    const unitPrice = SACK_IDS.has(id) && isBundleOrder ? product.bundlePrice : product.price;
-    const baseName = size ? `${product.name} — ${size}` : product.name;
-    orderSummaryParts.push(`${baseName} x${qty}`);
+
+  const push = (name, amount) => {
+    orderSummaryParts.push(name);
     lineItems.push({
       price_data: {
         currency: 'usd',
         product_data: {
-          name: `${baseName} x${qty}`,
+          name,
           tax_code: 'txcd_99999999', // General — Tangible Goods
         },
-        unit_amount: unitPrice * qty,
+        unit_amount: amount,
         tax_behavior: 'exclusive',
       },
       quantity: 1,
     });
+  };
+
+  // Packs the cart formed on its own, billed as the pack rather than as parts.
+  for (const pack of pricing.applied) {
+    push(pack.name, pack.price);
+  }
+
+  // Whatever sacks were left over after those packs came out.
+  for (const line of pricing.loose) {
+    push(`${PRODUCTS[line.id].name} x${line.qty}`, line.total);
+  }
+
+  // Tees, the mystery bag, and packs bought outright — ordinary priced goods.
+  for (const { product, qty, size, id } of validatedItems) {
+    if (PRICING.isSackId(id)) continue;
+    const baseName = size ? `${product.name} — ${size}` : product.name;
+    push(`${baseName} x${qty}`, product.price * qty);
   }
 
   try {

@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
-import { getProduct, isSack, isBundle, SACKS, SIZES, formatPrice, SACK_BUNDLE_PRICE } from '../lib/products';
+import {
+  getProduct, isSack, isBundle, bundleFor, SACKS, SIZES, formatPrice,
+  SACK_BUNDLE_PRICE, SPECIALTY_BUNDLE_PRICE, SPECIALTY_IDS,
+} from '../lib/products';
 import { useCart } from '../lib/CartContext';
 import { useReveal } from '../lib/useReveal';
 import { trackViewContent } from '../lib/pixel';
@@ -77,6 +80,10 @@ export default function ProductPage() {
      the full S–XXL would let people order sizes that don't exist. */
   const sizeOptions = Array.isArray(sack.sizes) ? sack.sizes : SIZES;
   const isASack = isSack(sack.id);
+  const isSpecialty = SPECIALTY_IDS.includes(sack.id);
+  /* The cheapest pack this sack belongs to — the smallest step up is the
+     one people actually take. Patriot sits in two; this offers the $39. */
+  const pack = bundleFor(sack.id);
   /* Clamped: a stale index from the previous product would read undefined. */
   const current = views[Math.min(active, views.length - 1)];
 
@@ -325,12 +332,22 @@ export default function ProductPage() {
               >
                 Add to cart — {formatPrice(sack.price * qty)}
               </button>
+
+              {pack && (
+                <button
+                  type="button"
+                  onClick={() => addItem(pack.id)}
+                  className="btn-secondary min-w-[220px] flex-1 py-4"
+                >
+                  Upgrade to {pack.fullName} — {formatPrice(pack.price)}
+                </button>
+              )}
             </div>
 
             {isASack && (
             <p className="mt-4 flex items-center gap-2.5 border-2 border-blue bg-blue px-4 py-3 label leading-[1.7] text-paper">
               <span className="material-symbols-outlined text-[17px]" aria-hidden="true">sell</span>
-              Buy 2 or more sacks — {formatPrice(SACK_BUNDLE_PRICE)} each
+              Buy 2 or more sacks — {formatPrice(isSpecialty ? SPECIALTY_BUNDLE_PRICE : SACK_BUNDLE_PRICE)} each
             </p>
             )}
 
@@ -356,7 +373,7 @@ export default function ProductPage() {
                 Add another sack
               </h2>
               <p className="mt-2 font-body text-body-md text-ink-soft">
-                Any 2 sacks drop to {formatPrice(SACK_BUNDLE_PRICE)} each — mix any colorways.
+                Any 2 sacks drop to {formatPrice(SACK_BUNDLE_PRICE)} each, specialty builds to {formatPrice(SPECIALTY_BUNDLE_PRICE)} — mix any colorways.
               </p>
             </div>
             <Link to="/shop" className="label text-blue underline underline-offset-4">

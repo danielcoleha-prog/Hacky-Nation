@@ -6,7 +6,7 @@ import { formatPrice, SACK_BUNDLE_PRICE, BUNDLE_MIN_QTY } from '../lib/products'
 export default function CartDrawer() {
   const {
     lines, subtotal, count, isOpen, closeCart, setQty, removeItem,
-    bundleActive, savings, totalSackQty, items,
+    bundleActive, savings, totalSackQty, packs, items,
   } = useCart();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -169,10 +169,29 @@ export default function CartDrawer() {
 
         {lines.length > 0 && (
           <footer className="border-t-2 border-ink bg-paper-deep px-5 py-5">
-            {bundleActive && savings > 0 && (
-              <p className="mb-3 flex items-center gap-2 label text-blue-deep">
-                <span className="material-symbols-outlined text-[16px]" aria-hidden="true">sell</span>
-                Bundle applied — you saved {formatPrice(savings)}
+            {/* Packs that formed on their own get a line each, so the total is
+                traceable instead of a subtotal that quietly disagrees with the
+                sum of the rows above it. */}
+            {packs.length > 0 && (
+              <ul className="mb-3 flex flex-col gap-1.5">
+                {packs.map((pack, i) => (
+                  <li
+                    key={`${pack.id}-${i}`}
+                    className="flex items-center justify-between gap-3 label text-blue-deep"
+                  >
+                    <span className="flex items-center gap-2">
+                      <span className="material-symbols-outlined text-[16px]" aria-hidden="true">sell</span>
+                      {pack.name} applied
+                    </span>
+                    <span className="font-numeric">−{formatPrice(pack.saving)}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {savings > 0 && (
+              <p className="mb-3 label text-ink-soft">
+                You saved {formatPrice(savings)} against buying these one at a time.
               </p>
             )}
 

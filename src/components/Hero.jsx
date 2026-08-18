@@ -54,16 +54,11 @@ export default function Hero() {
         </div>
 
         <div className="paper-grain relative bg-paper px-5 pb-10 pt-7 md:px-8">
-          <p className="eyebrow animate-rise-in">Handmade suede footbags</p>
-          <p className="mt-3 max-w-xs animate-rise-in font-body text-body-lg text-ink-soft [animation-delay:80ms]">
-            Premium suede, stitched one at a time. Built for the circle.
-          </p>
-          <div className="mt-6 flex animate-rise-in flex-col gap-3 sm:flex-row [animation-delay:160ms]">
+          {/* Strapline, blurb and the two stamps are desktop-only now — on a
+              phone the poster already says all of it, and stacking the copy
+              under it pushed the buttons below the fold. */}
+          <div className="flex animate-rise-in flex-col gap-3 sm:flex-row [animation-delay:160ms]">
             {ctas}
-          </div>
-          <div className="mt-6 flex animate-rise-in items-center gap-2 [animation-delay:220ms]">
-            <Seal variant="paper" size="sm" lines={['PREMIUM', 'SUEDE']} className="shadow-press-sm" />
-            <Seal variant="red" burst size="sm" lines={['EST.', '2025']} className="rotate-[-10deg]" />
           </div>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import Hero from '../components/Hero';
 import TrustStrip from '../components/TrustStrip';
 import SackCarousel from '../components/SackCarousel';
+import Bundles from '../components/Bundles';
 import CustomShowcase from '../components/CustomShowcase';
 import Merch from '../components/Merch';
 import CustomBanner from '../components/CustomBanner';
@@ -16,6 +17,7 @@ export default function Landing() {
       <Hero />
       <TrustStrip />
       <SackCarousel />
+      <Bundles />
       <CustomShowcase />
       <Merch />
       <CustomBanner />
