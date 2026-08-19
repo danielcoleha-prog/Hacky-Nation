@@ -338,7 +338,7 @@ export default function ProductPage() {
                 onClick={handleAdd}
                 className="btn-primary min-w-0 flex-1 basis-40 py-4 sm:min-w-[220px]"
               >
-                Add to cart — {formatPrice(sack.price * qty)}
+                Add to cart
               </button>
 
               {pack && (
