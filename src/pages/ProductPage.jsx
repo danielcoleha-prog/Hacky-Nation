@@ -113,12 +113,12 @@ export default function ProductPage() {
           </ol>
         </nav>
 
-        <div className="grid gap-6 sm:gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+        <div className="grid gap-4 sm:gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
           {/* ---------- gallery ----------
               self-start so the column hugs the image; stretched to the detail
               column's height, the seal's bottom anchor lands far below it. */}
-          <div className="self-start">
-            <div className="flex flex-col-reverse gap-3 sm:flex-row sm:gap-4">
+          <div className="contents lg:block lg:self-start">
+            <div className="contents lg:flex lg:gap-4">
               {/* Thumbnail rail — a vertical strip beside the image on desktop,
                   a horizontal scroller under it on phones, where a left column
                   would eat a third of the width. */}
@@ -126,7 +126,7 @@ export default function ProductPage() {
                 <div
                   role="group"
                   aria-label="Product images"
-                  className="no-scrollbar flex gap-3 overflow-x-auto sm:w-[74px] sm:shrink-0 sm:flex-col sm:overflow-visible"
+                  className="no-scrollbar order-3 flex gap-3 overflow-x-auto lg:order-none lg:w-[74px] lg:shrink-0 lg:flex-col lg:overflow-visible"
                 >
                   {views.map((view, i) => (
                     <button
@@ -153,8 +153,8 @@ export default function ProductPage() {
                 </div>
               )}
 
-              <div className="relative flex-1">
-                <div className="relative flex aspect-[5/4] items-center justify-center overflow-hidden border-2 border-ink bg-paper-deep shadow-press sm:aspect-square">
+              <div className="relative order-1 lg:order-none lg:flex-1">
+                <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden border-2 border-ink bg-paper-deep shadow-press sm:aspect-square">
                   {/* The disc and dot field sit behind the cut-out hero only —
                       under a full-bleed photo they would never be seen. */}
                   {current.cutout && (
@@ -234,7 +234,7 @@ export default function ProductPage() {
               controls come first and everything descriptive follows. Flex order
               rather than two DOM branches, so there is still one copy of the
               markup for crawlers. */}
-          <div className="flex flex-col lg:block">
+          <div className="order-2 flex flex-col lg:order-none lg:block">
             <p className="eyebrow order-6 mt-8 lg:order-none lg:mt-0">{sack.sub}</p>
 
             <h1 className="order-1 mt-0 font-display text-display-lg text-ink sm:text-display-xl lg:order-none lg:mt-3">
@@ -310,7 +310,7 @@ export default function ProductPage() {
               </div>
             )}
 
-            <div className="order-4 mt-5 flex flex-wrap items-stretch gap-3 lg:order-none lg:mt-8">
+            <div className="order-4 mt-4 flex flex-wrap items-stretch gap-3 lg:order-none lg:mt-8">
               <div className="flex items-center border-2 border-ink bg-paper">
                 <button
                   type="button"
