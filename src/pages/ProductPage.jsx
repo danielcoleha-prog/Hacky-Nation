@@ -100,8 +100,10 @@ export default function ProductPage() {
 
   return (
     <main className="paper-grain relative bg-paper">
-      <div className="relative z-10 mx-auto max-w-site px-5 py-8 md:px-8 md:py-12">
-        <nav aria-label="Breadcrumb" className="mb-8">
+      <div className="relative z-10 mx-auto max-w-site px-5 py-4 sm:py-8 md:px-8 md:py-12">
+        {/* Phones skip it — it costs a line of vertical space the add to
+            cart button needs more. */}
+        <nav aria-label="Breadcrumb" className="mb-8 hidden sm:block">
           <ol className="flex items-center gap-2 label text-ink-faint">
             <li><Link to="/" className="transition-colors hover:text-blue">Home</Link></li>
             <li aria-hidden="true">/</li>
@@ -111,7 +113,7 @@ export default function ProductPage() {
           </ol>
         </nav>
 
-        <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+        <div className="grid gap-6 sm:gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
           {/* ---------- gallery ----------
               self-start so the column hugs the image; stretched to the detail
               column's height, the seal's bottom anchor lands far below it. */}
@@ -152,7 +154,7 @@ export default function ProductPage() {
               )}
 
               <div className="relative flex-1">
-                <div className="relative flex aspect-square items-center justify-center overflow-hidden border-2 border-ink bg-paper-deep shadow-press">
+                <div className="relative flex aspect-[5/4] items-center justify-center overflow-hidden border-2 border-ink bg-paper-deep shadow-press sm:aspect-square">
                   {/* The disc and dot field sit behind the cut-out hero only —
                       under a full-bleed photo they would never be seen. */}
                   {current.cutout && (
@@ -227,15 +229,19 @@ export default function ProductPage() {
             )}
           </div>
 
-          {/* ---------- detail ---------- */}
-          <div>
-            <p className="eyebrow">{sack.sub}</p>
+          {/* ---------- detail ----------
+              Below lg this column is reordered so the name, price and buy
+              controls come first and everything descriptive follows. Flex order
+              rather than two DOM branches, so there is still one copy of the
+              markup for crawlers. */}
+          <div className="flex flex-col lg:block">
+            <p className="eyebrow order-6 mt-8 lg:order-none lg:mt-0">{sack.sub}</p>
 
-            <h1 className="mt-3 font-display text-display-xl text-ink">
+            <h1 className="order-1 mt-0 font-display text-display-lg text-ink sm:text-display-xl lg:order-none lg:mt-3">
               {sack.fullName}
             </h1>
 
-            <div className="mt-5 flex items-baseline gap-3">
+            <div className="order-2 mt-4 flex items-baseline gap-3 lg:order-none lg:mt-5">
               <span
                 className="font-numeric text-[2.6rem] leading-none text-ink"
               >
@@ -248,10 +254,10 @@ export default function ProductPage() {
               )}
             </div>
 
-            <p className="mt-5 max-w-md font-body text-body-lg text-ink-soft">{sack.desc}</p>
+            <p className="order-7 mt-5 max-w-md font-body text-body-lg text-ink-soft lg:order-none">{sack.desc}</p>
 
             {isASack && (
-            <dl className="mt-7 grid grid-cols-2 gap-px border-2 border-ink bg-ink/15 sm:grid-cols-4">
+            <dl className="order-8 mt-7 grid grid-cols-2 gap-px border-2 border-ink bg-ink/15 sm:grid-cols-4 lg:order-none">
               {SPECS(sack).map((spec) => (
                 <div key={spec.k} className="bg-paper px-3 py-3">
                   <dt className="label text-[10px] text-ink-faint">{spec.k}</dt>
@@ -264,7 +270,7 @@ export default function ProductPage() {
             )}
 
             {sack.colors && (
-            <div className="mt-6">
+            <div className="order-9 mt-6 lg:order-none">
               <p className="label text-ink-faint">Colorway</p>
               <div className="mt-2.5 flex gap-2">
                 {sack.colors.map((c) => (
@@ -281,7 +287,7 @@ export default function ProductPage() {
 
             {/* size picker — tees only, and required before adding */}
             {needsSize && (
-              <div className="mt-6">
+              <div className="order-3 mt-6 lg:order-none">
                 <p className="label text-ink-faint">Size</p>
                 <div className="mt-2.5 flex flex-wrap gap-2">
                   {sizeOptions.map((s2) => (
@@ -304,7 +310,7 @@ export default function ProductPage() {
               </div>
             )}
 
-            <div className="mt-8 flex flex-wrap items-stretch gap-3">
+            <div className="order-4 mt-5 flex flex-wrap items-stretch gap-3 lg:order-none lg:mt-8">
               <div className="flex items-center border-2 border-ink bg-paper">
                 <button
                   type="button"
@@ -330,7 +336,7 @@ export default function ProductPage() {
               <button
                 type="button"
                 onClick={handleAdd}
-                className="btn-primary min-w-[220px] flex-1 py-4"
+                className="btn-primary min-w-0 flex-1 basis-40 py-4 sm:min-w-[220px]"
               >
                 Add to cart — {formatPrice(sack.price * qty)}
               </button>
@@ -339,7 +345,7 @@ export default function ProductPage() {
                 <button
                   type="button"
                   onClick={() => addItem(pack.id)}
-                  className="btn-secondary min-w-[220px] flex-1 py-4"
+                  className="btn-secondary w-full py-4 sm:w-auto sm:min-w-[220px] sm:flex-1"
                 >
                   {/* The delta, not the pack price — "$39.00" next to a $15
                       sack reads as what it costs on top, which it is not. */}
@@ -349,13 +355,13 @@ export default function ProductPage() {
             </div>
 
             {isASack && (
-            <p className="mt-4 flex items-center gap-2.5 border-2 border-blue bg-blue px-4 py-3 label leading-[1.7] text-paper">
+            <p className="order-5 mt-4 flex items-center gap-2.5 border-2 border-blue bg-blue px-4 py-3 label leading-[1.7] text-paper lg:order-none">
               <span className="material-symbols-outlined text-[17px]" aria-hidden="true">sell</span>
               Buy 2 or more sacks — {formatPrice(isSpecialty ? SPECIALTY_BUNDLE_PRICE : SACK_BUNDLE_PRICE)} each
             </p>
             )}
 
-            <p className="mt-4 font-body text-body-sm text-ink-soft">
+            <p className="order-10 mt-4 font-body text-body-sm text-ink-soft lg:order-none">
               {sack.preorder ? 'Currently in production · ships in ~3 weeks · ' : 'Ready to ship · '}
               <a href="/pre-order-policy.html" className="underline underline-offset-2 hover:text-blue">
                 Images may vary*

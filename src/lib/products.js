@@ -44,7 +44,7 @@ export const SACKS = [
   {
     id: 'pink-lemonade-sack',
     name: 'Pink Lemonade',
-    fullName: 'Pink Lemonade Foot Bag',
+    fullName: 'Pink Lemonade',
     sub: 'PINK & YELLOW · 14 PANELS',
     image: '/img/products/pink-lemonade-sack.webp',
     desc: 'The Pink Lemonade is a 14-panel suede foot bag in hot pink and lemon yellow. Big soft panels for easy stalls, and loud enough to spot from across the field.',
@@ -59,7 +59,7 @@ export const SACKS = [
   {
     id: 'candy-corn-sack',
     name: 'Candy Corn',
-    fullName: 'Candy Corn Foot Bag',
+    fullName: 'Candy Corn',
     sub: 'YELLOW · ORANGE · WHITE · 32 PANELS',
     image: '/img/products/candy-corn-sack.webp',
     desc: 'The Candy Corn is a 32-panel suede foot bag in yellow, orange and cream. Tight panels for a responsive kick, and the only sack in the lineup that gets better the closer it gets to October.',
@@ -74,7 +74,7 @@ export const SACKS = [
   {
     id: 'star-burst-sack',
     name: 'Star Burst',
-    fullName: 'Star Burst Foot Bag',
+    fullName: 'Star Burst',
     sub: 'YELLOW & GREEN · METAL STUDS',
     image: '/img/products/star-burst-sack.webp',
     desc: 'The Star Burst is a suede foot bag in bright yellow, covered in green starbursts and set metal studs that catch the light on every kick. Nothing else in the lineup looks like it.',
@@ -88,7 +88,7 @@ export const SACKS = [
   {
     id: 'patriot-sack',
     name: 'Patriot',
-    fullName: 'Patriot Foot Bag',
+    fullName: 'Patriot',
     sub: 'RED · WHITE · BLUE · 32 PANELS',
     image: '/img/products/patriot-sack.webp',
     desc: 'The Patriot is a bold 32-panel suede foot bag in red, white, and blue. Handcrafted and built to play — perfect for the circle.',
@@ -124,7 +124,7 @@ export const SACKS = [
   {
     id: 'sunset-sack',
     name: 'Sunset',
-    fullName: 'Sunset Foot Bag',
+    fullName: 'Sunset',
     sub: 'YELLOW & ORANGE · 32 PANELS',
     image: '/img/products/sunset-sack.webp',
     desc: 'The Sunset is a 32-panel suede foot bag in warm yellow and orange tones. Eye-catching in the circle, built to last.',
@@ -160,7 +160,7 @@ export const SACKS = [
   {
     id: 'bulldawgs-sack',
     name: 'Bulldawgs',
-    fullName: 'Bulldawgs Foot Bag',
+    fullName: 'Bulldawgs',
     sub: 'BLACK & RED · 14 PANELS',
     image: '/img/products/bulldawgs-sack.webp',
     desc: 'The Bulldawgs is a 14-panel suede foot bag in black and red. Tight panels for a consistent, responsive kick.',
@@ -196,7 +196,7 @@ export const SACKS = [
   {
     id: 'sky-sack',
     name: 'Sky',
-    fullName: 'Sky Foot Bag',
+    fullName: 'Sky',
     sub: 'BLUE & WHITE · 14 PANELS',
     image: '/img/products/sky-sack.webp',
     desc: 'The Sky is a 14-panel suede foot bag in blue and white. Clean colorway, great feel, made for players who keep it up.',
